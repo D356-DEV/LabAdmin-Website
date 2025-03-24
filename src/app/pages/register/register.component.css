@@ -1,0 +1,12 @@
+.btn-outline-warning {
+    color: white; /* Texto blanco por defecto */
+    background-color: orange; /* Fondo naranja por defecto */
+    border-color: orange; /* Borde naranja */
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-outline-warning:hover {
+    color: orange; /* Texto naranja al pasar el mouse */
+    background-color: white; /* Fondo blanco */
+    border-color: orange; /* Mantiene el borde naranja */
+}
