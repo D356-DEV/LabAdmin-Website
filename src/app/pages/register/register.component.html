@@ -1,63 +1,92 @@
 <app-banner></app-banner>
-<section class="container-fluid mt-5">
-    <div class="container-lg">
-        <form [formGroup]="registerForm" (submit)="register()">
+<section class="container-fluid p-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow">
+                <div class="card-header ">
+                    <a routerLink="/login" style="color: orange;">
+                        <i class="bi bi-arrow-left-circle-fill p-1"></i> Volver
+                    </a>
+                    <h2>Registro</h2>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="registerForm" (submit)="register()">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control bg-orange" id="username" formControlName="username"
+                                placeholder="Introduce tu nombre de usuario" required>
+                            <div class="form-text">Elige un nombre de usuario único.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Nombre</label>
+                            <input type="text" class="form-control bg-orange" id="firstName"
+                                formControlName="first_name" placeholder="Introduce tu nombre" required>
+                            <div class="form-text">Escribe tu primer nombre tal como aparece en tu documento de
+                                identidad.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Apellido</label>
+                            <input type="text" class="form-control bg-orange" id="lastName" formControlName="last_name"
+                                placeholder="Introduce tu apellido" required>
+                            <div class="form-text">Ingresa tu(s) apellido(s) oficial(es).</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="birthDate" class="form-label">Fecha de nacimiento</label>
+                            <input type="date" class="form-control bg-orange" id="birthDate"
+                                formControlName="birth_date" required>
+                            <div class="form-text">Selecciona tu fecha de nacimiento en formato día/mes/año.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="institution" class="form-label">Institución</label>
+                            <input type="text" class="form-control bg-orange" id="institution"
+                                formControlName="institution" placeholder="Introduce tu institución" required>
+                            <div class="form-text">Ingresa el nombre de la institución educativa a la que perteneces.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="campus" class="form-label">Campus</label>
+                            <input type="text" class="form-control bg-orange" id="campus" formControlName="campus"
+                                placeholder="Introduce tu campus" required>
+                            <div class="form-text">Especifica el campus o sede donde estudias.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="studentCareer" class="form-label">Carrera</label>
+                            <input type="text" class="form-control bg-orange" id="studentCareer"
+                                formControlName="student_carrer" placeholder="Introduce tu carrera" required>
+                            <div class="form-text">Escribe el nombre de la carrera que estás cursando.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo</label>
+                            <input type="email" class="form-control bg-orange" id="email" formControlName="email"
+                                placeholder="example@alumnos.udg.mx" required>
+                            <div class="form-text">Introduce tu correo institucional o personal.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Teléfono</label>
+                            <input type="number" class="form-control bg-orange" id="phone" formControlName="phone"
+                                placeholder="Introduce tu teléfono" required>
+                            <div class="form-text">Proporciona un número de contacto válido.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control bg-orange" id="password"
+                                formControlName="password" placeholder="********" required>
+                            <div class="form-text">Debe contener al menos 8 caracteres.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                            <input type="password" class="form-control bg-orange" id="confirmPassword"
+                                formControlName="confirm_password" placeholder="********" required>
+                            <div class="form-text">Debe contener al menos 8 caracteres.</div>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-outline-warning">Registrarse</button>
+                        </div>
+                    </form>
 
-            <a routerLink="/login" style="color: orange;">
-                <i class="bi bi-arrow-left-circle-fill p-1"></i> Volver
-            </a>
-            <h2>Registro</h2> 
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" formControlName="username" style="background-color: orange;" placeholder="Introduce tu nombre de usuario" required>
+
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="firstName" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="firstName" formControlName="first_name" style="background-color: orange;" placeholder="Introduce tu nombre"required>
-            </div>
-            <div class="mb-3">
-                <label for="lastName" class="form-label">Apellido</label>
-                <input type="text" class="form-control" id="lastName" formControlName="last_name" style="background-color: orange;" placeholder="Introduce tu apellido"required>
-            </div>
-            <div class="mb-3">
-                <label for="birthDate" class="form-label">Fecha de nacimiento</label>
-                <input type="date" class="form-control" id="birthDate" formControlName="birth_date" style="background-color: orange;">
-            </div>
-            <div class="mb-3">
-                <label for="institution" class="form-label">Institución</label>
-                <input type="text" class="form-control" id="institution" formControlName="institution" style="background-color: orange;" placeholder="Introduce tu institución"required>
-            </div>
-            <div class="mb-3">
-                <label for="campus" class="form-label">Campus</label>
-                <input type="text" class="form-control" id="campus" formControlName="campus" style="background-color: orange;" placeholder="Introduce tu campus"required>
-            </div>
-            <div class="mb-3">
-                <label for="studentCode" class="form-label">Código de estudiante</label>
-                <input type="number" class="form-control" id="studentCode" formControlName="student_code" style="background-color: orange;" placeholder="Introduce tu código de estudiante"required>
-            </div>
-            <div class="mb-3">
-                <label for="studentCarreer" class="form-label">Carrera</label>
-                <input type="text" class="form-control" id="studentCarreer" formControlName="student_carreer" style="background-color: orange;" placeholder="Introduce tu carrera"required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Correo</label>
-                <input type="email" class="form-control" id="email" formControlName="email" style="background-color: orange;" placeholder="example@alumnos.udg.mx"required>
-            </div>
-            <div class="mb-3">
-                <label for="phone" class="form-label">Teléfono</label>
-                <input type="number" class="form-control" id="phone" formControlName="phone" style="background-color: orange;" placeholder="Introduce tu teléfono"required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" formControlName="password" style="background-color: orange;" placeholder="********"required>
-            </div>
-            <div class="mb-3">
-                <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
-                <input type="password" class="form-control" id="confirmPassword" formControlName="confirm_password" style="background-color: orange;" placeholder="**********"required>
-            </div>
-            <div>
-                <button type="submit" class="btn btn-outline-warning">Registrarse</button>
-            </div>
-        </form>
+        </div>
     </div>
 </section>

@@ -7,9 +7,9 @@ import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'recovery', component: RecoveryComponent },
-  { path: 'home', component: HomeComponent, canActivate: [authGuard] },
+  { path: 'login', component: LoginComponent, title: 'LabAdmin | Ingresar' },
+  { path: 'register', component: RegisterComponent, title: 'LabAdmin | Registro' },
+  { path: 'recovery', component: RecoveryComponent, title: 'LabAdmin | Recuperar contraseña' },
+  { path: 'home', component: HomeComponent, title: 'LabAdmin | Inicio', canActivate: [authGuard] },
   
 ];

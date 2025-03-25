@@ -16,3 +16,17 @@ export interface UserData {
   email: string;
   phone: string;
 }
+
+export interface CreateUser {
+  username: string;
+  first_name: string;
+  last_name: string;
+  birth_date: string;
+  password: string;
+  institution: string;
+  campus: string;
+  student_code?: string;
+  student_carrer: string;
+  email: string;
+  phone: string;
+}

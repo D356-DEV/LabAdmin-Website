@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 import { ViewEncapsulation } from '@angular/core';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { Validators } from '@angular/forms';
-import { UserData } from '../../interfaces/UserInterfaces';
+import { CreateUser, UserData } from '../../interfaces/UserInterfaces';
 import { UsersService } from '../../services/users.service';
 
 @Component({
@@ -22,24 +22,24 @@ import { UsersService } from '../../services/users.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class RegisterComponent {
-  registerForm: FormGroup<UserData | any>;
+  registerForm: FormGroup<CreateUser | any>;
   showPassword: boolean = false;
   usersService = inject(UsersService);
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
-      username: ['', Validators.required],
-      first_name: ['', Validators.required],
-      last_name: ['', Validators.required],
-      birth_date: ['', Validators.required],
-      institution: ['', Validators.required],
-      campus: ['', Validators.required],
-      student_code: [''],
-      student_carrer: ['', Validators.required],
-      email: ['', Validators.required],
-      phone: ['', Validators.required],
-      password: ['', Validators.required],
-      confirm_password: ['', Validators.required],
+      username: new FormControl('', [Validators.required]),
+      first_name: new FormControl('', [Validators.required]),
+      last_name: new FormControl('', [Validators.required]),
+      birth_date: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      confirm_password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      institution: new FormControl('', [Validators.required]),
+      campus: new FormControl('', [Validators.required]),
+      student_carrer: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required]),
+      phone: new FormControl('', [Validators.required
+      ]),
     });
   }
 
