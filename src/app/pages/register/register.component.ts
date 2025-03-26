@@ -17,7 +17,7 @@ import { delay } from 'rxjs';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, BannerComponent, NgTemplateOutlet],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, NgTemplateOutlet, BannerComponent, BannerComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
   encapsulation: ViewEncapsulation.None,
@@ -52,29 +52,39 @@ export class RegisterComponent {
     this.isLoading = true;
     this.formError = false;
     this.requestSuccess = false;
-  
+    
+    // Validación de campos vacíos
     if (this.registerForm.invalid) {
+      this.isLoading = false;
       this.formError = true;
-      this.formErrorText = 'Please fill out all fields';
+      this.formErrorText = 'Por favor, complete todos los campos.';
       return;
     }
   
-    this.registerForm.removeControl('confirm_password');
+    // Validación de coincidencia de contraseñas
+    if (this.registerForm.value.password !== this.registerForm.value.confirm_password) {
+      this.isLoading = false;
+      this.formError = true;
+      this.formErrorText = 'Las contraseñas no coinciden.';
+      return;
+    }
   
     try {
-      const response = await this.usersService.registerUser(
-        this.registerForm.value as UserData
-      );
+      this.registerForm.removeControl('confirm_password');
+      const response = await this.usersService.registerUser(this.registerForm.value);
   
-      this.requestSuccess = !!response;
-      if (!response) {
+      if (response) {
+        this.requestSuccess = true;
+      } else {
+        this.isLoading = false;
         this.formError = true;
-        this.formErrorText = 'An error occurred, please try again.';
+        this.formErrorText = 'Ocurrió un error, por favor intente nuevamente.';
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error('Error en el registro:', error);
+      this.isLoading = false;
       this.formError = true;
-      this.formErrorText = 'A network or server error occurred. Please try again later.';
+      this.formErrorText = 'Error de red o del servidor. Intente nuevamente más tarde.';
     } finally {
       this.isLoading = false;
     }

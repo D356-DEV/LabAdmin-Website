@@ -1,37 +1,48 @@
-<main >
-    <app-banner></app-banner>
-    <section class="container-fluid mt-5">
-        <div class="container">
-        <div class="row d-flex flex-column flex-md-row align-items-center">
-            <div class="col-12 col-sm-12 col-md-6">
-                <img src="../../../assets/IL.png" class="img-fluid" style="max-width: 100%;" alt="">
+<app-banner></app-banner>
+<section class="container-fluid py-5">
+    <div class="container-lg">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6">
+                <img src="../../../assets/IL.png" class="img-fluid" alt="Imagen de inicio de sesión">
             </div>
-            <div class="col-12 col-sm-12 col-md-6">
-                <h2>Iniciar sesion</h2>
-                <form [formGroup]="loginForm" (submit)="login()">
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Correo Electronico</label>
-                        <input type="email" class="form-control" id="email"  style="background-color: orange;" formControlName="email" placeholder="example@alumnos.udg.mx">
-                        <div id="email" class="form-text">Ingresa tu correo</div>
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header text-center bg-warning text-dark">
+                        <h2 class="mb-0">Iniciar sesión</h2>
                     </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
-                        <div class="input-group">
-                            <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-control" formControlName="password" style="background-color: orange;" placeholder="********">
-                            <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
-                                <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
-                            </button>
-                        </div>
-                        <div id="typePassword" class="form-text">Ingresa tu contraseña</div>
+                    <div class="card-body">
+                        <form [formGroup]="loginForm" (submit)="login()">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control bg-warning bg-opacity-25" id="email"
+                                    formControlName="email" placeholder="example@alumnos.udg.mx">
+                                <div class="form-text">Ingresa tu correo</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <input [type]="showPassword ? 'text' : 'password'" id="password"
+                                        class="form-control bg-warning bg-opacity-25" formControlName="password"
+                                        placeholder="********">
+                                    <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
+                                        <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                                    </button>
+                                </div>
+                                <div class="form-text">Ingresa tu contraseña</div>
+                            </div>
+                            <p class="mb-1">
+                                ¿Aún no tienes cuenta?
+                                <a routerLink="/register" class="text-warning">Regístrate aquí</a>
+                            </p>
+                            <p>
+                                ¿Olvidaste tu contraseña?
+                                <a routerLink="/recovery" class="text-warning">Haz clic aquí</a>
+                            </p>
+                            <button type="submit" class="btn btn-warning w-100">Acceder</button>
+                        </form>
                     </div>
-                    <p>¿Aún no tienes cuenta? <a routerLink="/register"style="color: orange;">Regístrate aquí</a></p>
-                    <p>¿Olvidaste tu contraseña? <a routerLink="/recovery" style="color: orange;">Click aqui</a></p>
-
-                    <button type="submit" class="btn btn-outline-warning w-100">Iniciar sesion</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 </section>
-    
-</main>
