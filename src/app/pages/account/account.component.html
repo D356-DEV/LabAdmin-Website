@@ -1,0 +1,61 @@
+<app-navbar></app-navbar>
+<section class="container-fluid">
+<div class="container">
+<br><br>
+<div class="container text-center">
+    <div class="row">
+      <div class="col-5">
+        <div class="card text-center" style="width: px; background-color: orange;">
+        <img [src]="userData?.profile_image ? 'data:image/jpeg;base64,' + userData?.profile_image : '/assets/IL.png'" 
+        width="100" height="100" 
+        alt="Foto de perfil" 
+        class="mx-auto d-block">
+           <div class="card-body" >
+          <h2 class="card-title">Informacion del perfil</h2>
+          <p class="card-text">Revisa o edita la informacion</p>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item"><strong>Nombre: </strong>{{userData?.first_name}}</li>
+          <li class="list-group-item"><strong>Apellido: </strong>{{userData?.last_name}}</li>
+          <li class="list-group-item"><strong>Institucion: </strong>{{userData?.institution}}</li>
+          <li class="list-group-item"><strong>Campus: </strong>{{userData?.campus}}</li>
+          <li class="list-group-item"><strong>Carrera: </strong>{{userData?.student_carrer}}</li>
+          <li class="list-group-item"><strong>Codigo: </strong>{{userData?.student_code}}</li>
+          <li class="list-group-item"><strong>Correo: </strong>{{userData?.email}}</li>
+          <li class="list-group-item"><strong>Telfono: </strong>{{userData?.phone}}</li>
+        </ul>
+        <div class="card-body">
+            <button type="submit" class="btn btn-outline-warning w-50">Editar informacion</button>
+        </div>
+      </div>
+      </div>
+      <div class="col-7">
+        <div class="container border border-2 rounded p-4">
+            <h2 class="text-center mb-4">Reservaciones de Laboratorios</h2>
+          
+            <!-- Contenedor con scroll solo vertical -->
+            <div class="overflow-auto" style="max-height: 600px; overflow-x: auto; overflow-y: hidden;">
+              <div class="row row-cols-1 row-cols-md-3 g-3">
+                <div class="col" *ngFor="let reservation of reservations">
+                  <div class="card shadow-lg p-3">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ reservation.laboratory }}</h5>
+                      <p class="card-text">
+                        <strong>Fecha:</strong> {{ reservation.date }} <br>
+                        <strong>Hora:</strong> {{ reservation.time }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+          
+      </div>
+      
+    </div>
+  </div>
+</div>
+</section>  
