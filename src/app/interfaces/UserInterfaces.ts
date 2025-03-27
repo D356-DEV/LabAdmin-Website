@@ -25,8 +25,7 @@ export interface CreateUser {
   password: string;
   institution: string;
   campus: string;
-  student_code?: string;
-  student_carrer: string;
+  student_carreer: string;
   email: string;
   phone: string;
 }

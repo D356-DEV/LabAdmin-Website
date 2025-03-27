@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { UserData } from '../interfaces/UserInterfaces';
+import { CreateUser, UserData } from '../interfaces/UserInterfaces';
+import { first } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +12,25 @@ export class UsersService {
 
   constructor() { }
 
-  public async registerUser(user: UserData): Promise<boolean> {
+  public async registerUser(user: CreateUser): Promise<boolean> {
     try {
       const response = await fetch(`${this.url}/create_user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify({
+          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          birth_date: user.birth_date,
+          password: user.password,
+          institution: user.institution,
+          campus: user.campus,
+          student_carreer: user.student_carreer,
+          email: user.email,
+          phone: user.phone,
+        })
       });
 
       if (!response.ok) {
@@ -26,6 +38,8 @@ export class UsersService {
       }
 
       const json = await response.json();
+
+      console.log(json);
 
       if (json.status === 'success') {
         return true;

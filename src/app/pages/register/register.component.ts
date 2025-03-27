@@ -38,10 +38,9 @@ export class RegisterComponent {
       last_name: new FormControl('', [Validators.required]),
       birth_date: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-      //confirm_password: new FormControl('', [Validators.required, Validators.minLength(8)]),
       institution: new FormControl('', [Validators.required]),
       campus: new FormControl('', [Validators.required]),
-      student_carrer: new FormControl('', [Validators.required]),
+      student_carreer: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
       phone: new FormControl('', [Validators.required
       ]),
