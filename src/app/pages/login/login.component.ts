@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';  
 import { RouterLink } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ViewEncapsulation } from '@angular/core';
 import { BannerComponent } from "../../components/banner/banner.component";
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,12 +16,13 @@ import { BannerComponent } from "../../components/banner/banner.component";
   encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent {
+
+  authService = inject(AuthService);
+  
   loginForm = new FormGroup({
-    email: new FormControl(''),
+    identifier: new FormControl(''),
     password: new FormControl('')
   });
-
-
 
   showPassword = false;
 
@@ -30,13 +32,17 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
+  async logIn(){
+    if (this.loginForm.invalid){
+      console.log('Log In form invalid');
+      return;
+    }
   
-  navigateToRegister() {
-    this.router.navigate(['/register']);
-  }
+    const identifier = this.loginForm.get('identifier')?.value ?? '';
+    const password = this.loginForm.get('password')?.value ?? '';
 
-  login() {
-    console.log(this.loginForm.value);
+    if(await this.authService.logIn(identifier, password)){
+      this.router.navigate(['/home']);
+    }
   }
-
 }

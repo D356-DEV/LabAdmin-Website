@@ -7,7 +7,7 @@ import { UserData } from '../interfaces/UserInterfaces';
 
 export class UsersService {
 
-  private url:string = 'http://labadmin.ct.ws/api/users';
+  private url:string = 'https://api.d356.dev/users';
 
   constructor() { }
 

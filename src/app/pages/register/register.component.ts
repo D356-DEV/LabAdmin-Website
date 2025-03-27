@@ -38,7 +38,7 @@ export class RegisterComponent {
       last_name: new FormControl('', [Validators.required]),
       birth_date: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-      confirm_password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      //confirm_password: new FormControl('', [Validators.required, Validators.minLength(8)]),
       institution: new FormControl('', [Validators.required]),
       campus: new FormControl('', [Validators.required]),
       student_carrer: new FormControl('', [Validators.required]),
@@ -61,16 +61,7 @@ export class RegisterComponent {
       return;
     }
   
-    // Validación de coincidencia de contraseñas
-    if (this.registerForm.value.password !== this.registerForm.value.confirm_password) {
-      this.isLoading = false;
-      this.formError = true;
-      this.formErrorText = 'Las contraseñas no coinciden.';
-      return;
-    }
-  
     try {
-      this.registerForm.removeControl('confirm_password');
       const response = await this.usersService.registerUser(this.registerForm.value);
   
       if (response) {

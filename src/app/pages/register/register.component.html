@@ -90,11 +90,6 @@
             <div class="form-text">Debe contener al menos 8 caracteres.</div>
         </div>
 
-        <div class="mb-3">
-            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-            <input type="password" class="form-control bg-orange" id="confirmPassword" formControlName="confirm_password" placeholder="********" required>
-            <div class="form-text">Debe coincidir con la contraseña ingresada.</div>
-        </div>
 
         @if (formError) {
             <ng-container *ngTemplateOutlet="error"></ng-container>

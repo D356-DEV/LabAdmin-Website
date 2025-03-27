@@ -1,40 +1,45 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { UserData } from '../interfaces/UserInterfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private url: string = 'https://api.d356.dev/users';
 
-  private url:string = 'http://labadmin.ct.ws/api/users';
+  constructor(private cookieService: CookieService) {}
 
-  constructor( private cookieService: CookieService) { }
-
-  async logIn(identifier:string, password:string): Promise<boolean> {
+  async logIn(identifier: string, password: string): Promise<boolean> {
     try {
       const response = await fetch(`${this.url}/login_user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          'identifier': identifier,
-          'password': password
-        })
-      })
+        body: JSON.stringify({ identifier, password })
+      });
 
-      const json = await response.json();
+      if (!response.ok) {
+        throw new Error(`[AUTH SERVICE] - HTTP error: ${response.status}`);
+      }
 
-      if (!response.ok || json.status === 'error') {
-        throw new Error('[AUTH SERVICE] - Error al iniciar sesión');
+      let json;
+      
+      try {
+        json = await response.json();
+      } catch (err) {
+        throw new Error('[AUTH SERVICE] - Invalid JSON response');
+      }
+
+      if (json.status === 'error') {
+        throw new Error(`[AUTH SERVICE] - Error al iniciar sesión: ${json.message}`);
       }
 
       if (json.data?.session_token && json.data?.user_id) {
-        this.cookieService.set('session_token', json.data.session_token, {path: '/'});
-        this.cookieService.set('user_id', json.data.user_id, {path: '/'});
+        this.cookieService.set('session_token', json.data.session_token, { path: '/' });
+        this.cookieService.set('user_id', json.data.user_id, { path: '/' });
         return true;
-      } 
+      }
       return false;
     } catch (error) {
       console.error(error);
@@ -50,19 +55,25 @@ export class AuthService {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${session_token}`,
         },
-        body: JSON.stringify({ user_id: user_id }),
+        body: JSON.stringify({ user_id }),
       });
 
-      const json = await response.json();
-
-      if (!response.ok || json.status === 'error') {
-        throw new Error('[AUTH SERVICE] - Error al verificar token');
+      if (!response.ok) {
+        throw new Error(`[AUTH SERVICE] - HTTP error: ${response.status}`);
       }
 
-      if (json.data?.status === 'success') {
-        return true;
+      let json;
+      try {
+        json = await response.json();
+      } catch (err) {
+        throw new Error('[AUTH SERVICE] - Invalid JSON response');
       }
-      return false;
+
+      if (json.status === 'error') {
+        throw new Error(`[AUTH SERVICE] - Error al verificar token: ${json.message}`);
+      }
+
+      return json.status === 'success';
     } catch (error) {
       console.error(error);
       return false;
@@ -79,32 +90,16 @@ export class AuthService {
     return false;
   }
 
-  async logOut(): Promise<boolean> {
-    try {
-      this.cookieService.delete('session_token');
-      this.cookieService.delete('user_id');
-      return true;
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
-  }
-
-  private getStoredSessionToken(): string | null {
-    return this.cookieService.get('session_token') || null;
-  }
-
-  private getStoredUserId(): string | null {
-    return this.cookieService.get('user_id') || null;
+  logOut(): void {
+    this.cookieService.delete('session_token');
+    this.cookieService.delete('user_id');
   }
 
   public cookieExists(): boolean {
-    return this.getStoredSessionToken() !== null && this.getStoredUserId() !== null;
+    return !!this.cookieService.get('session_token') && !!this.cookieService.get('user_id');
   }
 
   public removeCookies(): void {
-    this.cookieService.delete('session_token');
-    this.cookieService.delete('user_id');
     this.cookieService.deleteAll();
   }
 }
