@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { UserData } from '../interfaces/UserInterfaces';
+import { CreateUser } from '../interfaces/UserInterfaces';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class UsersService {
 
   constructor() { }
 
-  public async registerUser(user: UserData): Promise<boolean> {
+  public async registerUser(user: CreateUser): Promise<boolean> {
     try {
       const response = await fetch(`${this.url}/create_user`, {
         method: 'POST',
