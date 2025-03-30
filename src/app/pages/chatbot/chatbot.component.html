@@ -1,0 +1,32 @@
+<div class="chat-container">
+    <h1>Asistente de Turnos</h1>
+    
+    <div class="chat-container" #chatBox>
+        <div *ngFor="let msg of conversation" 
+             [class.user-message]="msg.sender === 'user'"
+             [class.bot-message]="msg.sender === 'bot'"
+             [class.error-message]="msg.isError"
+             class="message">
+            <div>{{msg.sender === 'user' ? 'Tú' : 'Asistente'}}: {{msg.text}}</div>
+            <div class="message-time">{{msg.time}}</div>
+        </div>
+        
+        <div *ngIf="isTyping" class="message bot-message typing-indicator">
+            <div>Asistente está escribiendo...</div>
+            <div class="typing-dots">
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+            </div>
+            <div class="message-time">{{currentTime | date:'HH:mm'}}</div>
+        </div>
+    </div>
+
+    <div class="input-container">
+        <input type="text" 
+               [(ngModel)]="userInput" 
+               placeholder="Escribe tu pregunta..."
+               (keyup.enter)="sendMessage()">
+        <button (click)="sendMessage()" [disabled]="!userInput.trim()">Enviar</button>
+    </div>
+</div>
