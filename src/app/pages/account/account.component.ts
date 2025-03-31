@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { UserData } from '../../interfaces/UserInterfaces';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-account',
-  imports: [RouterLink, CommonModule],
+  imports: [CommonModule],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css'
 })

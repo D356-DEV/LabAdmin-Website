@@ -1,6 +1,6 @@
 <div class="container-fluid py-5">
     <div class="container-lg">
-        <div class="card bg-warning-subtle">
+        <div class="card bg-warning-subtle shadow">
             <div class="card-header bg-warning text-white">
                 <h2 class="mb-0">Asistente Virtual</h2>
             </div>
@@ -9,7 +9,7 @@
                      class="p-2 rounded mb-2"
                      [ngClass]="{
                          'bg-primary text-white': msg.sender === 'user',
-                         'bg-light': msg.sender === 'bot',
+                         'bg-light shadow': msg.sender === 'bot',
                          'bg-danger text-white': msg.isError
                      }">
                      
