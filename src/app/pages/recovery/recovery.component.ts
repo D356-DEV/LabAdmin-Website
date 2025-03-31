@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router'; 
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ViewEncapsulation } from '@angular/core';
-import { BannerComponent } from "../../components/banner/banner.component";
 
 @Component({
   selector: 'app-recovery',
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, BannerComponent],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './recovery.component.html',
   styleUrl: './recovery.component.css',
   encapsulation: ViewEncapsulation.None

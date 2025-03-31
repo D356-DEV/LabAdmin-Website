@@ -10,13 +10,12 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { ViewEncapsulation } from '@angular/core';
-import { BannerComponent } from '../../components/banner/banner.component';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, BannerComponent],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   encapsulation: ViewEncapsulation.None,
