@@ -6,6 +6,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { authGuard } from './auth/auth.guard';
 import { AccountComponent } from './pages/account/account.component';
 import { ChatbotComponent } from './pages/chatbot/chatbot.component';
+import { LabComponent } from './pages/lab/lab.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, title: 'LabAdmin | Ingresar' },
@@ -13,5 +14,6 @@ export const routes: Routes = [
   { path: 'recovery', component: RecoveryComponent, title: 'LabAdmin | Recuperar contraseña' },
   { path: 'home', component: HomeComponent, title: 'LabAdmin | Inicio'},
   { path: 'account', component: AccountComponent, title: 'LabAdmin | Cuenta'},
-  { path: 'chatbot',component:ChatbotComponent,title:'LabAdmin | Chatbot' }
+  { path: 'chatbot',component:ChatbotComponent,title:'LabAdmin | Chatbot' },
+  {path: 'lab',component: LabComponent,title:'LabAdmin | Laboratorio'}
 ];
