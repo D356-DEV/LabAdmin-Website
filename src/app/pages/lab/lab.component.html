@@ -1,0 +1,219 @@
+<!-- app/pages/lab/lab.component.html -->
+
+<div class="container mt-4">
+    <!-- Loading and error messages -->
+    <div *ngIf="loading" class="d-flex justify-content-center my-4">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- LIST VIEW -->
+    <div *ngIf="viewMode === ViewMode.LIST">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Laboratorios</h2>
+        <button class="btn btn-primary" (click)="showCreateForm()">Crear Nuevo Laboratorio</button>
+      </div>
+      
+      <div *ngIf="laboratories.length === 0 && !loading" class="alert alert-info">
+        No se encontraron laboratorios. Haz clic en "Crear Nuevo Laboratorio" para añadir uno.
+      </div>
+      
+      <div class="row row-cols-1 row-cols-md-3 g-4" *ngIf="laboratories.length > 0">
+        <div class="col" *ngFor="let lab of laboratories">
+          <div class="card h-100">
+            <div *ngIf="lab.lab_image" class="card-img-top-container">
+              <img [src]="lab.lab_image" class="card-img-top" alt="{{ lab.name }}">
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ lab.name }}</h5>
+              <p class="card-text">{{ lab.description | slice:0:100 }}{{ lab.description.length > 100 ? '...' : '' }}</p>
+              <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item"><strong>Ubicación:</strong> {{ lab.location }}</li>
+                <li class="list-group-item"><strong>Capacidad:</strong> {{ lab.capacity }}</li>
+                <li class="list-group-item"><strong>Institución:</strong> {{ lab.institution }}</li>
+              </ul>
+              <div class="d-flex gap-2">
+                <button class="btn btn-primary" (click)="showDetails(lab)">Ver Detalles</button>
+                <button class="btn btn-warning" (click)="showEditForm(lab)">Editar</button>
+                <button class="btn btn-danger" (click)="deleteLab(lab.lab_id!)">Eliminar</button>
+              </div>
+            </div>
+            <div class="card-footer text-muted">
+              Creado: {{ lab.creation_date | date:'medium' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- CREATE/EDIT VIEW -->
+    <div *ngIf="viewMode === ViewMode.CREATE || viewMode === ViewMode.EDIT">
+      <h2>{{ viewMode === ViewMode.CREATE ? 'Crear Nuevo Laboratorio' : 'Editar Laboratorio' }}</h2>
+      
+      <form [formGroup]="labForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre*</label>
+          <input type="text" class="form-control" id="name" formControlName="name">
+          <div *ngIf="labForm.get('name')?.invalid && labForm.get('name')?.touched" class="text-danger">
+            El nombre es requerido y debe tener menos de 100 caracteres
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="location" class="form-label">Ubicación*</label>
+          <input type="text" class="form-control" id="location" formControlName="location">
+          <div *ngIf="labForm.get('location')?.invalid && labForm.get('location')?.touched" class="text-danger">
+            La ubicación es requerida y debe tener menos de 255 caracteres
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="capacity" class="form-label">Capacidad*</label>
+          <input type="number" class="form-control" id="capacity" formControlName="capacity">
+          <div *ngIf="labForm.get('capacity')?.invalid && labForm.get('capacity')?.touched" class="text-danger">
+            La capacidad es requerida y debe ser mayor que 0
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="description" class="form-label">Descripción*</label>
+          <textarea class="form-control" id="description" rows="3" formControlName="description"></textarea>
+          <div *ngIf="labForm.get('description')?.invalid && labForm.get('description')?.touched" class="text-danger">
+            La descripción es requerida
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="institution" class="form-label">Institución*</label>
+          <input type="text" class="form-control" id="institution" formControlName="institution">
+          <div *ngIf="labForm.get('institution')?.invalid && labForm.get('institution')?.touched" class="text-danger">
+            La institución es requerida y debe tener menos de 100 caracteres
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="campus" class="form-label">Campus*</label>
+          <input type="text" class="form-control" id="campus" formControlName="campus">
+          <div *ngIf="labForm.get('campus')?.invalid && labForm.get('campus')?.touched" class="text-danger">
+            El campus es requerido y debe tener menos de 100 caracteres
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="specialization" class="form-label">Especialización*</label>
+          <input type="text" class="form-control" id="specialization" formControlName="specialization">
+          <div *ngIf="labForm.get('specialization')?.invalid && labForm.get('specialization')?.touched" class="text-danger">
+            La especialización es requerida y debe tener menos de 255 caracteres
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="manager_id" class="form-label">ID del Responsable</label>
+          <input type="number" class="form-control" id="manager_id" formControlName="manager_id">
+        </div>
+        
+        <div class="mb-3">
+          <label for="lab_image" class="form-label">Imagen del Laboratorio</label>
+          <input type="file" class="form-control" id="lab_image" (change)="onImageSelected($event)" accept="image/*">
+        </div>
+        
+        <button type="submit" class="btn btn-primary me-2" [disabled]="labForm.invalid">
+          {{ viewMode === ViewMode.CREATE ? 'Crear' : 'Actualizar' }} Laboratorio
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="backToList()">Cancelar</button>
+      </form>
+    </div>
+  
+    <!-- DETAILS VIEW -->
+    <div *ngIf="viewMode === ViewMode.DETAILS && selectedLab">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{{ selectedLab.name }}</h2>
+        <div class="btn-group">
+          <button class="btn btn-warning" (click)="showEditForm(selectedLab)">Editar</button>
+          <button class="btn btn-danger" (click)="deleteLab(selectedLab.lab_id!)">Eliminar</button>
+          <button class="btn btn-secondary" (click)="backToList()">Volver a la Lista</button>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5>Información del Laboratorio</h5>
+            </div>
+            <div class="card-body">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <th scope="row">ID</th>
+                    <td>{{ selectedLab.lab_id }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Nombre</th>
+                    <td>{{ selectedLab.name }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Ubicación</th>
+                    <td>{{ selectedLab.location }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Capacidad</th>
+                    <td>{{ selectedLab.capacity }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Institución</th>
+                    <td>{{ selectedLab.institution }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Campus</th>
+                    <td>{{ selectedLab.campus }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Especialización</th>
+                    <td>{{ selectedLab.specialization }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">ID del Responsable</th>
+                    <td>{{ selectedLab.manager_id || 'Ninguno' }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">ID del Creador</th>
+                    <td>{{ selectedLab.creator_id }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Fecha de Creación</th>
+                    <td>{{ selectedLab.creation_date | date:'medium' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5>Descripción</h5>
+            </div>
+            <div class="card-body">
+              <p>{{ selectedLab.description }}</p>
+            </div>
+          </div>
+          
+          <div class="card mb-4" *ngIf="selectedLab.lab_image">
+            <div class="card-header">
+              <h5>Imagen del Laboratorio</h5>
+            </div>
+            <div class="card-body text-center">
+              <img [src]="selectedLab.lab_image" class="img-fluid" alt="{{ selectedLab.name }}" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

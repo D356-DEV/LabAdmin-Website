@@ -1,6 +1,7 @@
+<!-- Navbar (ya existente) -->
 <app-navbar></app-navbar>
 
-<!-- Superhero Section -->
+<!-- Hero Section -->
 <section style="height: 50vh">
     <div class="container-fluid h-100 d-flex flex-column align-items-center justify-content-center">
         <img src="/assets/icon.png" alt="LabAdmin logo" class="mb-3" style="height: 60%;" />
@@ -8,40 +9,62 @@
     </div>
 </section>
 
-<!-- Us Section -->
+<!-- Features Section -->
 <section id="us-section" class="container-fluid py-5 bg-warning-subtle">
     <div class="container d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
         <div class="row justify-content-center align-items-start gy-3 py-4">
+            <!-- Tarjeta 1 Existente -->
             <div class="col-md-4">
-                <div class="card shadow">
+                <div class="card shadow h-100">
                     <img src="/assets/icon.png" class="card-img-top img-fluid p-5" alt="Laboratorios" />
-                    <div class="card-body text-center">
+                    <div class="card-body text-center d-flex flex-column">
                         <h5 class="card-title">Laboratorios</h5>
-                        <p class="card-text" style="min-height: 100px">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit reiciendis doloremque nulla blanditiis quidem voluptates, amet obcaecati quisquam tempora ullam!
+                        <p class="card-text flex-grow-1">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit reiciendis doloremque nulla blanditiis quidem voluptates.
                         </p>
+                        <a href="#" class="btn btn-outline-warning mt-auto">Ver más</a>
                     </div>
                 </div>
             </div>
+
+            <!-- Tarjeta 2: Laboratorios -->
             <div class="col-md-4">
-                <div class="card shadow">
-                    <img src="/assets/icon.png" class="card-img-top img-fluid p-5" alt="Laboratorios" />
-                    <div class="card-body text-center">
+                <div class="card shadow h-100">
+                    <div class="card-img-top d-flex justify-content-center p-4"> 
+                        <i class="bi bi-flask fs-1 text-primary"></i> <!-- Ícono de laboratorio -->
+                    </div>
+                    <div class="card-body text-center d-flex flex-column">
                         <h5 class="card-title">Laboratorios</h5>
-                        <p class="card-text" style="min-height: 100px">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit reiciendis doloremque nulla blanditiis quidem voluptates, amet obcaecati quisquam tempora ullam!
+                        <p class="card-text flex-grow-1">
+                            Explora nuestros laboratorios, verifica disponibilidad y encuentra el espacio ideal para tu investigación y aprendizaje.
                         </p>
+                        <button 
+                            class="btn btn-outline-warning mt-auto"
+                            routerLink="/lab">
+                            <i class="bi bi-building me-2"></i>Ver Laboratorios
+                        </button>
                     </div>
                 </div>
             </div>
+
+
+
+            <!-- Tarjeta 3:  Chatbot -->
             <div class="col-md-4">
-                <div class="card shadow">
-                    <img src="/assets/icon.png" class="card-img-top img-fluid p-5" alt="Laboratorios" />
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Laboratorios</h5>
-                        <p class="card-text" style="min-height: 100px">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit reiciendis doloremque nulla blanditiis quidem voluptates, amet obcaecati quisquam tempora ullam!
+                <div class="card shadow h-100">
+                    <div class="card-img-top d-flex justify-content-center p-4">
+                        <i class="bi bi-robot fs-1 text-primary"></i> <!-- Icono de Bootstrap Icons -->
+                    </div>
+                    <div class="card-body text-center d-flex flex-column">
+                        <h5 class="card-title">Asistente Virtual</h5>
+                        <p class="card-text flex-grow-1">
+                            Consulta horarios, turnos y disponibilidad de laboratorios mediante nuestro asistente inteligente.
                         </p>
+                        <button 
+                            class="btn btn-warning mt-auto"
+                            routerLink="/chatbot">
+                            <i class="bi bi-robot me-2"></i>Abrir Chatbot
+                        </button>
                     </div>
                 </div>
             </div>
