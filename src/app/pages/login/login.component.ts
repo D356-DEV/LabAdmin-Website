@@ -62,6 +62,7 @@ export class LoginComponent {
   
       if (success) {
         await this.router.navigate(['/home']);
+        window.location.reload();
       } else {
         this.isLoading = false;
         this.isError = true;

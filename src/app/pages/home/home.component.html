@@ -1,7 +1,7 @@
 <!-- Hero Section -->
 <section style="height: 50vh">
     <div class="container-fluid h-100 d-flex flex-column align-items-center justify-content-center">
-        <img src="/assets/icon.png" alt="LabAdmin logo" class="mb-3" style="height: 60%;" />
+        <img src="/images/icon.png" alt="LabAdmin logo" class="mb-3" style="height: 60%;" />
         <h1 class="text-warning">LabAdmin</h1>
     </div>
 </section>
@@ -9,61 +9,108 @@
 <!-- Features Section -->
 <section id="us-section" class="container-fluid py-5 bg-warning-subtle">
     <div class="container d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
-        <div class="row justify-content-center align-items-start gy-3 py-4">
-            <!-- Tarjeta 1 Existente -->
+        <div class="row justify-content-center align-items-stretch gy-3 py-4">
+            <!-- Tarjeta 1: Equipos -->
             <div class="col-md-4">
-                <div class="card shadow h-100">
-                    <img src="/assets/icon.png" class="card-img-top img-fluid p-5" alt="Laboratorios" />
-                    <div class="card-body text-center d-flex flex-column">
-                        <h5 class="card-title">Laboratorios</h5>
-                        <p class="card-text flex-grow-1">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit reiciendis doloremque nulla blanditiis quidem voluptates.
+                <div class="card shadow" style="min-height: 275px">
+                    <div class="card-header text-center">
+                        <h5 class="card-title">Equipos <i class="bi bi-gear text-warning mx-1"></i></h5>
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between text-center">
+                        <p class="card-text">
+                            Accede a un inventario completo de equipos disponibles en los laboratorios. Consulta
+                            especificaciones, disponibilidad y estado de cada dispositivo para optimizar el uso de los
+                            recursos tecnológicos.
                         </p>
-                        <a href="#" class="btn btn-outline-warning mt-auto">Ver más</a>
+                        <a routerLink="/home" class="btn btn-warning">Ver más</a>
                     </div>
                 </div>
             </div>
 
             <!-- Tarjeta 2: Laboratorios -->
             <div class="col-md-4">
-                <div class="card shadow h-100">
-                    <div class="card-img-top d-flex justify-content-center p-4"> 
-                        <i class="bi bi-flask fs-1 text-primary"></i> <!-- Ícono de laboratorio -->
+                <div class="card shadow" style="min-height: 275px">
+                    <div class="card-header text-center">
+                        <h5 class="card-title">Laboratorios <i class="bi bi-building text-warning mx-1"></i></h5>
                     </div>
-                    <div class="card-body text-center d-flex flex-column">
-                        <h5 class="card-title">Laboratorios</h5>
-                        <p class="card-text flex-grow-1">
-                            Explora nuestros laboratorios, verifica disponibilidad y encuentra el espacio ideal para tu investigación y aprendizaje.
+                    <div class="card-body d-flex flex-column justify-content-between text-center">
+                        <p class="card-text">
+                            Explora nuestros laboratorios, verifica disponibilidad y encuentra el espacio ideal para tu
+                            investigación y aprendizaje.
                         </p>
-                        <button 
-                            class="btn btn-outline-warning mt-auto"
-                            routerLink="/lab">
-                            <i class="bi bi-building me-2"></i>Ver Laboratorios
-                        </button>
+                        <button class="btn btn-warning" routerLink="/labs">Ver Laboratorios</button>
                     </div>
                 </div>
             </div>
 
-
-
-            <!-- Tarjeta 3:  Chatbot -->
+            <!-- Tarjeta 3: Chatbot -->
             <div class="col-md-4">
-                <div class="card shadow h-100">
-                    <div class="card-img-top d-flex justify-content-center p-4">
-                        <i class="bi bi-robot fs-1 text-primary"></i> <!-- Icono de Bootstrap Icons -->
+                <div class="card shadow" style="min-height: 275px">
+                    <div class="card-header text-center">
+                        <h5 class="card-title">Chatbot <i class="bi bi-robot text-warning mx-1"></i></h5>
                     </div>
-                    <div class="card-body text-center d-flex flex-column">
-                        <h5 class="card-title">Asistente Virtual</h5>
-                        <p class="card-text flex-grow-1">
-                            Consulta horarios, turnos y disponibilidad de laboratorios mediante nuestro asistente inteligente.
+                    <div class="card-body d-flex flex-column justify-content-between text-center">
+                        <p class="card-text">
+                            Consulta horarios, turnos y disponibilidad de laboratorios mediante nuestro asistente
+                            inteligente.
                         </p>
-                        <button 
-                            class="btn btn-warning mt-auto"
-                            routerLink="/chatbot">
-                            <i class="bi bi-robot me-2"></i>Abrir Chatbot
-                        </button>
+                        <button class="btn btn-warning" routerLink="/chatbot">Abrir Chatbot</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="container-fluid">
+    <div class="container py-5">
+        <div class="row align-items-center gy-4">
+            <div class="col-md-4 justify-content-center d-flex">
+                <img src="/images/icon.png" class="" height="250" alt="">
+            </div>
+            <div class="col-md-8">
+                <h3>¿Que es LabAdmin?</h3>
+                <p>
+                    LabAdmin es una aplicación web diseñada para optimizar la gestión y el control de los laboratorios
+                    de la Universidad de Guadalajara. Su principal objetivo es proporcionar una plataforma centralizada
+                    donde estudiantes, prestadores de servicio y profesores puedan interactuar de manera eficiente para
+                    organizar el uso de los laboratorios y sus recursos.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="container-fluid bg-warning-subtle">
+    <div class="container-lg py-5 text-center">
+        <h3>Misión</h3>
+        <p style="max-width: 800px; margin: auto;">
+            Proporcionar una plataforma confiable e integral para la administración eficiente de laboratorios
+            universitarios, optimizando el control de usuarios, inventarios y horarios. <br> LabAdmin busca mejorar
+            la gestión de recursos académicos, facilitar el acceso equitativo a los laboratorios y contribuir al
+            desarrollo educativo y científico mediante el uso de tecnología accesible y sostenible, alineándose
+            con los principios de la Agenda 2030 de la ONU.
+        </p>
+    </div>
+
+</section>
+
+<section class="container-fluid">
+    <div class="container py-5">
+        <div class="row align-items-center flex-wrap-reverse gy-4">
+            <div class="col-md-8">
+                <h3>Visión</h3>
+                <p>
+                    Ser la plataforma líder en la gestión de laboratorios universitarios, reconocida por su innovación y
+                    eficiencia. LabAdmin aspira a ser un referente en la administración académica, promoviendo el uso
+                    responsable y sostenible de los recursos, facilitando la colaboración entre estudiantes y docentes,
+                    y contribuyendo al avance del conocimiento científico y tecnológico en la comunidad universitaria.
+                </p>
+            </div>
+            <div class="col-md-4 justify-content-center d-flex">
+                <img src="/images/icon.png" class="" height="250" alt="">
             </div>
         </div>
     </div>
