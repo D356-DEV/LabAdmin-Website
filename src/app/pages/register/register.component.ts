@@ -63,6 +63,7 @@ export class RegisterComponent {
   
       if (response) {
         this.requestSuccess = true;
+        this.registerForm.reset();
       } else {
         this.isLoading = false;
         this.formError = true;
