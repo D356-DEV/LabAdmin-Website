@@ -2,12 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { LabData } from '../../interfaces/LabInterfaces';
 import { AuthService } from '../../services/auth.service';
 import { LabService } from '../../services/lab.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-lab',
-  imports: [ NgTemplateOutlet ],
+  imports: [ NgTemplateOutlet, RouterLink ],
   templateUrl: './lab.component.html',
   styleUrl: './lab.component.css'
 })
@@ -49,9 +49,6 @@ export class LabComponent implements OnInit {
     } finally {
       this.isLoading = false;
     }
-
-   console.log('Lab ID:', this.lab_id);
-   console.log('User ID:', this.user_id);
   }
 
   /*

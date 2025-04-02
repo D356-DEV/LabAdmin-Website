@@ -36,7 +36,7 @@ export class LabService {
 
   async getLab(lab_id: number): Promise<LabData> {
     try {
-      const response = await fetch(`${this.apiUrl}/get_lab/lab_id=${lab_id}`, {
+      const response = await fetch(`${this.apiUrl}/get_lab?lab_id=${lab_id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
