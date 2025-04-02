@@ -8,7 +8,7 @@ import { catchError, delay } from 'rxjs/operators';
 })
 export class ChatbotService {
   
-  private apiUrl = 'https://api.allorigins.win/raw?url=http://pruebabot.free.nf/procesar.php'; 
+  private apiUrl = 'https://api.d356.dev/bot/handle_question'; 
 
   constructor(private http: HttpClient) { }
 
@@ -32,20 +32,27 @@ export class ChatbotService {
     console.error('Error en la solicitud:', error);
     return throwError(() => new Error(error.message || 'Error del servidor'));
   }
-  sendMessage(message: string) {
-  return this.http.post(this.apiUrl, { mensaje: message }).pipe(
-    catchError((error) => {
-      // Manejo detallado de errores
-      let errorMessage = 'Error desconocido';
-      if (error.error instanceof ErrorEvent) {
-        errorMessage = `Error del cliente: ${error.error.message}`;
-      } else if (error.status === 0) {
-        errorMessage = 'No hay conexión con el servidor';
-      } else {
-        errorMessage = `Error ${error.status}: ${error.error?.message || error.message}`;
-      }
-      throw new Error(errorMessage);
-    })
-  );
-}
+  sendMessage(message: string): Observable<any> {
+    if (!message || message.trim() === '') {
+      return throwError(() => new Error('El mensaje no puede estar vacío'));
+    }
+
+    return this.http.post(this.apiUrl, { message: message.trim() }).pipe(
+      catchError((error) => {
+        let errorMessage = 'Error desconocido';
+        
+        if (error.status === 400) {
+          errorMessage = error.error?.message || 'Petición incorrecta';
+        } else if (error.error instanceof ErrorEvent) {
+          errorMessage = `Error del cliente: ${error.error.message}`;
+        } else if (error.status === 0) {
+          errorMessage = 'No hay conexión con el servidor';
+        } else {
+          errorMessage = `Error ${error.status}: ${error.error?.message || error.message}`;
+        }
+        
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }
