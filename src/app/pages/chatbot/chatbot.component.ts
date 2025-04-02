@@ -4,14 +4,13 @@ import { ChatbotService } from '../../services/chatbot.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-
 interface ChatMessage {
   sender: string;
   text: string;
   time: string;
   isError?: boolean;
+  isThinking?: boolean;
 }
-
 
 @Component({
   selector: 'app-chatbot',
@@ -19,9 +18,8 @@ interface ChatMessage {
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule,
-    DatePipe
-  ],
+    HttpClientModule
+],
   templateUrl: './chatbot.component.html',
   styleUrls: ['./chatbot.component.css']
 })
@@ -44,10 +42,11 @@ export class ChatbotComponent implements OnInit {
 
   private showInitialMessages() {
     const initialMessages = [
-      'Hola, soy tu asistente de turnos. Puedes preguntarme cosas como:',
-      '• ¿A qué hora trabaja [nombre]?',
-      '• ¿Quién está de turno en la [mañana/tarde/noche]?',
-      '• ¿Quién trabaja hoy a las [hora]?'
+      'Hola, soy tu asistente de laboratorios. Puedes preguntarme cosas como:',
+      '• ¿Quién supervisa Biología Molecular?',
+      '• ¿A qué hora abre Química Orgánica?',
+      '• ¿Está abierto el laboratorio de Nanotecnología a las 10:00?',
+      '• ¿En qué laboratorio trabaja Carlos Perez?'
     ];
 
     initialMessages.forEach((msg, index) => {
@@ -59,56 +58,72 @@ export class ChatbotComponent implements OnInit {
 
   async sendMessage() {
     const message = this.userInput.trim();
-    if (!message) return;
-
+    
+    // Validación adicional en el componente
+    if (!message) {
+      this.addBotMessage('Por favor escribe tu pregunta', true);
+      return;
+    }
+  
     this.addMessage('user', message);
     this.userInput = '';
     
-    this.isTyping = true;
+    // Mostrar mensaje de "pensando..."
+    const thinkingMsg = this.addMessage('bot', '...', false, true);
     
     try {
-      // Paso 1: Procesar con Wit.ai
-      const witResponse = await this.chatbotService.processMessage(message).toPromise();
+      const response = await this.chatbotService.sendMessage(message).toPromise();
       
-      // Paso 2: Consultar BD
-      const dbResponse = await this.chatbotService.queryDatabase(
-        witResponse.data?.intent?.name || '',
-        witResponse.data?.entities || {}
-      ).toPromise();
-
-      this.handleDatabaseResponse(dbResponse);
-
-    } catch (error) {
-      this.addBotMessage('Error: ' + (error as Error).message, true);
-    }
-    
-    this.isTyping = false;
-  }
-
-  private handleDatabaseResponse(response: any) {
-    if (response.status === 'success') {
-      if (response.data && response.data.length > 0) {
-        response.data.forEach((encargado: any) => {
-          const inicio = encargado.Turno_inicio.substring(0, 5);
-          const fin = encargado.Turno_Fin.substring(0, 5);
-          this.addBotMessage(`${encargado.nombre}: ${inicio} - ${fin}`);
-        });
+      // Eliminar el mensaje de "pensando..."
+      this.conversation = this.conversation.filter(msg => msg !== thinkingMsg);
+      
+      if (response.status === 'success') {
+        // Procesar la respuesta y dividir las líneas
+        const respuesta = response.data.respuesta;
+        if (respuesta) {
+          const lineas = respuesta.split('\n');
+          
+          for (let i = 0; i < lineas.length; i++) {
+            await new Promise(resolve => setTimeout(resolve, i * 300));
+            if (i === 0) {
+              this.addBotMessage(lineas[i]);
+            } else {
+              const lastMsg = this.conversation[this.conversation.length - 1];
+              if (lastMsg.sender === 'bot') {
+                lastMsg.text += '\n' + lineas[i];
+              }
+            }
+          }
+        } else {
+          this.addBotMessage('No recibí una respuesta válida', true);
+        }
       } else {
-        this.addBotMessage(response.message || 'No se encontraron resultados');
+        this.addBotMessage(response.message || 'Error al procesar tu solicitud', true);
       }
-    } else {
-      this.addBotMessage(response.message || 'Error al obtener datos', true);
+    } catch (error) {
+      this.conversation = this.conversation.filter(msg => msg !== thinkingMsg);
+      
+      // Manejo específico para errores conocidos
+      const errorMessage = (error as Error).message;
+      if (errorMessage.includes('400')) {
+        this.addBotMessage('Error: La solicitud no fue válida. Por favor intenta con otra pregunta.', true);
+      } else {
+        this.addBotMessage('Error: ' + errorMessage, true);
+      }
     }
   }
 
-  private addMessage(sender: string, text: string, isError = false) {
-    this.conversation.push({
+  private addMessage(sender: string, text: string, isError = false, isThinking = false): ChatMessage {
+    const msg: ChatMessage = {
       sender,
       text,
       time: this.datePipe.transform(new Date(), 'HH:mm') || '',
-      isError
-    });
+      isError,
+      isThinking
+    };
+    this.conversation.push(msg);
     this.scrollToBottom();
+    return msg;
   }
 
   private addBotMessage(text: string, isError = false) {
