@@ -31,23 +31,25 @@ export class LabComponent implements OnInit {
   async ngOnInit() {
     this.lab_id = Number(this.route.snapshot.paramMap.get('lab_id'));
     this.user_id = this.authService.getStoredUserId();
-    /*
+
     try {
-      this.artwork = await this.artworksService.getDetails(this.artwork_id);
-      if (!this.artwork) {
-        this.router.navigate(['/gallery']);
+      this.lab = await this.labService.getLab(this.lab_id);
+      if (!this.lab) {
+        this.router.navigate(['/labs']);
         return;
       }
+      /*
       if (this.user_id) {
         this.quoteSent = await this.quoteService.quoteExists(this.artwork_id, this.user_id);
       }
+      */
     } catch (error) {
       console.error('Error fetching artwork details:', error);
-      this.router.navigate(['/gallery']);
+      this.router.navigate(['/labs']);
     } finally {
       this.isLoading = false;
     }
-    */
+
    console.log('Lab ID:', this.lab_id);
    console.log('User ID:', this.user_id);
   }
