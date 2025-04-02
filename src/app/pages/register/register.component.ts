@@ -8,16 +8,14 @@ import {
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ViewEncapsulation } from '@angular/core';
-import { BannerComponent } from '../../components/banner/banner.component';
 import { Validators } from '@angular/forms';
 import { CreateUser, UserData } from '../../interfaces/UserInterfaces';
 import { UsersService } from '../../services/users.service';
-import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, NgTemplateOutlet, BannerComponent, BannerComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, NgTemplateOutlet],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
   encapsulation: ViewEncapsulation.None,
@@ -38,7 +36,6 @@ export class RegisterComponent {
       last_name: new FormControl('', [Validators.required]),
       birth_date: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-      //confirm_password: new FormControl('', [Validators.required, Validators.minLength(8)]),
       institution: new FormControl('', [Validators.required]),
       campus: new FormControl('', [Validators.required]),
       student_carreer: new FormControl('', [Validators.required]),

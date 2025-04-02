@@ -1,61 +1,89 @@
-<app-navbar></app-navbar>
-<section class="container-fluid">
-<div class="container">
-<br><br>
-<div class="container text-center">
-    <div class="row">
-      <div class="col-5">
-        <div class="card text-center" style="width: px; background-color: orange;">
-        <img [src]="userData?.profile_image ? 'data:image/jpeg;base64,' + userData?.profile_image : '/assets/IL.png'" 
-        width="100" height="100" 
-        alt="Foto de perfil" 
-        class="mx-auto d-block">
-           <div class="card-body" >
-          <h2 class="card-title">Informacion del perfil</h2>
-          <p class="card-text">Revisa o edita la informacion</p>
-        </div>
-        <ul class="list-group">
-          <li class="list-group-item"><strong>Nombre: </strong>{{userData?.first_name}}</li>
-          <li class="list-group-item"><strong>Apellido: </strong>{{userData?.last_name}}</li>
-          <li class="list-group-item"><strong>Institucion: </strong>{{userData?.institution}}</li>
-          <li class="list-group-item"><strong>Campus: </strong>{{userData?.campus}}</li>
-          <li class="list-group-item"><strong>Carrera: </strong>{{userData?.student_carrer}}</li>
-          <li class="list-group-item"><strong>Codigo: </strong>{{userData?.student_code}}</li>
-          <li class="list-group-item"><strong>Correo: </strong>{{userData?.email}}</li>
-          <li class="list-group-item"><strong>Telfono: </strong>{{userData?.phone}}</li>
-        </ul>
-        <div class="card-body">
-            <button type="submit" class="btn btn-outline-warning w-50">Editar informacion</button>
-        </div>
-      </div>
-      </div>
-      <div class="col-7">
-        <div class="container border border-2 rounded p-4">
-            <h2 class="text-center mb-4">Reservaciones de Laboratorios</h2>
-          
-            <!-- Contenedor con scroll solo vertical -->
-            <div class="overflow-auto" style="max-height: 600px; overflow-x: auto; overflow-y: hidden;">
-              <div class="row row-cols-1 row-cols-md-3 g-3">
-                <div class="col" *ngFor="let reservation of reservations">
-                  <div class="card shadow-lg p-3">
-                    <div class="card-body">
-                      <h5 class="card-title">{{ reservation.laboratory }}</h5>
-                      <p class="card-text">
-                        <strong>Fecha:</strong> {{ reservation.date }} <br>
-                        <strong>Hora:</strong> {{ reservation.time }}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          
-          
-      </div>
-      
-    </div>
-  </div>
+<div class="container-fluid py-5">
+    @if (user) {
+    <ng-container *ngTemplateOutlet="ready"></ng-container>
+    } @else{
+    <ng-container *ngTemplateOutlet="loading"></ng-container>
+    }
 </div>
-</section>  
+
+<ng-template #loading>
+    <div class="col text-center py-5">
+        <div class="spinner-border text-dark" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-3">Cargando...</p>
+    </div>
+</ng-template>
+
+<ng-template #ready>
+    <div class="container-lg">
+        <div class="card bg-warning-subtle shadow-lg rounded-4">
+            <div class="card-body p-5 shadow">
+                <div class="row d-flex align-items-center gap-5">
+
+                    <!-- Columna de la imagen -->
+                    <div class="col-md-4 text-center">
+                        @if (user?.profile_image) {
+                        <img [src]="'data:image/png;base64,' + user?.profile_image"
+                            class="rounded-circle border border-3 border-light shadow-sm" width="250" height="250"
+                            alt="Avatar" style="object-fit: cover;">
+                        }
+                        <img src="/images/icon.png" class="rounded-circle border border-3 border-light shadow-sm"
+                            width="250" height="250" alt="Avatar" style="object-fit: cover;">
+                        <hr>
+                        <h6 class="">{{'@'+ user?.username }}</h6>
+                        <h4 class="fw-bold">{{ user?.first_name + " " + user?.last_name }}</h4>
+                        <h6 class="">{{ user?.institution }}</h6>
+                    </div>
+
+                    <!-- Columna de información -->
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <span class="fw-bold">Nombre Completo:</span> <br>
+                            <span class="border-bottom pb-1">{{ user?.first_name + " " + user?.last_name }}</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <span class="fw-bold">Fecha de Nacimiento:</span> <br>
+                            <span class="border-bottom pb-1">{{ formatDate(user?.birth_date) }}</span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="fw-bold">Correo Electrónico:</span> <br>
+                            <span class="border-bottom pb-1">{{ user?.email }}</span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="fw-bold">Teléfono:</span> <br>
+                            <span class="border-bottom pb-1">{{ user?.phone }}</span>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-danger px-4 py-2 rounded-pill shadow-sm"
+                                (click)="logOut()">
+                                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-lg mt-5">
+        <div class="row gy-3">
+            <div class="col-md-6">
+                <div class="card bg-warning-subtle shadow">
+                    <div class="card-header">
+                        <h3>Reservaciones</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-warning-subtle shadow">
+                    <div class="card-header">
+                        <h3>Prestamos</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-template>

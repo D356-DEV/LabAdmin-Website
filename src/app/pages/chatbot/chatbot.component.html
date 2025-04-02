@@ -1,0 +1,50 @@
+<div class="container-fluid py-5">
+    <div class="container-lg">
+        <div class="card bg-warning-subtle shadow">
+            <div class="card-header bg-warning text-white">
+                <h2 class="mb-0">Asistente Virtual</h2>
+            </div>
+            <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                <div *ngFor="let msg of conversation" 
+                     class="p-2 rounded mb-2"
+                     [ngClass]="{
+                         'bg-primary text-white': msg.sender === 'user',
+                         'bg-light shadow': msg.sender === 'bot',
+                         'bg-danger text-white': msg.isError
+                     }">
+                     
+                    <div class="fw-bold">
+                        {{ msg.sender === 'user' ? 'Tú' : 'Asistente' }}:
+                    </div>
+                    <div>{{ msg.text }}</div>
+                    <div class="text-muted small">{{ msg.time }}</div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div *ngIf="isTyping" class="p-2 mt-2 rounded bg-light">
+                    <div class="fw-bold">Asistente está escribiendo...</div>
+                    <div class="d-flex gap-2">
+                        <span class="spinner-grow spinner-grow-sm text-secondary"></span>
+                        <span class="spinner-grow spinner-grow-sm text-secondary"></span>
+                        <span class="spinner-grow spinner-grow-sm text-secondary"></span>
+                    </div>
+                    <div class="text-muted small">{{ currentTime | date:'HH:mm' }}</div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+                        <input type="text" class="form-control" [(ngModel)]="userInput" 
+                               placeholder="Escribe tu pregunta..." (keyup.enter)="sendMessage()">
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-warning" (click)="sendMessage()" [disabled]="!userInput.trim()">
+                            Enviar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

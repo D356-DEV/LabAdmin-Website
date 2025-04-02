@@ -1,47 +1,93 @@
-<app-banner></app-banner>
 <section class="container-fluid py-5">
-    <div class="container-lg">
-        <div class="row justify-content-center align-items-center">
-            <div class="col-md-6">
-                <img src="../../../assets/IL.png" class="img-fluid" alt="Imagen de inicio de sesión">
-            </div>
-            <div class="col-md-6">
-                <div class="card shadow-sm">
-                    <div class="card-header text-center bg-warning text-dark">
-                        <h2 class="mb-0">Iniciar sesión</h2>
-                    </div>
-                    <div class="card-body">
-                        <form [formGroup]="loginForm" (submit)="logIn()">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-control bg-warning bg-opacity-25" formControlName="identifier" placeholder="example@alumnos.udg.mx">
-                                <div class="form-text">Ingresa tu correo</div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Contraseña</label>
-                                <div class="input-group">
-                                    <input [type]="showPassword ? 'text' : 'password'" id="password"
-                                        class="form-control bg-warning bg-opacity-25" formControlName="password"
-                                        placeholder="********">
-                                    <button type="button" class="btn btn-outline-secondary" (click)="togglePassword()">
-                                        <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
-                                    </button>
-                                </div>
-                                <div class="form-text">Ingresa tu contraseña</div>
-                            </div>
-                            <p class="mb-1">
-                                ¿Aún no tienes cuenta?
-                                <a routerLink="/register" class="text-warning">Regístrate aquí</a>
-                            </p>
-                            <p>
-                                ¿Olvidaste tu contraseña?
-                                <a routerLink="/recovery" class="text-warning">Haz clic aquí</a>
-                            </p>
-                            <button type="submit" class="btn btn-warning w-100">Acceder</button>
-                        </form>
-                    </div>
+  <div class="container-lg">
+    <div class="row justify-content-center align-items-center gy-5">
+      
+      <!-- Image Section -->
+      <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
+        <img src="/images/icon.png" class="img-fluid" style="max-height: 300px;" alt="Imagen de inicio de sesión">
+        <h1 class="text-warning mt-4">LabAdmin</h1>
+      </div>
+      
+      <!-- Login Form Section -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-header bg-warning">
+            <h2 class="text-white">Iniciar sesión</h2>
+          </div>
+          <div class="card-body border shadow">
+            
+            <form [formGroup]="loginForm" (ngSubmit)="logIn()">
+              
+              <!-- Identifier Field -->
+              <div class="mb-3">
+                <label for="identifier" class="form-label">Identificador</label>
+                <input
+                  type="email"
+                  id="identifier"
+                  class="form-control bg-warning bg-opacity-25"
+                  formControlName="identifier"
+                  placeholder="Correo electrónico o nombre de usuario"
+                >
+                <div class="form-text">Introduce tu correo electrónico o nombre de usuario</div>
+              </div>
+              
+              <!-- Password Field -->
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <div class="input-group">
+                  <input
+                    [type]="showPassword ? 'text' : 'password'"
+                    id="password"
+                    class="form-control bg-warning bg-opacity-25"
+                    formControlName="password"
+                    placeholder="********"
+                  >
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="togglePassword()"
+                    aria-label="Mostrar u ocultar contraseña"
+                  >
+                    <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                  </button>
                 </div>
-            </div>
+                <a routerLink="/recovery" class="text-warning d-inline-block my-1">¿Olvidaste tu contraseña?</a>
+              </div>
+              
+              <!-- Error Message -->
+              <div *ngIf="isError">
+                <ng-container *ngTemplateOutlet="error"></ng-container>
+              </div>
+              
+              <!-- Loading Spinner -->
+              <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center h-100">
+                <div class="spinner-border text-warning" role="status">
+                  <span class="visually-hidden">Cargando...</span>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <button *ngIf="!isLoading" type="submit" class="btn btn-warning w-100 text-white">
+                Acceder
+              </button>
+              
+              <!-- Registration Link -->
+              <p class="my-2 text-center">
+                ¿No tienes cuenta? <a routerLink="/register" class="text-dark">Regístrate aquí</a>
+              </p>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>
+
+<ng-template #error>
+  <div class="alert alert-danger d-flex align-items-center" role="alert">
+    <div class="spinner-grow text-danger me-2" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mb-0">{{ errorMessage }}</p>
+  </div>
+</ng-template>
