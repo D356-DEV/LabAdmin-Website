@@ -100,6 +100,10 @@ export class AuthService {
     return !!this.cookieService.get('session_token') && !!this.cookieService.get('user_id');
   }
 
+  getStoredUserId(): string | null {
+    return this.cookieService.get('user_id') || null;
+  }
+
   removeCookies(): void {
     this.cookieService.deleteAll();
   }
@@ -138,7 +142,7 @@ export class AuthService {
     }
   }
 
-  public async logOutSecurely(): Promise<boolean> {
+  async logOutSecurely(): Promise<boolean> {
     return new Promise((resolve) => {
       this.logOut();
 
