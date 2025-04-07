@@ -9,19 +9,25 @@ import {
   AbstractControl,
   ValidationErrors,
   AsyncValidator,
-  AsyncValidatorFn
+  AsyncValidatorFn,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ViewEncapsulation } from '@angular/core';
 import { CreateUser, UserData } from '../../interfaces/UserInterfaces';
 import { UsersService } from '../../services/users.service';
 import { from, Observable, of } from 'rxjs';
-import { map, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import {
+  map,
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
   encapsulation: ViewEncapsulation.None,
@@ -37,111 +43,102 @@ export class RegisterComponent {
   formErrorText: string = '';
   isCheckingUsername: boolean = false;
   isCheckingEmail: boolean = false;
+  
   readonly USERNAME = /^[a-zA-Z0-9_-]{3,20}$/;
   readonly EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   readonly PHONE = /^\d{10}$/;
 
   constructor(private fb: FormBuilder) {
-    this.registerForm = this.fb.group({
-      username: new FormControl('', {
-        validators: [
+    this.registerForm = this.fb.group(
+      {
+        username: new FormControl('', {
+          validators: [Validators.required, Validators.pattern(this.USERNAME)],
+          asyncValidators: [this.usernameValidator()],
+        }),
+        first_name: new FormControl('', [
           Validators.required,
-          Validators.pattern(this.USERNAME)
-        ],
-        asyncValidators: [this.usernameValidator()]
-      }),
-      first_name: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(50)
-      ]),
-      last_name: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(50)
-      ]),
-      birth_date: new FormControl('', [
-        Validators.required
-      ]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8),
-        this.passwordStrengthValidator
-      ]),
-      confirm_password: new FormControl('', [
-        Validators.required
-      ]),
-      institution: new FormControl('', [
-        Validators.required
-      ]),
-      campus: new FormControl('', [
-        Validators.required
-      ]),
-      student_carreer: new FormControl('', [
-        Validators.required
-      ]),
-      email: new FormControl('', {
-        validators: [
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ]),
+        last_name: new FormControl('', [
           Validators.required,
-          Validators.pattern(this.EMAIL)
-        ],
-        asyncValidators: [this.emailValidator()]
-      }),
-      phone: new FormControl('', [
-        Validators.required,
-        Validators.pattern(this.PHONE)
-      ]),
-    }, { validators: this.passwordMatchValidator });
-    
-    this.registerForm.get('username')?.statusChanges.pipe(
-      distinctUntilChanged()
-    ).subscribe(status => {
-      this.isCheckingUsername = status === 'PENDING';
-    });
-    
-    this.registerForm.get('email')?.statusChanges.pipe(
-      distinctUntilChanged()
-    ).subscribe(status => {
-      this.isCheckingEmail = status === 'PENDING';
-    });
+          Validators.minLength(2),
+          Validators.maxLength(50),
+        ]),
+        birth_date: new FormControl('', [Validators.required]),
+        password: new FormControl('', [
+          Validators.required,
+          Validators.minLength(8),
+          this.passwordStrengthValidator,
+        ]),
+        confirm_password: new FormControl('', [Validators.required]),
+        institution: new FormControl('', [Validators.required]),
+        campus: new FormControl('', [Validators.required]),
+        student_carreer: new FormControl('', [Validators.required]),
+        email: new FormControl('', {
+          validators: [Validators.required, Validators.pattern(this.EMAIL)],
+          asyncValidators: [this.emailValidator()],
+        }),
+        phone: new FormControl('', [
+          Validators.required,
+          Validators.pattern(this.PHONE),
+        ]),
+      },
+      { validators: this.passwordMatchValidator }
+    );
+
+    this.registerForm
+      .get('username')
+      ?.statusChanges.pipe(distinctUntilChanged())
+      .subscribe((status) => {
+        this.isCheckingUsername = status === 'PENDING';
+      });
+
+    this.registerForm
+      .get('email')
+      ?.statusChanges.pipe(distinctUntilChanged())
+      .subscribe((status) => {
+        this.isCheckingEmail = status === 'PENDING';
+      });
   }
 
   usernameValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const value = control.value;
-      
+
       if (!value || !this.USERNAME.test(value)) {
         return of(null);
       }
-      
+
       return of(value).pipe(
         debounceTime(500),
         distinctUntilChanged(),
-        switchMap(username => {
+        switchMap((username) => {
           return from(this.usersService.verifyUsername(username)).pipe(
-            map(isAvailable => isAvailable ? null : { usernameExists: true }),
+            map((isAvailable) =>
+              isAvailable ? null : { usernameExists: true }
+            ),
             catchError(() => of({ usernameExists: true }))
           );
         })
       );
     };
   }
-  
-  
+
   emailValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const value = control.value;
-      
+
       if (!value || !this.EMAIL.test(value)) {
         return of(null);
       }
-      
+
       return of(value).pipe(
         debounceTime(500),
         distinctUntilChanged(),
-        switchMap(email => {
+        switchMap((email) => {
           return from(this.usersService.verifyEmail(email)).pipe(
-            map(isAvailable => isAvailable ? null : { emailExists: true }),
+            map((isAvailable) => (isAvailable ? null : { emailExists: true })),
             catchError(() => of({ emailExists: true }))
           );
         })
@@ -160,7 +157,8 @@ export class RegisterComponent {
     const hasNumeric = /[0-9]/.test(value);
     const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(value);
 
-    const passwordValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar;
+    const passwordValid =
+      hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar;
 
     return !passwordValid ? { passwordStrength: true } : null;
   }
@@ -179,7 +177,7 @@ export class RegisterComponent {
 
   getErrorMessage(controlName: string): string {
     const control = this.registerForm.get(controlName);
-    
+
     if (!control || !control.errors || !control.touched) {
       return '';
     }
@@ -220,22 +218,22 @@ export class RegisterComponent {
     if (errors['passwordMismatch']) {
       return 'Las contraseñas no coinciden';
     }
-    
+
     if (errors['usernameExists']) {
       return 'Este nombre de usuario ya está en uso';
     }
-    
+
     if (errors['emailExists']) {
       return 'Este correo electrónico ya está registrado';
     }
     if (errors['usernameExists']) {
       return 'Este nombre de usuario ya está en uso. Por favor elige otro.';
     }
-    
+
     if (errors['emailExists']) {
       return 'Este correo electrónico ya está registrado. ¿Has olvidado tu contraseña?';
     }
-  
+
     return 'Campo inválido';
   }
 
@@ -249,55 +247,62 @@ export class RegisterComponent {
     if (!control || !control.touched) {
       return 'form-control bg-orange';
     }
-    
+
     if (control.pending) {
       return 'form-control bg-orange is-pending';
     }
-    
-    return control.valid ? 'form-control bg-orange is-valid' : 'form-control bg-orange is-invalid';
+
+    return control.valid
+      ? 'form-control bg-orange is-valid'
+      : 'form-control bg-orange is-invalid';
   }
 
   async register() {
     this.isLoading = true;
     this.formError = false;
     this.requestSuccess = false;
-    
-    Object.keys(this.registerForm.controls).forEach(key => {
+
+    Object.keys(this.registerForm.controls).forEach((key) => {
       const control = this.registerForm.get(key);
       control?.markAsTouched();
     });
-    
+
     if (this.registerForm.pending) {
       setTimeout(() => this.register(), 500);
       return;
     }
-    
+
     if (this.registerForm.invalid) {
       this.isLoading = false;
       this.formError = true;
-      this.formErrorText = 'Por favor, corrija los errores en el formulario antes de continuar.';
+      this.formErrorText =
+        'Por favor, corrija los errores en el formulario antes de continuar.';
       return;
     }
-  
+
     try {
-      const usernameIsAvailable = await this.usersService.verifyUsername(this.registerForm.value.username);
-      const emailIsAvailable = await this.usersService.verifyEmail(this.registerForm.value.email);
-      
+      const usernameIsAvailable = await this.usersService.verifyUsername(
+        this.registerForm.value.username
+      );
+      const emailIsAvailable = await this.usersService.verifyEmail(
+        this.registerForm.value.email
+      );
+
       if (!usernameIsAvailable) {
         this.registerForm.get('username')?.setErrors({ usernameExists: true });
         throw new Error('El nombre de usuario ya está en uso');
       }
-      
+
       if (!emailIsAvailable) {
         this.registerForm.get('email')?.setErrors({ emailExists: true });
         throw new Error('El correo electrónico ya está registrado');
       }
-      
+
       const formData = { ...this.registerForm.value };
       delete formData.confirm_password;
-      
+
       const response = await this.usersService.registerUser(formData);
-  
+
       if (response) {
         this.requestSuccess = true;
         this.registerForm.reset();
@@ -305,36 +310,42 @@ export class RegisterComponent {
         this.formError = true;
         this.formErrorText = 'Ocurrió un error, por favor intente nuevamente.';
       }
-      const usernameAvailable = await this.usersService.verifyUsername(this.registerForm.value.username);
-    const emailAvailable = await this.usersService.verifyEmail(this.registerForm.value.email);
-    
-    if (!usernameAvailable) {
-      this.registerForm.get('username')?.setErrors({ usernameExists: true });
-      throw new Error('El nombre de usuario no está disponible');
-    }
-    
-    if (!emailAvailable) {
-      this.registerForm.get('email')?.setErrors({ emailExists: true });
-      throw new Error('El correo electrónico ya está registrado');
-    }
+      const usernameAvailable = await this.usersService.verifyUsername(
+        this.registerForm.value.username
+      );
+      const emailAvailable = await this.usersService.verifyEmail(
+        this.registerForm.value.email
+      );
+
+      if (!usernameAvailable) {
+        this.registerForm.get('username')?.setErrors({ usernameExists: true });
+        throw new Error('El nombre de usuario no está disponible');
+      }
+
+      if (!emailAvailable) {
+        this.registerForm.get('email')?.setErrors({ emailExists: true });
+        throw new Error('El correo electrónico ya está registrado');
+      }
     } catch (error: any) {
       console.error('Error en el registro:', error);
       this.formError = true;
-      
+
       if (error.status === 409) {
-        this.formErrorText = 'El nombre de usuario o correo electrónico ya está en uso.';
+        this.formErrorText =
+          'El nombre de usuario o correo electrónico ya está en uso.';
       } else if (error.status === 400 && error.error?.message) {
         this.formErrorText = error.error.message;
       } else if (error.message) {
         this.formErrorText = error.message;
       } else {
-        this.formErrorText = 'Error de red o del servidor. Intente nuevamente más tarde.';
+        this.formErrorText =
+          'Error de red o del servidor. Intente nuevamente más tarde.';
       }
     } finally {
       this.isLoading = false;
     }
   }
-  
+
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
