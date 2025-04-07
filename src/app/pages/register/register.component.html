@@ -34,73 +34,140 @@
     <form [formGroup]="registerForm" (submit)="register()">
         <div class="mb-3">
             <label for="username" class="form-label">Usuario</label>
-            <input type="text" class="form-control bg-orange" id="username" formControlName="username"
-                placeholder="Introduce tu nombre de usuario" required>
-            <div class="form-text">Elige un nombre de usuario único.</div>
+            <div class="input-group">
+                <input type="text" [class]="getInputClass('username')" id="username" formControlName="username"
+                    placeholder="Introduce tu nombre de usuario" required>
+                @if (isCheckingUsername) {
+                    <div class="input-group-text">
+                        <div class="spinner-border spinner-border-sm text-warning" role="status">
+                            <span class="visually-hidden">Verificando...</span>
+                        </div>
+                    </div>
+                }
+            </div>
+            @if (hasError('username')) {
+                <div class="invalid-feedback">{{ getErrorMessage('username') }}</div>
+            }
+            <div class="form-text">Elige un nombre de usuario único (3-20 caracteres, letras, números, guiones).</div>
         </div>
 
         <div class="mb-3">
             <label for="firstName" class="form-label">Nombre</label>
-            <input type="text" class="form-control bg-orange" id="firstName" formControlName="first_name"
+            <input type="text" [class]="getInputClass('first_name')" id="firstName" formControlName="first_name"
                 placeholder="Introduce tu nombre" required>
+            @if (hasError('first_name')) {
+                <div class="invalid-feedback">{{ getErrorMessage('first_name') }}</div>
+            }
             <div class="form-text">Escribe tu primer nombre tal como aparece en tu documento de identidad.</div>
         </div>
 
         <div class="mb-3">
             <label for="lastName" class="form-label">Apellido</label>
-            <input type="text" class="form-control bg-orange" id="lastName" formControlName="last_name"
+            <input type="text" [class]="getInputClass('last_name')" id="lastName" formControlName="last_name"
                 placeholder="Introduce tu apellido" required>
+            @if (hasError('last_name')) {
+                <div class="invalid-feedback">{{ getErrorMessage('last_name') }}</div>
+            }
             <div class="form-text">Ingresa tu(s) apellido(s) oficial(es).</div>
         </div>
 
         <div class="mb-3">
             <label for="birthDate" class="form-label">Fecha de nacimiento</label>
-            <input type="date" class="form-control bg-orange" id="birthDate" formControlName="birth_date" required>
+            <input type="date" [class]="getInputClass('birth_date')" id="birthDate" formControlName="birth_date" required>
+            @if (hasError('birth_date')) {
+                <div class="invalid-feedback">{{ getErrorMessage('birth_date') }}</div>
+            }
             <div class="form-text">Selecciona tu fecha de nacimiento en formato día/mes/año.</div>
         </div>
 
         <div class="mb-3">
             <label for="institution" class="form-label">Institución</label>
-            <input type="text" class="form-control bg-orange" id="institution" formControlName="institution"
+            <input type="text" [class]="getInputClass('institution')" id="institution" formControlName="institution"
                 placeholder="Introduce tu institución" required>
+            @if (hasError('institution')) {
+                <div class="invalid-feedback">{{ getErrorMessage('institution') }}</div>
+            }
             <div class="form-text">Ingresa el nombre de la institución educativa a la que perteneces.</div>
         </div>
 
         <div class="mb-3">
             <label for="campus" class="form-label">Campus</label>
-            <input type="text" class="form-control bg-orange" id="campus" formControlName="campus"
+            <input type="text" [class]="getInputClass('campus')" id="campus" formControlName="campus"
                 placeholder="Introduce tu campus" required>
+            @if (hasError('campus')) {
+                <div class="invalid-feedback">{{ getErrorMessage('campus') }}</div>
+            }
             <div class="form-text">Especifica el campus o sede donde estudias.</div>
         </div>
 
         <div class="mb-3">
             <label for="studentCareer" class="form-label">Carrera</label>
-            <input type="text" class="form-control bg-orange" formControlName="student_carreer"
+            <input type="text" [class]="getInputClass('student_carreer')" id="studentCareer" formControlName="student_carreer"
                 placeholder="Introduce tu carrera" required>
+            @if (hasError('student_carreer')) {
+                <div class="invalid-feedback">{{ getErrorMessage('student_carreer') }}</div>
+            }
             <div class="form-text">Escribe el nombre de la carrera que estás cursando.</div>
         </div>
 
         <div class="mb-3">
             <label for="email" class="form-label">Correo</label>
-            <input type="email" class="form-control bg-orange" id="email" formControlName="email"
-                placeholder="example@alumnos.udg.mx" required>
+            <div class="input-group">
+                <input type="email" [class]="getInputClass('email')" id="email" formControlName="email"
+                    placeholder="example@alumnos.udg.mx" required>
+                @if (isCheckingEmail) {
+                    <div class="input-group-text">
+                        <div class="spinner-border spinner-border-sm text-warning" role="status">
+                            <span class="visually-hidden">Verificando...</span>
+                        </div>
+                    </div>
+                }
+            </div>
+            @if (hasError('email')) {
+                <div class="invalid-feedback">{{ getErrorMessage('email') }}</div>
+            }
             <div class="form-text">Introduce tu correo institucional o personal.</div>
         </div>
 
         <div class="mb-3">
             <label for="phone" class="form-label">Teléfono</label>
-            <input type="text" class="form-control bg-orange" id="phone" formControlName="phone"
+            <input type="text" [class]="getInputClass('phone')" id="phone" formControlName="phone"
                 placeholder="Introduce tu teléfono" required>
-            <div class="form-text">Proporciona un número de contacto válido.</div>
+            @if (hasError('phone')) {
+                <div class="invalid-feedback">{{ getErrorMessage('phone') }}</div>
+            }
+            <div class="form-text">Proporciona un número de contacto válido (10 dígitos).</div>
         </div>
 
         <div class="mb-3">
             <label for="password" class="form-label">Contraseña</label>
-            <input type="password" class="form-control bg-orange" id="password" formControlName="password"
-                placeholder="********" required>
-            <div class="form-text">Debe contener al menos 8 caracteres.</div>
+            <div class="input-group">
+                <input [type]="showPassword ? 'text' : 'password'" [class]="getInputClass('password')" 
+                    id="password" formControlName="password" placeholder="********" required>
+                <button class="btn btn-outline-secondary" type="button" (click)="togglePassword()">
+                    <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+            </div>
+            @if (hasError('password')) {
+                <div class="invalid-feedback d-block">{{ getErrorMessage('password') }}</div>
+            }
+            <div class="form-text">Debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y caracteres especiales.</div>
         </div>
 
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+            <div class="input-group">
+                <input [type]="showConfirmPassword ? 'text' : 'password'" [class]="getInputClass('confirm_password')" 
+                    id="confirmPassword" formControlName="confirm_password" placeholder="********" required>
+                <button class="btn btn-outline-secondary" type="button" (click)="toggleConfirmPassword()">
+                    <i class="bi" [ngClass]="showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                </button>
+            </div>
+            @if (hasError('confirm_password')) {
+                <div class="invalid-feedback d-block">{{ getErrorMessage('confirm_password') }}</div>
+            }
+            <div class="form-text">Vuelve a introducir tu contraseña para confirmarla.</div>
+        </div>
 
         @if (formError) {
         <ng-container *ngTemplateOutlet="error"></ng-container>
