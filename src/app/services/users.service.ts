@@ -51,5 +51,37 @@ export class UsersService {
       return false;
     }
   }
-
+  async verifyUsername(username: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/verify_username?username=${encodeURIComponent(username)}`);
+      
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      // Retorna true si el status es "success" (username disponible)
+      return data.status === "success";
+    } catch (error) {
+      console.error('Error verificando nombre de usuario:', error);
+      return false; // En caso de error, asumimos que no está disponible
+    }
+  }
+  
+  async verifyEmail(email: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/verify_email?email=${encodeURIComponent(email)}`);
+      
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      // Retorna true si el status es "success" (email disponible)
+      return data.status === "success";
+    } catch (error) {
+      console.error('Error verificando correo electrónico:', error);
+      return false; // En caso de error, asumimos que no está disponible
+    }
+  }
 }
