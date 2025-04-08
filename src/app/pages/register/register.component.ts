@@ -65,7 +65,10 @@ export class RegisterComponent {
           Validators.minLength(2),
           Validators.maxLength(50),
         ]),
-        birth_date: new FormControl('', [Validators.required]),
+        birth_day: new FormControl('', [Validators.required]),
+        birth_month: new FormControl('', [Validators.required]),
+        birth_year: new FormControl('', [Validators.required]),
+       
         password: new FormControl('', [
           Validators.required,
           Validators.minLength(8),
@@ -281,6 +284,10 @@ export class RegisterComponent {
     }
 
     try {
+
+      
+   
+
       const usernameIsAvailable = await this.usersService.verifyUsername(
         this.registerForm.value.username
       );
@@ -298,9 +305,14 @@ export class RegisterComponent {
         throw new Error('El correo electrónico ya está registrado');
       }
 
-      const formData = { ...this.registerForm.value };
-      delete formData.confirm_password;
 
+      
+      const formData = this.registerForm.value;
+      
+      formData.birth_date = `${formData.birth_year}-${formData.birth_month.toString().padStart(2, '0')}-${formData.birth_day.toString().padStart(2, '0')}`;
+      
+      delete formData.confirm_password;
+       
       const response = await this.usersService.registerUser(formData);
 
       if (response) {

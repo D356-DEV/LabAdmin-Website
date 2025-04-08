@@ -14,6 +14,7 @@ export class UsersService {
 
   public async registerUser(user: CreateUser): Promise<boolean> {
     try {
+      console.log('Datos enviados para crear usuario:', user);
       const response = await fetch(`${this.url}/create_user`, {
         method: 'POST',
         headers: {
