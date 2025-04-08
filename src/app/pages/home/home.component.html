@@ -1,176 +1,238 @@
 <!-- Hero Section -->
 <section class="container-fluid p-0">
-    <div style="position: relative; height: 50vh; overflow: hidden;">
-  
-      
-      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                  display: flex; flex-direction: column; align-items: center; z-index: 10;">
-  
-        <img src="/images/icon.png" 
-             style="width: 100%; max-width: 150px;">
-  
-        <h1 class="text-warning" style=" font-size: 2rem; margin-top: 1rem; ">
-          LabAdmin
-        </h1>
-  
-      </div>
-  
-     
-      <div id="carouselExample" class="carousel slide h-100" data-bs-ride="carousel" data-bs-interval="3000">
-        <div class="carousel-inner h-100">
-  
-          <div class="carousel-item active h-100">
-            <img src="/images/carousel1.jpg" class="d-block w-100 h-100" style="object-fit: cover;" alt="...">
-          </div>
-  
-          <div class="carousel-item h-100">
-            <img src="/images/carousel2.jpg" class="d-block w-100 h-100" style="object-fit: cover;" alt="...">
-          </div>
-  
-          <div class="carousel-item h-100">
-            <img src="/images/carousel3.jpg" class="d-block w-100 h-100" style="object-fit: cover;" alt="...">
-          </div>
-  
-          <div class="carousel-item h-100">
-            <img src="/images/carousel4.jpg" class="d-block w-100 h-100" style="object-fit: cover;" alt="...">
-          </div>
-  
-        </div>
-  
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-  
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-  
-      </div>
-  
+  <div style="position: relative; height: 50vh; overflow: hidden">
+    <div
+      style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 10;
+      "
+    >
+      <img src="/images/icon.png" style="width: 100%; max-width: 150px" />
+
+      <h1 class="text-warning" style="font-size: 2rem; margin-top: 1rem">
+        LabAdmin
+      </h1>
     </div>
-  </section>
-  
-  
-  
+
+    <div
+      id="carouselExample"
+      class="carousel slide h-100"
+      data-bs-ride="carousel"
+      data-bs-interval="3000"
+    >
+      <div class="carousel-inner h-100">
+        <div class="carousel-item active h-100">
+          <img
+            src="/images/carousel1.jpg"
+            class="d-block w-100 h-100"
+            style="object-fit: cover"
+            alt="..."
+          />
+        </div>
+
+        <div class="carousel-item h-100">
+          <img
+            src="/images/carousel2.jpg"
+            class="d-block w-100 h-100"
+            style="object-fit: cover"
+            alt="..."
+          />
+        </div>
+
+        <div class="carousel-item h-100">
+          <img
+            src="/images/carousel3.jpg"
+            class="d-block w-100 h-100"
+            style="object-fit: cover"
+            alt="..."
+          />
+        </div>
+
+        <div class="carousel-item h-100">
+          <img
+            src="/images/carousel4.jpg"
+            class="d-block w-100 h-100"
+            style="object-fit: cover"
+            alt="..."
+          />
+        </div>
+      </div>
+
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExample"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExample"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+</section>
 
 <!-- Features Section -->
 <section id="us-section" class="container-fluid py-5 bg-warning-subtle">
-    <div class="container d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
-        <div class="row justify-content-center align-items-stretch gy-3 py-4">
-            <!-- Tarjeta 1: Equipos -->
-            <div class="col-md-4">
-                <div class="card shadow h-100">
-                    <div class="card-header text-center">
-                        <h5 class="card-title">Equipos <i class="bi bi-gear text-warning mx-1"></i></h5>
-                    </div>
-                    <div class="card-body d-flex flex-column justify-content-between text-center">
-                        <p class="card-text">
-                            Accede a un inventario completo de equipos disponibles en los laboratorios. Consulta
-                            especificaciones, disponibilidad y estado de cada dispositivo para optimizar el uso de los
-                            recursos tecnológicos.
-                        </p>
-                        <a routerLink="/home" class="btn btn-warning">Ver más</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tarjeta 2: Laboratorios -->
-            <div class="col-md-4">
-                <div class="card shadow h-100">
-                    <div class="card-header text-center">
-                        <h5 class="card-title">Laboratorios <i class="bi bi-building text-warning mx-1"></i></h5>
-                    </div>
-                    <div class="card-body d-flex flex-column justify-content-between text-center">
-                        <p class="card-text">
-                            Explora nuestros laboratorios, verifica disponibilidad y encuentra el espacio ideal para tu
-                            investigación y aprendizaje.
-                        </p>
-                        <button class="btn btn-warning" routerLink="/labs">Ver Laboratorios</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tarjeta 3: Chatbot -->
-            <div class="col-md-4">
-                <div class="card shadow h-100">
-                    <div class="card-header text-center">
-                        <h5 class="card-title">Chatbot <i class="bi bi-robot text-warning mx-1"></i></h5>
-                    </div>
-                    <div class="card-body d-flex flex-column justify-content-between text-center">
-                        <p class="card-text">
-                            Consulta horarios, turnos y disponibilidad de laboratorios mediante nuestro asistente
-                            inteligente.
-                        </p>
-                        <button class="btn btn-warning" routerLink="/chatbot">Abrir Chatbot</button>
-                    </div>
-                </div>
-            </div>
+  <div
+    class="container d-flex flex-column align-items-center justify-content-center"
+    style="min-height: 400px"
+  >
+    <div class="row justify-content-center align-items-stretch gy-3 py-4">
+      <!-- Tarjeta 1: Equipos -->
+      <div class="col-md-4">
+        <div class="card shadow h-100">
+          <div class="card-header text-center">
+            <h5 class="card-title">
+              Equipos <i class="bi bi-gear text-warning mx-1"></i>
+            </h5>
+          </div>
+          <div
+            class="card-body d-flex flex-column justify-content-between text-center"
+          >
+            <p class="card-text">
+              Accede a un inventario completo de equipos disponibles en los
+              laboratorios. Consulta especificaciones, disponibilidad y estado
+              de cada dispositivo para optimizar el uso de los recursos
+              tecnológicos.
+            </p>
+            <a routerLink="/home" class="btn btn-warning">Ver más</a>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
 
+      <!-- Tarjeta 2: Laboratorios -->
+      <div class="col-md-4">
+        <div class="card shadow h-100">
+          <div class="card-header text-center">
+            <h5 class="card-title">
+              Laboratorios <i class="bi bi-building text-warning mx-1"></i>
+            </h5>
+          </div>
+          <div
+            class="card-body d-flex flex-column justify-content-between text-center"
+          >
+            <p class="card-text">
+              Explora nuestros laboratorios, verifica disponibilidad y encuentra
+              el espacio ideal para tu investigación y aprendizaje.
+            </p>
+            <button class="btn btn-warning" routerLink="/labs">
+              Ver Laboratorios
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta 3: Chatbot -->
+      <div class="col-md-4">
+        <div class="card shadow h-100">
+          <div class="card-header text-center">
+            <h5 class="card-title">
+              Chatbot <i class="bi bi-robot text-warning mx-1"></i>
+            </h5>
+          </div>
+          <div
+            class="card-body d-flex flex-column justify-content-between text-center"
+          >
+            <p class="card-text">
+              Consulta horarios, turnos y disponibilidad de laboratorios
+              mediante nuestro asistente inteligente.
+            </p>
+            <button class="btn btn-warning" routerLink="/chatbot">
+              Abrir Chatbot
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- About Section -->
 <section class="container-fluid">
-    <div class="container py-5">
-        <div class="row align-items-center gy-4">
-            <div class="col-md-4 justify-content-center d-flex">
-                <img src="/images/icon.png" class="p-2" height="250" alt="">
-            </div>
-            <div class="col-md-8">
-                <h3>¿Que es LabAdmin?</h3>
-                <p>
-                    LabAdmin es una aplicación web diseñada para optimizar la gestión y el control de los laboratorios
-                    de la Universidad de Guadalajara. Su principal objetivo es proporcionar una plataforma centralizada
-                    donde estudiantes, prestadores de servicio y profesores puedan interactuar de manera eficiente para
-                    organizar el uso de los laboratorios y sus recursos.
-                </p>
-            </div>
-
-        </div>
+  <div class="container-lg">
+    <div class="row align-items-center gy-4">
+      <div class="col-md-4">
+        <img
+          src="/images/icon.png"
+          class="img-fluid p-5"
+          alt="imagen labadmin"
+        />
+      </div>
+      <div class="col-md-8 p-3">
+        <h3>¿Que es LabAdmin?</h3>
+        <p>
+          LabAdmin es una aplicación web diseñada para optimizar la gestión y el
+          control de los laboratorios de la Universidad de Guadalajara. Su
+          principal objetivo es proporcionar una plataforma centralizada donde
+          estudiantes, prestadores de servicio y profesores puedan interactuar
+          de manera eficiente para organizar el uso de los laboratorios y sus
+          recursos.
+        </p>
+      </div>
     </div>
+  </div>
 </section>
 
 <section class="container-fluid bg-warning-subtle">
-    
-    <div class="container py-5">
-        <div class="row align-items-center gy-4">
-            
-            <div class="col-md-8">
-                <h3>Misión</h3>
-                <p>
-                    Proporcionar una plataforma confiable e integral para la administración eficiente de laboratorios
-            universitarios, optimizando el control de usuarios, inventarios y horarios. <br> LabAdmin busca mejorar
-            la gestión de recursos académicos, facilitar el acceso equitativo a los laboratorios y contribuir al
-            desarrollo educativo y científico mediante el uso de tecnología accesible y sostenible, alineándose
-            con los principios de la Agenda 2030 de la ONU.
-                </p>
-            </div>
-            <div class="col-md-4 justify-content-center d-flex">
-                            <img src="/images/mision.jpg" class="p-2 " height="250" alt="">
-                        </div>
-        </div>
+  <div class="container-lg">
+    <div class="row align-items-center gy-4">
+      <div class="col-md-8 p-3">
+        <h3>Misión</h3>
+        <p>
+          Proporcionar una plataforma confiable e integral para la
+          administración eficiente de laboratorios universitarios, optimizando
+          el control de usuarios, inventarios y horarios. <br />
+          LabAdmin busca mejorar la gestión de recursos académicos, facilitar el
+          acceso equitativo a los laboratorios y contribuir al desarrollo
+          educativo y científico mediante el uso de tecnología accesible y
+          sostenible, alineándose con los principios de la Agenda 2030 de la
+          ONU.
+        </p>
+      </div>
+      <div class="col-md-4">
+        <img
+          src="/images/mision.jpg"
+          class="img-fluid p-4 rounded-5"
+          alt="vision LabAdmin"
+        />
+      </div>
     </div>
+  </div>
 </section>
 
 <section class="container-fluid">
-    <div class="container py-5">
-        <div class="row align-items-center flex-wrap-reverse gy-4">
-             <div class="col-md-4 justify-content-center d-flex">
-                <img src="/images/Vision.jpg" class="p-2" height="250" alt="">
-            </div>
-            <div class="col-md-8">
-                <h3>Visión</h3>
-                <p>
-                    Ser la plataforma líder en la gestión de laboratorios universitarios, reconocida por su innovación y
-                    eficiencia. LabAdmin aspira a ser un referente en la administración académica, promoviendo el uso
-                    responsable y sostenible de los recursos, facilitando la colaboración entre estudiantes y docentes,
-                    y contribuyendo al avance del conocimiento científico y tecnológico en la comunidad universitaria.
-                </p>
-            </div>
-           
-        </div>
+  <div class="container-lg">
+    <div class="row align-items-center flex-wrap-reverse gy-4">
+      <div class="col-md-4">
+        <img src="/images/Vision.jpg" class="img-fluid p-4" alt="LabAdmin" />
+      </div>
+      <div class="col-md-8 p-3">
+        <h3>Visión</h3>
+        <p>
+          Ser la plataforma líder en la gestión de laboratorios universitarios,
+          reconocida por su innovación y eficiencia. LabAdmin aspira a ser un
+          referente en la administración académica, promoviendo el uso
+          responsable y sostenible de los recursos, facilitando la colaboración
+          entre estudiantes y docentes, y contribuyendo al avance del
+          conocimiento científico y tecnológico en la comunidad universitaria.
+        </p>
+      </div>
     </div>
+  </div>
 </section>
