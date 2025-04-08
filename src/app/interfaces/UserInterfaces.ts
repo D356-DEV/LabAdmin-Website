@@ -28,4 +28,7 @@ export interface CreateUser {
   student_carreer: string;
   email: string;
   phone: string;
+  year: string;
+  months: string;
+  days: string;
 }

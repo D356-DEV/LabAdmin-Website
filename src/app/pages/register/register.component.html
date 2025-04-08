@@ -71,45 +71,116 @@
             <div class="form-text">Ingresa tu(s) apellido(s) oficial(es).</div>
         </div>
 
-        <div class="mb-3">
-            <label for="birthDate" class="form-label">Fecha de nacimiento</label>
-            <input type="date" [class]="getInputClass('birth_date')" id="birthDate" formControlName="birth_date" required>
-            @if (hasError('birth_date')) {
-                <div class="invalid-feedback">{{ getErrorMessage('birth_date') }}</div>
-            }
-            <div class="form-text">Selecciona tu fecha de nacimiento en formato día/mes/año.</div>
-        </div>
-
+        
         <div class="mb-3">
             <label for="institution" class="form-label">Institución</label>
-            <input type="text" [class]="getInputClass('institution')" id="institution" formControlName="institution"
-                placeholder="Introduce tu institución" required>
+                <select class="form-select" [class]="getInputClass('institution')" id="institution" formControlName="institution" required>
+                    <option value="" selected>Seleciona tu Institución</option>
+                    <option value="Universidad de Guadalajara">Universidad de Guadalajara</option>
+                  </select>
             @if (hasError('institution')) {
                 <div class="invalid-feedback">{{ getErrorMessage('institution') }}</div>
             }
-            <div class="form-text">Ingresa el nombre de la institución educativa a la que perteneces.</div>
+            <div class="form-text">Selecciona la institución educativa a la que perteneces.</div>
         </div>
+
+
+        <div class="mb-3">
+            <label for="birthDate" class="form-label">Fecha de nacimiento</label>
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                      <label for="birth_day">Día</label>
+                      <input 
+                        type="number" 
+                        [class]="getInputClass('birth_day')" 
+                        id="birth_day" 
+                        formControlName="birth_day" 
+                        required 
+                        min="1" 
+                        max="31">
+                    </div>
+                    <div class="col">
+                      <label for="birth_month">Mes</label>
+                      <input 
+                        type="number" 
+                        [class]="getInputClass('birth_month')" 
+                        id="birth_month" 
+                        formControlName="birth_month" 
+                        required 
+                        min="1" 
+                        max="12">
+                    </div>
+                    <div class="col">
+                      <label for="birth_year">Año</label>
+                      <input 
+                        type="number" 
+                        [class]="getInputClass('birth_year')" 
+                        id="birth_year" 
+                        formControlName="birth_year" 
+                        required 
+                        min="1980" 
+                        max="2100">
+                    </div>
+                  </div>
+                  
+              </div>
+            
+            @if (hasError('birth_day') || hasError('birth_month') || hasError('birth_year')) {
+                <div class="invalid-feedback">{{ getErrorMessage('birth_day') }}</div>
+                <div class="invalid-feedback">{{ getErrorMessage('birth_month') }}</div>
+                <div class="invalid-feedback">{{ getErrorMessage('birth_year') }}</div>
+            }
+            <div class="form-text">Selecciona tu fecha de nacimiento en formato día/mes/año.</div>
+        </div>
+       
 
         <div class="mb-3">
             <label for="campus" class="form-label">Campus</label>
-            <input type="text" [class]="getInputClass('campus')" id="campus" formControlName="campus"
-                placeholder="Introduce tu campus" required>
+                <select class="form-select"  [class]="getInputClass('campus')" id="campus" formControlName="campus" required>
+                    <option value="" selected >Seleciona tu Campus</option>
+                    <option value="CUCEI">CUCEI</option>
+                  </select>
             @if (hasError('campus')) {
                 <div class="invalid-feedback">{{ getErrorMessage('campus') }}</div>
             }
-            <div class="form-text">Especifica el campus o sede donde estudias.</div>
+            <div class="form-text">Selecciona el campus donde estudias.</div>
         </div>
+
 
         <div class="mb-3">
             <label for="studentCareer" class="form-label">Carrera</label>
-            <input type="text" [class]="getInputClass('student_carreer')" id="studentCareer" formControlName="student_carreer"
-                placeholder="Introduce tu carrera" required>
-            @if (hasError('student_carreer')) {
-                <div class="invalid-feedback">{{ getErrorMessage('student_carreer') }}</div>
-            }
-            <div class="form-text">Escribe el nombre de la carrera que estás cursando.</div>
-        </div>
-
+            <select class="form-select" formControlName="student_carreer" [class]="getInputClass('student_carreer')" required>
+              <option value="" selected>Selecciona una carrera</option>
+              <option value="Licenciatura en Física">Licenciatura en Física</option>
+              <option value="Licenciatura en Matemáticas">Licenciatura en Matemáticas</option>
+              <option value="Licenciatura en Química">Licenciatura en Química</option>
+              <option value="Químico Farmacéutico Biólogo">Químico Farmacéutico Biólogo</option>
+              <option value="Ingeniería en Ciencia de Materiales">Ingeniería en Ciencia de Materiales</option>
+              <option value="Ingeniería Civil">Ingeniería Civil</option>
+              <option value="Ingeniería en Alimentos y Biotecnología">Ingeniería en Alimentos y Biotecnología</option>
+              <option value="Ingeniería en Topografía Geomática">Ingeniería en Topografía Geomática</option>
+              <option value="Ingeniería Industrial">Ingeniería Industrial</option>
+              <option value="Ingeniería Mecánica Eléctrica">Ingeniería Mecánica Eléctrica</option>
+              <option value="Ingeniería Química">Ingeniería Química</option>
+              <option value="Ingeniería en Logística y Transporte">Ingeniería en Logística y Transporte</option>
+              <option value="Ingeniería Informática">Ingeniería Informática</option>
+              <option value="Ingeniería Biomédica">Ingeniería Biomédica</option>
+              <option value="Ingeniería en Computación">Ingeniería en Computación</option>
+              <option value="Ingeniería en Electromovilidad y Autotrónica">Ingeniería en Electromovilidad y Autotrónica</option>
+              <option value="Ingeniería en Electrónica y Sistemas Inteligentes">Ingeniería en Electrónica y Sistemas Inteligentes</option>
+              <option value="Ingeniería Fotónica">Ingeniería Fotónica</option>
+              <option value="Ingeniería en Mecatrónica Inteligente">Ingeniería en Mecatrónica Inteligente</option>
+              <option value="Ingeniería Robótica">Ingeniería Robótica</option>
+            </select>
+          
+            <div *ngIf="hasError('student_carreer')">
+              <div class="invalid-feedback">{{ getErrorMessage('student_carreer') }}</div>
+            </div>
+          
+            <div class="form-text">Selecciona la carrera que estás cursando.</div>
+          </div>
+          
         <div class="mb-3">
             <label for="email" class="form-label">Correo</label>
             <div class="input-group">
