@@ -38,9 +38,13 @@ export class AccountComponent {
     }
     
     this.isAdmin = await this.adminService.isUserAdmin(this.user.user_id);
+    
     if (this.isAdmin){
       this.admin = await this.adminService.getByUser(this.user.user_id);
-      this.labs = await this.labService.getLabs();
+      
+      if (this.admin){
+        this.labs = await this.labService.creatorLabs(this.admin.admin_id);
+      }
     }
   }
 
