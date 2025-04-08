@@ -57,4 +57,28 @@ export class LabService {
       throw error;
     }
   }
+
+  async creatorLabs(admin_id: number): Promise<LabData[]> {
+    try {
+      const response = await fetch(`${this.apiUrl}/creator_labs?admin_id=${admin_id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch creator labs: ${response.status} ${errorText}`);
+      }
+      
+      const json = await response.json();
+
+      return json.data as LabData[];
+
+    } catch (error) {
+      console.error(`[LabService] Error in getLab:`, error);
+      throw error;
+    }
+  }
 }

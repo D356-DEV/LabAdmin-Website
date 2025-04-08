@@ -80,43 +80,185 @@
         </div>
     </div>
 
-    <div class="container-lg mt-5">
-        <div class="row gy-3">
-            <div class="col-md-6">
-                <div class="card bg-warning-subtle shadow">
-                    <div class="card-header">
-                        <h3>Reservaciones</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card bg-warning-subtle shadow">
-                    <div class="card-header">
-                        <h3>Prestamos</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     @if (isAdmin) {
     <div class="container-lg mt-5">
-        <div class="card">
+        <div class="card shadow">
             <div class="card-header bg-warning-subtle">
                 <div class="row">
-                    <div class="col-8 col-4 d-flex align-items-center justify-content-start">
+                    <div class="col-7 col-4 d-flex align-items-center justify-content-start">
                         <h3>Laboratorios</h3>
                     </div>
-                    <div class="col-4 d-flex align-items-center justify-content-center">
-                        <button type="button" class="btn btn-warning w-100"><i
-                                class="bi bi-plus-circle mx-1"></i>Agregar</button>
+                    <div class="col-5 d-flex align-items-center justify-content-center">
+                        <button type="button" class="btn btn-warning w-100" data-bs-toggle="modal"
+                            data-bs-target="#labModal">
+                            <i class="bi bi-plus-circle mx-1"></i> Agregar
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body bg-secondary-subtle" style="height: 350px; overflow-y: auto;">
+                <div class="accordion accordion-flush" id="accordionFlush">
+                    @for (lab of labs; track lab.lab_id) {
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-{{lab.lab_id}}">
 
+                            <button class="accordion-button collapsed bg-warning-subtle" type="button"
+                                data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + lab.lab_id"
+                                aria-expanded="false" [attr.aria-controls]="'collapse-' + lab.lab_id">
+
+                                {{ lab.name + ' - ' + lab.campus}}
+
+                            </button>
+                        </h2>
+                        <div id="collapse-{{lab.lab_id}}" class="accordion-collapse collapse"
+                            data-bs-parent="#accordionFlush">
+                            <div class="accordion-body" style="min-height: 150px;">
+                                <div class="d-flex flex-wrap gap-3">
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px;">
+                                        <span class="fw-bold">Nombre:</span><br>
+                                        <span class="border-bottom pb-1 d-inline-block">{{ capitalizeString(lab.name)
+                                            }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px;">
+                                        <span class="fw-bold">Especialización:</span><br>
+                                        <span class="border-bottom pb-1 d-inline-block">{{
+                                            capitalizeString(lab.specialization) }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px;">
+                                        <span class="fw-bold">Capacidad:</span><br>
+                                        <span class="border-bottom pb-1 d-inline-block">{{ lab.capacity + ' personas'
+                                            }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px;">
+                                        <span class="fw-bold">Institución:</span><br>
+                                        <span class="border-bottom pb-1 d-inline-block">{{
+                                            capitalizeString(lab.institution) }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px;">
+                                        <span class="fw-bold">Campus:</span><br>
+                                        <span class="border-bottom pb-1 d-inline-block">{{ lab.campus }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px;">
+                                        <span class="fw-bold">Ubicación:</span><br>
+                                        <span class="border-bottom pb-1 d-inline-block">{{
+                                            capitalizeString(lab.location) }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px;">
+                                        <span class="fw-bold">Creado el:</span><br>
+                                        <span class="border-bottom pb-1 d-inline-block">{{ formatDate(lab.creation_date)
+                                            }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px;">
+                                        <span class="fw-bold">Descripción:</span><br>
+                                        <span class="border-bottom pb-1 d-inline-block">{{
+                                            capitalizeString(lab.description) }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
     }
+
+    <!-- Create Lab Modal -->
+    <div class="modal fade" id="labModal" tabindex="-1" aria-labelledby="labModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+
+            <div class="modal-content">
+                <div class="modal-header bg-warning-subtle">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Laboratorio</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="labName" class="form-label">Nombre del laboratorio</label>
+                            <input type="text" class="form-control" id="labName">
+                            <div class="form-text">
+                                Ejemplo: Laboratorio de Química Orgánica
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="labInstitution" class="form-label">Institución</label>
+                            <select id="labInstitution" class="form-select">
+                                <option selected disabled>Selecciona una institución</option>
+                                <option>Universidad de Guadalajara</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="labCampus" class="form-label">Campus</label>
+                            <select id="labCampus" class="form-select">
+                                <option selected disabled>Selecciona un campus</option>
+                                <option>CUCEI</option>
+                                <option>CUCS</option>
+                                <option>CUCEA</option>
+                                <option>CUSUR</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="labLocation" class="form-label">Ubicación</label>
+                            <input type="text" class="form-control" id="labLocation">
+                            <div class="form-text">
+                                Ejemplo: Edificio anexo a Rectoría, planta baja.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="labDescription" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="labDescription" rows="3"></textarea>
+                            <div class="form-text">
+                                Ejemplo: Laboratorio enfocado en estudios de neurociencia cognitiva, psicología
+                                experimental y modelos computacionales del cerebro.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="labCapacity" class="form-label">Capacidad</label>
+                            <input type="number" min="1" max="100" placeholder="1" class="form-control"
+                                id="labCapacity">
+                            <div class="form-text">
+                                Ejemplo: Número total de personas que pueden estar simultáneamente en el laboratorio.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="labSpecialization" class="form-label">Especialización</label>
+                            <select id="labSpecialization" class="form-select">
+                                <option selected disabled>Selecciona una especialización</option>
+                                <option>Química</option>
+                                <option>Física</option>
+                                <option>Alimentos</option>
+                                <option>Fotónica</option>
+                                <option>Computación</option>
+                                <option>Biotecnología</option>
+                                <option>Ingeniería Biomédica</option>
+                                <option>Microbiología</option>
+                                <option>Robótica</option>
+                                <option>Inteligencia Artificial</option>
+                            </select>
+                            <div class="form-text">
+                                Selecciona el área principal de enfoque del laboratorio.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning">Crear Lab <i
+                            class="bi bi-plus-circle mx-1"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </ng-template>

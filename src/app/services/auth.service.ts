@@ -108,7 +108,7 @@ export class AuthService {
     this.cookieService.deleteAll();
   }
 
-  async getUserData(): Promise<UserData | null> {
+  async getUserData(): Promise<UserData | undefined> {
     try {
       const response = await fetch(`${this.url}/get_user`, {
         method: 'POST',
@@ -138,7 +138,7 @@ export class AuthService {
       return json.data as UserData;
     } catch (error) {
       console.error(error);
-      return null;
+      return undefined;
     }
   }
 

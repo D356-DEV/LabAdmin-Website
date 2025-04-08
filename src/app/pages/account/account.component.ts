@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { AdminsService } from '../../services/admins.service';
 import { AdminData } from '../../interfaces/AdminInterfaces';
+import { LabService } from '../../services/lab.service';
+import { LabData } from '../../interfaces/LabInterfaces';
 @Component({
   selector: 'app-account',
   imports: [CommonModule],
@@ -14,10 +16,13 @@ import { AdminData } from '../../interfaces/AdminInterfaces';
 export class AccountComponent {
   authService = inject(AuthService);
   adminService = inject(AdminsService);
+  labService = inject(LabService);
+
   router = inject(Router);
 
-  user: UserData | null = null;
-  admin: AdminData | undefined ;
+  user: UserData | undefined;
+  admin: AdminData | undefined;
+  labs: LabData[] | undefined;
 
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
@@ -25,15 +30,21 @@ export class AccountComponent {
   constructor() {}
 
   async ngOnInit() {
+    
     this.user = await this.authService.getUserData();
     if (!this.user) {
       await this.router.navigate(['/login']);
       return;
     }
+    
     this.isAdmin = await this.adminService.isUserAdmin(this.user.user_id);
-    if ( this.isAdmin){
+    
+    if (this.isAdmin){
       this.admin = await this.adminService.getByUser(this.user.user_id);
-      console.log(this.admin);
+      
+      if (this.admin){
+        this.labs = await this.labService.creatorLabs(this.admin.admin_id);
+      }
     }
   }
 
