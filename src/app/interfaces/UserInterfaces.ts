@@ -32,3 +32,8 @@ export interface CreateUser {
   months: string;
   days: string;
 }
+
+export interface ContactUser {
+
+  
+}

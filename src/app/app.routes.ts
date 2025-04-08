@@ -10,6 +10,8 @@ import { authGuard } from './auth/auth.guard';
 import { TermsComponent } from './pages/terms/terms.component';
 import { PrivacyComponent } from './pages/privacy/privacy.component';
 import { LabComponent } from './pages/lab/lab.component';
+import { FaqComponent } from './pages/faq/faq.component';
+import { ContactComponent } from './pages/contact/contact.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -18,6 +20,8 @@ export const routes: Routes = [
   { path: 'recovery', component: RecoveryComponent, title: 'LabAdmin | Recuperar contraseña' },
   { path: 'terms', component: TermsComponent, title: 'LabAdmin | Terminos del Servicio' },
   { path: 'privacy', component: PrivacyComponent, title: 'LabAdmin | Politica de Privacidad ' },
+  { path: 'faq', component: FaqComponent, title: 'LabAdmin | FAQ' },
+  { path: 'contact', component: ContactComponent, title: 'LabAdmin | Contacto' },
   { path: 'home', component: HomeComponent, title: 'LabAdmin | Inicio', canActivate: [authGuard] },
   { path: 'account', component: AccountComponent, title: 'LabAdmin | Cuenta', canActivate: [authGuard] },
   { path: 'chatbot',component:ChatbotComponent,title:'LabAdmin | Chatbot', canActivate: [authGuard] },
