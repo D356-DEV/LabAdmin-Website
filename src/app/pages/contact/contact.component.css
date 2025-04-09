@@ -1,0 +1,12 @@
+.btn-outline-warning {
+    color: orange;
+    background-color: rgb(255, 255, 255); 
+    border-color: orange; 
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-outline-warning:hover {
+    color: white; 
+    background-color: orange; 
+    border-color: white; 
+}

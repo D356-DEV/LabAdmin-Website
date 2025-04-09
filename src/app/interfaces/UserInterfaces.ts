@@ -34,6 +34,9 @@ export interface CreateUser {
 }
 
 export interface ContactUser {
+  name_contact: string;
+  email_contact: string;
+  subject_contact: string;
+  message_contact: string;
 
-  
 }
