@@ -1,69 +1,68 @@
-<!-- Botón  mostrar  panel  -->
-<button class="news-toggle-btn" [ngClass]="{'active': showNewsSidebar}" (click)="toggleNewsSidebar()">
+<!-- Botón Mostrar Panel -->
+<button class="news-toggle-btn" [ngClass]="{ 'active': showNewsSidebar }" (click)="toggleNewsSidebar()">
     <i class="bi" [ngClass]="showNewsSidebar ? 'bi-chevron-right' : 'bi-chevron-left'"></i>
     <span class="news-label" *ngIf="!showNewsSidebar">Noticias</span>
-</button>
-
-<!-- Panel Noticias -->
-<div class="news-sidebar" [ngClass]="{'show': showNewsSidebar}">
+  </button>
+  
+  <!-- Panel Noticias -->
+  <div class="news-sidebar" [ngClass]="{ 'show': showNewsSidebar }">
     <div class="news-sidebar-header">
-        <h2 class="mb-0">Últimas Noticias</h2>
-        <button class="btn-close" (click)="toggleNewsSidebar()"></button>
+      <h2 class="mb-0">Últimas Noticias</h2>
+      <button class="btn-close" (click)="toggleNewsSidebar()"></button>
     </div>
-    
+  
     <div class="news-sidebar-content">
-        @if (isLoading) {
-            <div class="text-center py-5">
-                <div class="spinner-border text-warning" role="status">
-                    <span class="visually-hidden">Cargando...</span>
-                </div>
-                <p class="mt-3 text-muted">Verificando permisos...</p>
-            </div>
-        } @else {
-            @if (isAdmin) {
-                <div class="text-end mb-3">
-                    <button class="btn btn-warning" (click)="openAddNewsModal()">
-                        <i class="bi bi-plus-circle"></i> Añadir Noticia
-                    </button>
-                </div>
-            }
-            
-            <div class="news-feed-container">
-                @for (news of newsFeed; track news.news_id) {
-                    <div class="card shadow-sm mb-3">
-                        <div class="card-header news-header d-flex justify-content-between align-items-center py-3" 
-                            (click)="toggleNews(news.news_id)">
-                            <h5 class="card-title mb-0">{{news.title}}</h5>
-                            <div class="d-flex align-items-center">
-                                <small class="text-muted me-3">{{news.creation_date | date:'mediumDate'}}</small>
-                                <i class="bi" [ngClass]="expandedNews.includes(news.news_id) ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="card-body news-body" [ngClass]="{'show': expandedNews.includes(news.news_id)}">
-                            <p class="card-text">{{news.content}}</p>
-                            
-                            <!-- Botones de Admin -->
-                            @if (isAdmin) {
-                                <div class="admin-actions mt-3 border-top pt-2 text-end">
-                                    <button class="btn btn-sm btn-outline-primary me-2" (click)="editNews(news.news_id); $event.stopPropagation()">
-                                        <i class="bi bi-pencil"></i> Editar
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger" (click)="deleteNews(news.news_id); $event.stopPropagation()">
-                                        <i class="bi bi-trash"></i> Eliminar
-                                    </button>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                } @empty {
-                    <div class="text-center py-5">
-                        <i class="bi bi-newspaper" style="font-size: 3rem; color: #ccc;"></i>
-                        <p class="mt-3 text-muted">No hay noticias disponibles</p>
-                    </div>
-                }
-            </div>
+      @if (isLoading) {
+        <div class="text-center py-5">
+          <div class="spinner-border text-warning" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <p class="mt-3 text-muted">Verificando permisos...</p>
+        </div>
+      } @else {
+        @if (isAdmin) {
+          <div class="text-end mb-3">
+            <button class="btn btn-warning" (click)="openAddNewsModal()">
+              <i class="bi bi-plus-circle"></i> Añadir Noticia
+            </button>
+          </div>
         }
+  
+        <div class="news-feed-container">
+          @for (news of newsFeed; track news.news_id) {
+            <div class="card shadow-sm mb-3">
+              <div class="card-header news-header d-flex justify-content-between align-items-center py-3"
+                (click)="toggleNews(news.news_id)">
+                <h5 class="card-title mb-0">{{ news.title }}</h5>
+                <div class="d-flex align-items-center">
+                  <small class="text-muted me-3">{{ news.creation_date | date: 'mediumDate' }}</small>
+                  <i class="bi" [ngClass]="expandedNews.includes(news.news_id) ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+                </div>
+              </div>
+  
+              <div class="card-body news-body" [ngClass]="{ 'show': expandedNews.includes(news.news_id) }">
+                <p class="card-text">{{ news.content }}</p>
+  
+                @if (isAdmin) {
+                  <div class="admin-actions mt-3 border-top pt-2 text-end">
+                    <button class="btn btn-sm btn-outline-primary me-2" (click)="editNews(news.news_id); $event.stopPropagation()">
+                      <i class="bi bi-pencil"></i> Editar
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="deleteNews(news.news_id); $event.stopPropagation()">
+                      <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                  </div>
+                }
+              </div>
+            </div>
+          } @empty {
+            <div class="text-center py-5">
+              <i class="bi bi-newspaper" style="font-size: 3rem; color: #ccc;"></i>
+              <p class="mt-3 text-muted">No hay noticias disponibles</p>
+            </div>
+          }
+        </div>
+      }
     </div>
 </div>
 
@@ -233,27 +232,22 @@
       </div>
     </div>
   </section>
-  
 
 <!-- About Section -->
 <section class="container-fluid">
     <div class="container py-5">
-        <div class="row align-items-center gy-4">
-            <div class="col-md-4 justify-content-center d-flex">
-                <img src="/images/icon.png" class="" height="250" alt="">
-            </div>
-            <div class="col-md-8">
-                <h3>¿Que es LabAdmin?</h3>
-                <p>
-                    LabAdmin es una aplicación web diseñada para optimizar la gestión y el control de los laboratorios
-                    de la Universidad de Guadalajara. Su principal objetivo es proporcionar una plataforma centralizada
-                    donde estudiantes, prestadores de servicio y profesores puedan interactuar de manera eficiente para
-                    organizar el uso de los laboratorios y sus recursos.
-                </p>
-            </div>
+      <div class="row align-items-center gy-4">
+        <div class="col-md-4 justify-content-center d-flex">
+          <img src="/images/icon.png" height="250" alt="">
         </div>
-    </div>
-  
+        <div class="col-md-8">
+          <h3>¿Qué es LabAdmin?</h3>
+          <p>
+            LabAdmin es una aplicación web diseñada para optimizar la gestión y el control de los laboratorios de la Universidad de Guadalajara. Su principal objetivo es proporcionar una plataforma centralizada donde estudiantes, prestadores de servicio y profesores puedan interactuar de manera eficiente para organizar el uso de los laboratorios y sus recursos.
+          </p>
+        </div>
+      </div>
+    </div>  
 </section>
 
 <section class="container-fluid bg-warning-subtle">
