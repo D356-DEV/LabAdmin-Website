@@ -8,6 +8,7 @@ import { AdminData } from '../../interfaces/AdminInterfaces';
 import { LabService } from '../../services/lab.service';
 import { CreateLab, LabData } from '../../interfaces/LabInterfaces';
 import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms'; // Se puede incluir Validators si deseas validaciones
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-account',
@@ -16,12 +17,20 @@ import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } 
   styleUrl: './account.component.css'
 })
 export class AccountComponent {
-  loadingState: 'loading' | 'loaded' | 'error' = 'loading';
+  
+  activeScreen: 'information' | 'security' = 'information';
+  
   authService = inject(AuthService);
   adminService = inject(AdminsService);
   labService = inject(LabService);
+  userService = inject(UsersService);
   router = inject(Router);
+  
   labForm: FormGroup<CreateLab | any>;
+  
+  passwordForm: FormGroup;
+  passwordMessage: string = '';
+
   user: UserData | undefined;
   admin: AdminData | undefined;
   labs: LabData[] | undefined;
@@ -30,6 +39,7 @@ export class AccountComponent {
   isAdmin: boolean = false;
 
   constructor(private fb: FormBuilder) {
+    
     this.labForm = this.fb.group({
       name: new FormControl('', Validators.required),
       location: new FormControl('', Validators.required),
@@ -40,6 +50,11 @@ export class AccountComponent {
       specialization: new FormControl('')
       
     });
+
+    this.passwordForm = this.fb.group({
+      newPassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)])
+    })
   }
 
   async createLab() {
@@ -70,6 +85,40 @@ export class AccountComponent {
     }
   }
 
+  async updatePassword() {
+    if (this.passwordForm.invalid) {
+      this.passwordMessage = 'Las contraseñas deben coincidir y ser más largas de 8 caracteres.';
+      return;
+    }
+  
+    const newPassword = this.passwordForm.controls['newPassword'].value.trim();
+    const confirmPassword = this.passwordForm.controls['confirmPassword'].value.trim();
+  
+    if (newPassword !== confirmPassword) {
+      this.passwordMessage = 'Las contraseñas no coinciden.';
+      return;
+    }
+  
+    const sessionToken = this.user?.session_token || '';
+    const userId = this.user?.user_id || 0;
+  
+    try {
+      const success = await this.userService.updatePassword(newPassword, userId, sessionToken);
+      
+      if (success) {
+        this.passwordMessage = 'La contraseña se actualizó correctamente.';
+        this.passwordForm.reset();
+      } else {
+        this.passwordMessage = 'No se pudo actualizar la contraseña. Intenta nuevamente.';
+      }
+  
+    } catch (error) {
+      console.error('Error actualizando la contraseña:', error);
+      this.passwordMessage = 'Ocurrió un error inesperado. Intenta más tarde.';
+    }
+  }
+  
+
   async ngOnInit() {
     this.user = await this.authService.getUserData();
     if (!this.user) {
@@ -86,6 +135,11 @@ export class AccountComponent {
         this.labs = await this.labService.creatorLabs(this.admin.admin_id);
       }
     }
+  }
+
+  setActiveScreen(screen:string){
+    window.scrollTo({top: 0, behavior: "smooth"});
+    this.activeScreen = screen as 'information' | 'security';
   }
 
   formatDate(dateString: string | undefined): string {

@@ -52,6 +52,7 @@ export class UsersService {
       return false;
     }
   }
+  
   async verifyUsername(username: string): Promise<boolean> {
     try {
       const response = await fetch(`${this.url}/verify_username?username=${encodeURIComponent(username)}`);
@@ -68,7 +69,7 @@ export class UsersService {
       return false; // En caso de error, asumimos que no está disponible
     }
   }
-  
+
   async verifyEmail(email: string): Promise<boolean> {
     try {
       const response = await fetch(`${this.url}/verify_email?email=${encodeURIComponent(email)}`);
@@ -85,4 +86,32 @@ export class UsersService {
       return false; // En caso de error, asumimos que no está disponible
     }
   }
+
+  async updatePassword(password: string, user_id: number, session_token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/update_password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${session_token}`
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          password: password
+        })
+      });
+  
+      if (!response.ok) {
+        return false;
+      }
+  
+      const json = await response.json();
+      return json.status === 'success';
+  
+    } catch (error) {
+      console.error('Error updating password:', error);
+      return false;
+    }
+  }
+  
 }

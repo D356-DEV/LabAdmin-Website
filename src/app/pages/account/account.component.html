@@ -5,28 +5,7 @@
     <ng-container *ngTemplateOutlet="loading"></ng-container>
     }
 </div>
-<div class="container-fluid py-5">
-    <ng-container [ngSwitch]="loadingState">
-        <!-- Estado de Cargando -->
-        <ng-container *ngSwitchCase="'loading'">
-            <ng-container *ngTemplateOutlet="loading"></ng-container>
-        </ng-container>
 
-        <!-- Estado de Listo -->
-        <ng-container *ngSwitchCase="'ready'">
-            <ng-container *ngTemplateOutlet="ready"></ng-container>
-        </ng-container>
-
-        <!-- Estado de Error -->
-        <ng-container *ngSwitchCase="'error'">
-            <div class="col text-center py-5">
-                <div class="alert alert-danger" role="alert">
-                    Ocurrió un error al cargar los datos. Por favor, intenta nuevamente.
-                </div>
-            </div>
-        </ng-container>
-    </ng-container>
-</div>
 <ng-template #loading>
     <div class="col text-center py-5">
         <div class="spinner-border text-dark" role="status">
@@ -38,64 +17,38 @@
 
 <ng-template #ready>
     <div class="container-lg">
-        <div class="card bg-warning-subtle shadow-lg rounded-4">
-            <div class="card-body p-5 shadow">
-                <div class="row gy-3">
-                    <!-- Columna de la imagen -->
-                    <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
-                        @if (user?.profile_image) {
-                        <img [src]="'data:image/png;base64,' + user?.profile_image"
-                            class="rounded-circle border border-3 border-light shadow-sm" width="250" height="250"
-                            alt="Avatar" style="object-fit: cover;">
-                        }
-                        <img src="/images/icon.png" class="rounded-circle border border-3 border-light shadow-sm"
-                            width="250" height="250" alt="Avatar" style="object-fit: cover;">
-                        <hr>
-                        <h6 class="">{{'@'+ user?.username }}</h6>
-                        <h4 class="fw-bold mb-0">
-                            {{ user?.first_name + " " + user?.last_name }}
-                        </h4>
-                        @if (isAdmin) {
-                        <span class="badge text-bg-success">Admin</span>
-                        } @else {
-                        <span class="badge text-bg-primary">Estudiante</span>
-                        }
-                        <h6 class="my-1">{{ user?.institution }}</h6>
+        <div class="card bg-warning-subtle">
+
+            <div class="card-body" style="min-height: 450px;">
+                @switch (activeScreen) {
+                @case ('information') {
+                <ng-container *ngTemplateOutlet="information"></ng-container>
+                }
+                @case ('security') {
+                <ng-container *ngTemplateOutlet="security"></ng-container>
+                }
+                }
+            </div>
+
+            <div class="card-footer">
+                <div class="row gap-1">
+                    <div class="col">
+                        <button type="button" class="btn btn-warning rounded-pill w-100 h-100"
+                            (click)="setActiveScreen('information')">
+                            <i class="bi bi-person"></i> Información
+                        </button>
                     </div>
-
-                    <!-- Columna de información con título arriba y valor debajo -->
-                    <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
-                        <div class="w-100">
-                            <div class="mb-3">
-                                <span class="fw-bold">Fecha de Nacimiento:</span><br>
-                                <span class="border-bottom pb-1">{{ formatDate(user?.birth_date) }}</span>
-                            </div>
-                            <div class="mb-3">
-                                <span class="fw-bold">Correo:</span><br>
-                                <span class="border-bottom pb-1">{{ user?.email }}</span>
-                            </div>
-                            <div class="mb-3">
-                                <span class="fw-bold">Telefono:</span><br>
-                                <span class="border-bottom pb-1">{{ user?.phone }}</span>
-                            </div>
-                            <div class="mb-3">
-                                <span class="fw-bold">Campus:</span><br>
-                                <span class="border-bottom pb-1">{{ user?.campus }}</span>
-                            </div>
-                            <div class="mb-3">
-                                <span class="fw-bold">Carrera:</span><br>
-                                <span class="border-bottom pb-1">{{ user?.student_carrer }}</span>
-                            </div>
-                        </div>
-
-                        <div class="text-center mt-4">
-                            <button type="button" class="btn btn-danger px-4 py-2 rounded-pill shadow-sm"
-                                (click)="logOut()">
-                                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-                            </button>
-                        </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-warning rounded-pill w-100 h-100"
+                            (click)="setActiveScreen('security')">
+                            <i class="bi bi-key"></i> Seguridad
+                        </button>
                     </div>
-
+                    <div class="col">
+                        <button type="button" class="btn btn-danger rounded-pill w-100 h-100" (click)="logOut()">
+                            <i class="bi bi-box-arrow-right"></i> Salir
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -196,96 +149,259 @@
     <!-- Create Lab Modal -->
     <div class="modal fade" id="labModal" tabindex="-1" aria-labelledby="labModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header bg-warning-subtle">
-              <h1 class="modal-title fs-5" >Agregar Laboratorio</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            <div class="modal-content">
+                <div class="modal-header bg-warning-subtle">
+                    <h1 class="modal-title fs-5">Agregar Laboratorio</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form [formGroup]="labForm" (submit)="createLab()">
+                        <div class="mb-3">
+                            <label for="labName" class="form-label">Nombre del laboratorio</label>
+                            <input type="text" class="form-control" id="labName" formControlName="name">
+                            <div class="form-text">
+                                Ejemplo: Laboratorio de Química Orgánica
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="labInstitution" class="form-label">Institución</label>
+                            <select id="labInstitution" class="form-select" formControlName="institution">
+                                <option value="" disabled selected>Selecciona una institución</option>
+                                <option value="Universidad de Guadalajara">Universidad de Guadalajara</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="labCampus" class="form-label">Campus</label>
+                            <select id="labCampus" class="form-select" formControlName="campus">
+                                <option value="" disabled selected>Selecciona un campus</option>
+                                <option value="CUCEI">CUCEI</option>
+                                <option value="CUCS">CUCS</option>
+                                <option value="CUCEA">CUCEA</option>
+                                <option value="CUSUR">CUSUR</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="labLocation" class="form-label">Ubicación</label>
+                            <input type="text" class="form-control" id="labLocation" formControlName="location">
+                            <div class="form-text">
+                                Ejemplo: Edificio anexo a Rectoría, planta baja.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="labDescription" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="labDescription" rows="3"
+                                formControlName="description"></textarea>
+                            <div class="form-text">
+                                Ejemplo: Laboratorio enfocado en estudios de neurociencia cognitiva, psicología
+                                experimental y modelos computacionales del cerebro.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="labCapacity" class="form-label">Capacidad</label>
+                            <input type="number" min="1" max="100" placeholder="1" class="form-control" id="labCapacity"
+                                formControlName="capacity">
+                            <div class="form-text">
+                                Ejemplo: Número total de personas que pueden estar simultáneamente en el laboratorio.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="labSpecialization" class="form-label">Especialización</label>
+                            <select id="labSpecialization" class="form-select" formControlName="specialization">
+                                <option value="" disabled selected>Selecciona una especialización</option>
+                                <option>Química</option>
+                                <option>Física</option>
+                                <option>Alimentos</option>
+                                <option>Fotónica</option>
+                                <option>Computación</option>
+                                <option>Biotecnología</option>
+                                <option>Ingeniería Biomédica</option>
+                                <option>Microbiología</option>
+                                <option>Robótica</option>
+                                <option>Inteligencia Artificial</option>
+                            </select>
+                            <div class="form-text">
+                                Selecciona el área principal de enfoque del laboratorio.
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-warning">
+                                Crear Lab <i class="bi bi-plus-circle mx-1"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
+        </div>
+    </div>
+
+</ng-template>
+
+<ng-template #information>
+    <div class="row gy-3">
+        <!-- Columna de la imagen -->
+        <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
+            @if (user?.profile_image) {
+            <img [src]="'data:image/png;base64,' + user?.profile_image"
+                class="rounded-circle border border-3 border-light shadow-sm" width="250" height="250" alt="Avatar"
+                style="object-fit: cover;">
+            }
+            <img src="/images/icon.png" class="rounded-circle border border-3 border-light shadow-sm" width="250"
+                height="250" alt="Avatar" style="object-fit: cover;">
+            <hr>
+            <h6 class="">{{'@'+ user?.username }}</h6>
+            <h4 class="fw-bold mb-0">
+                {{ user?.first_name + " " + user?.last_name }}
+            </h4>
+            @if (isAdmin) {
+            <span class="badge text-bg-success">Admin</span>
+            } @else {
+            <span class="badge text-bg-primary">Estudiante</span>
+            }
+            <h6 class="my-1">{{ user?.institution }}</h6>
+        </div>
+
+        <!-- Columna de información -->
+        <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
+            <table class="table table-warning table-hover">
+                <tbody>
+                    <tr>
+                        <th scope="row">Usuario</th>
+                        <td>{{user?.username}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Nombre</th>
+                        <td>{{user?.first_name + ' ' + user?.last_name}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Institución</th>
+                        <td>{{user?.institution}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Campus</th>
+                        <td>{{user?.campus}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Carrera</th>
+                        <td>{{user?.student_carrer}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Codigo</th>
+                        <td>{{user?.student_code}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Correo</th>
+                        <td>{{user?.email}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Telefono</th>
+                        <td>{{user?.phone}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Miembro desde</th>
+                        <td>{{formatDate(user?.creation_date)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #security>
+    <div class="container">
+        <div class="accordion" id="accountAccordion">
       
-            <div class="modal-body">
-              <form [formGroup]="labForm" (submit)="createLab()">
-                <div class="mb-3">
-                  <label for="labName" class="form-label">Nombre del laboratorio</label>
-                  <input type="text" class="form-control" id="labName" formControlName="name">
-                  <div class="form-text">
-                    Ejemplo: Laboratorio de Química Orgánica
+          <!-- Password Section -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingPassword">
+              <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapsePassword" aria-expanded="false" aria-controls="collapsePassword">
+                Contraseña <i class="bi bi-key-fill mx-2"></i>
+              </button>
+            </h2>
+            <div id="collapsePassword" class="accordion-collapse collapse" aria-labelledby="headingPassword"
+              data-bs-parent="#accountAccordion">
+              <div class="accordion-body">
+                <form [formGroup]="passwordForm" (submit)="updatePassword()">
+                  <div class="mb-3">
+                    <label for="newPassword" class="form-label">Nueva contraseña</label>
+                    <input type="password" class="form-control" id="newPassword" formControlName="newPassword">
                   </div>
-                </div>
-      
-                <div class="mb-3">
-                  <label for="labInstitution" class="form-label">Institución</label>
-                  <select id="labInstitution" class="form-select" formControlName="institution">
-                    <option value="" disabled selected>Selecciona una institución</option>
-                    <option value="Universidad de Guadalajara">Universidad de Guadalajara</option>
-                  </select>
-                </div>
-      
-                <div class="mb-3">
-                  <label for="labCampus" class="form-label">Campus</label>
-                  <select id="labCampus" class="form-select" formControlName="campus">
-                    <option value="" disabled selected>Selecciona un campus</option>
-                    <option value="CUCEI">CUCEI</option>
-                    <option value="CUCS">CUCS</option>
-                    <option value="CUCEA">CUCEA</option>
-                    <option value="CUSUR">CUSUR</option>
-                  </select>
-                </div>
-      
-                <div class="mb-3">
-                  <label for="labLocation" class="form-label">Ubicación</label>
-                  <input type="text" class="form-control" id="labLocation" formControlName="location">
-                  <div class="form-text">
-                    Ejemplo: Edificio anexo a Rectoría, planta baja.
+                  <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
+                    <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword">
                   </div>
-                </div>
-      
-                <div class="mb-3">
-                  <label for="labDescription" class="form-label">Descripción</label>
-                  <textarea class="form-control" id="labDescription" rows="3" formControlName="description"></textarea>
-                  <div class="form-text">
-                    Ejemplo: Laboratorio enfocado en estudios de neurociencia cognitiva, psicología
-                    experimental y modelos computacionales del cerebro.
-                  </div>
-                </div>
-      
-                <div class="mb-3">
-                  <label for="labCapacity" class="form-label">Capacidad</label>
-                  <input type="number" min="1" max="100" placeholder="1" class="form-control" id="labCapacity" formControlName="capacity">
-                  <div class="form-text">
-                    Ejemplo: Número total de personas que pueden estar simultáneamente en el laboratorio.
-                  </div>
-                </div>
-      
-                <div class="mb-3">
-                  <label for="labSpecialization" class="form-label">Especialización</label>
-                  <select id="labSpecialization" class="form-select" formControlName="specialization">
-                    <option value="" disabled selected>Selecciona una especialización</option>
-                    <option>Química</option>
-                    <option>Física</option>
-                    <option>Alimentos</option>
-                    <option>Fotónica</option>
-                    <option>Computación</option>
-                    <option>Biotecnología</option>
-                    <option>Ingeniería Biomédica</option>
-                    <option>Microbiología</option>
-                    <option>Robótica</option>
-                    <option>Inteligencia Artificial</option>
-                  </select>
-                  <div class="form-text">
-                    Selecciona el área principal de enfoque del laboratorio.
-                  </div>
-                </div>
-      
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-warning">
-                    Crear Lab <i class="bi bi-plus-circle mx-1"></i>
+                  @if (passwordMessage != '') {
+                    <div class="alert alert-warning" role="alert">
+                        {{passwordMessage}}
+                    </div>    
+                  }
+                  <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                    Actualizar
                   </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
+      
+          <!-- Email Section -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingEmail">
+              <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapseEmail" aria-expanded="false" aria-controls="collapseEmail">
+                Correo <i class="bi bi-envelope-fill mx-2"></i>
+              </button>
+            </h2>
+            <div id="collapseEmail" class="accordion-collapse collapse" aria-labelledby="headingEmail"
+              data-bs-parent="#accountAccordion">
+              <div class="accordion-body">
+                <form>
+                  <div class="mb-3">
+                    <label for="newEmail" class="form-label">Nuevo correo</label>
+                    <input type="email" class="form-control" id="newEmail">
+                  </div>
+                  <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                    Actualizar
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+      
+          <!-- Phone Section -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingPhone">
+              <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapsePhone" aria-expanded="false" aria-controls="collapsePhone">
+                Teléfono <i class="bi bi-phone-fill mx-2"></i>
+              </button>
+            </h2>
+            <div id="collapsePhone" class="accordion-collapse collapse" aria-labelledby="headingPhone"
+              data-bs-parent="#accountAccordion">
+              <div class="accordion-body">
+                <form>
+                  <div class="mb-3">
+                    <label for="newPhone" class="form-label">Nuevo teléfono</label>
+                    <input type="text" class="form-control" id="newPhone">
+                  </div>
+                  <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                    Actualizar
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+      
         </div>
       </div>
-     
+      
+
 </ng-template>
