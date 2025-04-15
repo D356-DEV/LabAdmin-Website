@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LabData } from '../interfaces/LabInterfaces';
+import { CreateLab } from '../interfaces/LabInterfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -78,6 +79,38 @@ export class LabService {
 
     } catch (error) {
       console.error(`[LabService] Error in getLab:`, error);
+      throw error;
+    }
+  }
+  async createLab(CreateLab: CreateLab): Promise<CreateLab> {
+    try {
+      const response = await fetch(`${this.apiUrl}/create_lab`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: CreateLab.name,
+          location: CreateLab.location,
+          capacity: CreateLab.capacity,
+          description: CreateLab.description,
+          institution: CreateLab.institution,
+          campus: CreateLab.campus,
+          specialization: CreateLab.specialization,
+          creator_id: CreateLab.creator_id,
+        })
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to create laboratory: ${response.status} ${errorText}`);
+      }
+      
+      const json = await response.json();
+
+      return json.data as LabData;
+    } catch (error) {
+      console.error(`[LabService] Error in createLab:`, error);
       throw error;
     }
   }
