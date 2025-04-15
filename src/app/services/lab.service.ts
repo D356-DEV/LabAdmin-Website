@@ -81,4 +81,36 @@ export class LabService {
       throw error;
     }
   }
+
+  async createLab(creator_id: number, labData: {
+    name: string;
+    location: string;
+    capacity: number;
+    description: string;
+    institution: string;
+    campus: string;
+    specialization: string;
+  }): Promise<{status: string; message: string}> {
+    try {
+      const response = await fetch(`${this.apiUrl}/create_lab?creator_id=${creator_id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(labData)
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to create lab: ${response.status} ${errorText}`);
+      }
+      
+      const json = await response.json();
+      return json;
+  
+    } catch (error) {
+      console.error(`[LabService] Error in createLab:`, error);
+      throw error;
+    }
+  }
 }

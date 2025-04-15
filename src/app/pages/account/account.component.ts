@@ -2,14 +2,16 @@ import { Component, inject } from '@angular/core';
 import { UserData } from '../../interfaces/UserInterfaces';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { AdminsService } from '../../services/admins.service';
 import { AdminData } from '../../interfaces/AdminInterfaces';
 import { LabService } from '../../services/lab.service';
 import { LabData } from '../../interfaces/LabInterfaces';
+
 @Component({
   selector: 'app-account',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css'
 })
@@ -26,11 +28,22 @@ export class AccountComponent {
 
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
+  isCreatingLab: boolean = false;
+
+  // New lab form data model
+  newLab = {
+    name: '',
+    location: '',
+    capacity: 1,
+    description: '',
+    institution: 'Universidad de Guadalajara',
+    campus: '',
+    specialization: ''
+  };
 
   constructor() {}
 
   async ngOnInit() {
-    
     this.user = await this.authService.getUserData();
     if (!this.user) {
       await this.router.navigate(['/login']);
@@ -43,8 +56,52 @@ export class AccountComponent {
       this.admin = await this.adminService.getByUser(this.user.user_id);
       
       if (this.admin){
-        this.labs = await this.labService.creatorLabs(this.admin.admin_id);
+        await this.loadLabs();
       }
+    }
+  }
+
+  async loadLabs() {
+    if (this.admin) {
+      this.labs = await this.labService.creatorLabs(this.admin.admin_id);
+    }
+  }
+
+  async createLab() {
+    try {
+      if (!this.admin) {
+        console.error('[AccountComponent] Cannot create lab: No admin data available');
+        return;
+      }
+
+      this.isCreatingLab = true;
+      
+      const result = await this.labService.createLab(
+        this.admin.admin_id, 
+        this.newLab
+      );
+      
+      if (result.status === 'success') {
+        this.newLab = {
+          name: '',
+          location: '',
+          capacity: 1,
+          description: '',
+          institution: 'Universidad de Guadalajara',
+          campus: '',
+          specialization: ''
+        };
+        
+        document.getElementById('closeLabModal')?.click();
+        
+        await this.loadLabs();
+      } else {
+        console.error('[AccountComponent] Failed to create lab:', result.message);
+      }
+    } catch (error) {
+      console.error('[AccountComponent] Error creating lab:', error);
+    } finally {
+      this.isCreatingLab = false;
     }
   }
 

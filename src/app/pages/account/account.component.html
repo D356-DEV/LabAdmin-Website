@@ -173,92 +173,95 @@
     }
 
     <!-- Create Lab Modal -->
-    <div class="modal fade" id="labModal" tabindex="-1" aria-labelledby="labModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-
-            <div class="modal-content">
-                <div class="modal-header bg-warning-subtle">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Laboratorio</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="labName" class="form-label">Nombre del laboratorio</label>
-                            <input type="text" class="form-control" id="labName">
-                            <div class="form-text">
-                                Ejemplo: Laboratorio de Química Orgánica
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="labInstitution" class="form-label">Institución</label>
-                            <select id="labInstitution" class="form-select">
-                                <option selected disabled>Selecciona una institución</option>
-                                <option>Universidad de Guadalajara</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="labCampus" class="form-label">Campus</label>
-                            <select id="labCampus" class="form-select">
-                                <option selected disabled>Selecciona un campus</option>
-                                <option>CUCEI</option>
-                                <option>CUCS</option>
-                                <option>CUCEA</option>
-                                <option>CUSUR</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="labLocation" class="form-label">Ubicación</label>
-                            <input type="text" class="form-control" id="labLocation">
-                            <div class="form-text">
-                                Ejemplo: Edificio anexo a Rectoría, planta baja.
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="labDescription" class="form-label">Descripción</label>
-                            <textarea class="form-control" id="labDescription" rows="3"></textarea>
-                            <div class="form-text">
-                                Ejemplo: Laboratorio enfocado en estudios de neurociencia cognitiva, psicología
-                                experimental y modelos computacionales del cerebro.
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="labCapacity" class="form-label">Capacidad</label>
-                            <input type="number" min="1" max="100" placeholder="1" class="form-control"
-                                id="labCapacity">
-                            <div class="form-text">
-                                Ejemplo: Número total de personas que pueden estar simultáneamente en el laboratorio.
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="labSpecialization" class="form-label">Especialización</label>
-                            <select id="labSpecialization" class="form-select">
-                                <option selected disabled>Selecciona una especialización</option>
-                                <option>Química</option>
-                                <option>Física</option>
-                                <option>Alimentos</option>
-                                <option>Fotónica</option>
-                                <option>Computación</option>
-                                <option>Biotecnología</option>
-                                <option>Ingeniería Biomédica</option>
-                                <option>Microbiología</option>
-                                <option>Robótica</option>
-                                <option>Inteligencia Artificial</option>
-                            </select>
-                            <div class="form-text">
-                                Selecciona el área principal de enfoque del laboratorio.
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-warning">Crear Lab <i
-                            class="bi bi-plus-circle mx-1"></i></button>
-                </div>
+<div class="modal fade" id="labModal" tabindex="-1" aria-labelledby="labModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-warning-subtle">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Laboratorio</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" id="closeLabModal"></button>
             </div>
-
+            <div class="modal-body">
+                <form (submit)="$event.preventDefault(); createLab()">
+                    <div class="mb-3">
+                        <label for="labName" class="form-label">Nombre del laboratorio</label>
+                        <input type="text" class="form-control" id="labName" [(ngModel)]="newLab.name" name="labName" required>
+                        <div class="form-text">
+                            Ejemplo: Laboratorio de Química Orgánica
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="labInstitution" class="form-label">Institución</label>
+                        <select id="labInstitution" class="form-select" [(ngModel)]="newLab.institution" name="labInstitution" required>
+                            <option selected>Universidad de Guadalajara</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="labCampus" class="form-label">Campus</label>
+                        <select id="labCampus" class="form-select" [(ngModel)]="newLab.campus" name="labCampus" required>
+                            <option selected disabled value="">Selecciona un campus</option>
+                            <option>CUCEI</option>
+                            <option>CUCS</option>
+                            <option>CUCEA</option>
+                            <option>CUSUR</option>
+                            <option>CULagos</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="labLocation" class="form-label">Ubicación</label>
+                        <input type="text" class="form-control" id="labLocation" [(ngModel)]="newLab.location" name="labLocation" required>
+                        <div class="form-text">
+                            Ejemplo: Edificio anexo a Rectoría, planta baja.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="labDescription" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="labDescription" rows="3" [(ngModel)]="newLab.description" name="labDescription" required></textarea>
+                        <div class="form-text">
+                            Ejemplo: Laboratorio enfocado en estudios de neurociencia cognitiva, psicología
+                            experimental y modelos computacionales del cerebro.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="labCapacity" class="form-label">Capacidad</label>
+                        <input type="number" min="1" max="100" class="form-control" id="labCapacity" [(ngModel)]="newLab.capacity" name="labCapacity" required>
+                        <div class="form-text">
+                            Ejemplo: Número total de personas que pueden estar simultáneamente en el laboratorio.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="labSpecialization" class="form-label">Especialización</label>
+                        <select id="labSpecialization" class="form-select" [(ngModel)]="newLab.specialization" name="labSpecialization" required>
+                            <option selected disabled value="">Selecciona una especialización</option>
+                            <option>Química</option>
+                            <option>Física</option>
+                            <option>Alimentos</option>
+                            <option>Fotónica</option>
+                            <option>Computación</option>
+                            <option>Biotecnología</option>
+                            <option>Ingeniería Biomédica</option>
+                            <option>Microbiología</option>
+                            <option>Robótica</option>
+                            <option>Inteligencia Artificial</option>
+                            <option>Neurociencias y Comportamiento</option>
+                        </select>
+                        <div class="form-text">
+                            Selecciona el área principal de enfoque del laboratorio.
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-warning" (click)="createLab()" [disabled]="isCreatingLab || !newLab.name || !newLab.campus || !newLab.location || !newLab.description || !newLab.specialization">
+                    <span *ngIf="!isCreatingLab">Crear Lab <i class="bi bi-plus-circle mx-1"></i></span>
+                    <span *ngIf="isCreatingLab">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Creando...
+                    </span>
+                </button>
+            </div>
         </div>
     </div>
+</div>
 
 </ng-template>
