@@ -27,6 +27,7 @@ export class AccountComponent {
   router = inject(Router);
   
   labForm: FormGroup<CreateLab | any>;
+  labMessage: string = '';
   
   passwordForm: FormGroup;
   passwordMessage: string = '';
@@ -57,34 +58,55 @@ export class AccountComponent {
     })
   }
 
-  async createLab() {
-   
-    if (this.labForm.invalid || !this.admin?.admin_id) {
-      console.warn("Formulario incompleto o administrador no disponible.");
+  async ngOnInit() {
+    this.user = await this.authService.getUserData();
+    if (!this.user) {
+      await this.router.navigate(['/login']);
       return;
     }
 
-   
-    const labData: CreateLab = this.labForm.value;
-    labData.creator_id = this.admin.admin_id;
+    this.isAdmin = await this.adminService.isUserAdmin(this.user.user_id);
 
-    try {
-      const response = await this.labService.createLab(labData);
-      if (response) {
-        console.log('Laboratorio creado exitosamente:', response);
+    if (this.isAdmin) {
+      this.admin = await this.adminService.getByUser(this.user.user_id);
 
-       
-        this.labForm.reset();
-
-      } else {
-        console.error('Error al crear el laboratorio');
+      if (this.admin) {
+        this.labs = await this.labService.creatorLabs(this.admin.admin_id);
       }
-    }
-    catch (error) {
-      console.error('Error al crear el laboratorio:', error);
     }
   }
 
+  async createLab() {
+    if (this.labForm.invalid) {
+      this.labMessage = 'Formulario incompleto.';
+      return;
+    }
+
+    if (!this.admin?.admin_id) {
+      this.labMessage = 'Administrador no disponible.';
+      return;
+    }
+  
+    const labData: CreateLab = this.labForm.value;
+    labData.creator_id = this.admin.admin_id;
+  
+    try {
+      const response = await this.labService.createLab(labData);
+  
+      if (response) {
+        this.labMessage = 'Laboratorio creado exitosamente.';
+        this.labForm.reset();
+      } else {
+        this.labMessage = 'No se pudo crear el laboratorio. Intenta nuevamente.';
+        console.error('Respuesta nula o inválida al crear el laboratorio');
+      }
+  
+    } catch (error) {
+      console.error('Error al crear el laboratorio:', error);
+      this.labMessage = 'Ocurrió un error inesperado al crear el laboratorio.';
+    }
+  }
+  
   async updatePassword() {
     if (this.passwordForm.invalid) {
       this.passwordMessage = 'Las contraseñas deben coincidir y ser más largas de 8 caracteres.';
@@ -118,25 +140,6 @@ export class AccountComponent {
     }
   }
   
-
-  async ngOnInit() {
-    this.user = await this.authService.getUserData();
-    if (!this.user) {
-      await this.router.navigate(['/login']);
-      return;
-    }
-
-    this.isAdmin = await this.adminService.isUserAdmin(this.user.user_id);
-
-    if (this.isAdmin) {
-      this.admin = await this.adminService.getByUser(this.user.user_id);
-
-      if (this.admin) {
-        this.labs = await this.labService.creatorLabs(this.admin.admin_id);
-      }
-    }
-  }
-
   setActiveScreen(screen:string){
     window.scrollTo({top: 0, behavior: "smooth"});
     this.activeScreen = screen as 'information' | 'security';

@@ -82,7 +82,7 @@ export class LabService {
       throw error;
     }
   }
-  async createLab(CreateLab: CreateLab): Promise<CreateLab> {
+  async createLab(CreateLab: CreateLab): Promise<boolean> {
     try {
       const response = await fetch(`${this.apiUrl}/create_lab`, {
         method: 'POST',
@@ -108,7 +108,7 @@ export class LabService {
       
       const json = await response.json();
 
-      return json.data as LabData;
+      return json.status === 'success';
     } catch (error) {
       console.error(`[LabService] Error in createLab:`, error);
       throw error;
