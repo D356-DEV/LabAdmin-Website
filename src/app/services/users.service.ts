@@ -114,4 +114,29 @@ export class UsersService {
     }
   }
   
+  async resetPassword(email: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/reset_password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 'email' : email }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`El servidor respondió con estado: ${response.status}`);
+      }
+
+      const json = await response.json();
+      if (!json) {
+        throw new Error('La respuesta del servidor no es un JSON válido.');
+      }
+
+      return json.status === 'success';
+    } catch (error) {
+      console.error('Error al restaurar contraseña:', error);
+      return false;
+    }
+  }
 }
