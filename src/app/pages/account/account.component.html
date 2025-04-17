@@ -302,7 +302,7 @@
                     </tr>
                     <tr>
                         <th scope="row">Carrera</th>
-                        <td>{{ user?.student_carrer }}</td>
+                        <td>{{ user?.student_carreer }}</td>
                     </tr>
                     <tr>
                         <th scope="row">Codigo</th>
@@ -380,8 +380,14 @@
                         <form [formGroup]="emailForm" (submit)="updateEmail()">
                             <div class="mb-3">
                                 <label for="newEmail" class="form-label">Nuevo correo</label>
-                                <input type="email" class="form-control" id="newEmail" formControlName="newEmail" />
+                                <input type="email" class="form-control" id="newEmail" formControlName="email" />
                             </div>
+                            @if (emailMessage != '') {
+                                <div class="alert alert-warning" role="alert">
+                                    {{ emailMessage }}
+                                </div>
+                                }
+                                
                             <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
                                 Actualizar
                             </button>

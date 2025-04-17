@@ -208,14 +208,15 @@ export class AccountComponent {
       this.passwordMessage = 'El correo electrónico no es válido.';
       return;
     }
-    const email = this.emailForm.controls['email'].value.trim();
+    const newEmail = this.emailForm.controls['email'].value.trim();
     const sessionToken = this.user?.session_token || '';
     const userId = this.user?.user_id || 0;
     try {
-      const success = await this.userService.updateEmail(email, userId, sessionToken);
+      const success = await this.userService.updateEmail(newEmail, userId, sessionToken);
       if (success) {
         this.emailMessage = 'El correo electrónico se actualizó correctamente.';
         this.emailForm.reset();
+        window.location.reload();
       }
       else {
         this.emailMessage = 'No se pudo actualizar el correo electrónico. Intenta nuevamente.';
