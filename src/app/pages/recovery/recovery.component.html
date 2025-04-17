@@ -1,38 +1,54 @@
-<section class="container-fluid mt-5">
-    <div class="container-lg">
-
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow">
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col p-2">
-                                <h5 class="text-warning">LabAdmin</h5>
-                                <h2>Recuperar Contraseña</h2>
-                            </div>
-                            <div class="col d-flex justify-content-center">
-                                <a routerLink="/login" class="text-dark d-flex align-items-center">
-                                    <i class="bi bi-arrow-left-circle-fill me-1"></i> Volver
-                                </a>
+<section class="container-fluid p-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card bg-warning-subtle">
+                <div class="card-header">
+                    <a routerLink="/login" class="d-block mb-3 text-dark">
+                        <i class="bi bi-arrow-left-circle-fill p-1"></i> Volver a Iniciar Sesión
+                    </a>
+                    <h4>Recuperar contraseña</h4>
+                </div>
+                <form [formGroup]="recoveryForm" (submit)="resetPassword()">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email" formControlName="email">
+                            <div class="form-text">
+                                Introduzca aquí el correo electrónico asociado a su cuenta.
+                                Si existe una cuenta de LabAdmin relacionada a este correo, se
+                                le enviará una contraseña temporal al mismo.
                             </div>
                         </div>
+                        @if (recoveryMessage != '' && !isSuccess) {
+                        <div class="alert alert-danger" role="alert">
+                            {{recoveryMessage}}
+                        </div>
+                        }
                     </div>
-                    <div class="card-body">
-                        <form [formGroup]="recoveryForm" (submit)="recovery()">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Introduce tu correo</label>
-                                <input type="email" class="form-control bg-warning bg-opacity-25" formControlName="email" placeholder="example@alumnos.udg.mx">
-                                <div id="email" class="form-text">Si el correo esta enlazado a
-                                    una cuenta existente se te enviara un correo de recuperacion.</div>
+                    <div class="card-footer">
+                        @if (isSuccess) {
+                        <div class="alert alert-success d-flex flex-column align-items-center justify-content-center">
+                            <div class="spinner-grow text-success d-flex align-items-center justify-content-center mb-2" role="status">
+                                <i class="bi bi-check text-light fs-3"></i>
+                                <span class="visually-hidden">Loading...</span>
                             </div>
-                            <div>
-                                <button type="submit" class="btn btn-outline-warning w-100">Recuperar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                    
+                            <h6 class="mb-3 text-center">¡Se restableció tu contraseña!</h6>
+                            <p class="text-center">Espera unos minutos, recibirás una nueva contraseña en tu correo...</p>
+                        </div>
+                        }
+                    
+                        @if (isLoading) {
+                        <button type="submit" class="btn btn-warning w-100 mb-2" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Cargando...
+                        </button>
+                        } @else if (!isLoading && !isSuccess) {
+                        <button type="submit" class="btn btn-warning w-100 mb-2">Recuperar contraseña</button>
+                        }
+                    </div>                    
+                </form>
             </div>
         </div>
-
     </div>
 </section>
