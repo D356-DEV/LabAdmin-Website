@@ -193,6 +193,7 @@ export class AccountComponent {
       if (success) {
         this.passwordMessage = 'La contraseña se actualizó correctamente.';
         this.passwordForm.reset();
+        window.location.reload();
       } else {
         this.passwordMessage = 'No se pudo actualizar la contraseña. Intenta nuevamente.';
       }
@@ -264,7 +265,7 @@ export class AccountComponent {
       if (success) {
         this.nameMessage = 'El nombre se actualizó correctamente.';
         this.nameForm.reset();
-        window.location.reload(); // Recargar la página para reflejar el cambio
+        window.location.reload(); 
       }
       else {
         this.nameMessage = 'No se pudo actualizar el nombre. Intenta nuevamente.';
@@ -389,14 +390,14 @@ export class AccountComponent {
         sessionToken);
         
       if (success) {
-        this.codeMessage = 'El apellido se actualizó correctamente.';
+        this.codeMessage = 'El Codigo se actualizó correctamente.';
         this.codeForm.reset();
         window.location.reload();
       } else {
-        this.codeMessage = 'No se pudo actualizar el apellido. Intenta nuevamente.';
+        this.codeMessage = 'No se pudo actualizar el codigo. Intenta nuevamente.';
       }
     }catch (error) {
-      console.error('Error actualizando el apellido:', error);
+      console.error('Error actualizando el codigo:', error);
       this.codeMessage = 'Ocurrió un error inesperado. Intenta más tarde.';
   }
   }
