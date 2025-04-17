@@ -7,19 +7,14 @@
 </div>
 
 <ng-template #ready>
-    
     <div class="container-lg">
         <div class="card bg-warning-subtle">
-
-            <div class="card-body" style="min-height: 450px;">
-                @switch (activeScreen) {
-                @case ('information') {
+            <div class="card-body" style="min-height: 450px">
+                @switch (activeScreen) { @case ('information') {
                 <ng-container *ngTemplateOutlet="information"></ng-container>
-                }
-                @case ('security') {
+                } @case ('security') {
                 <ng-container *ngTemplateOutlet="security"></ng-container>
-                }
-                }
+                } }
             </div>
 
             <div class="card-footer">
@@ -63,70 +58,76 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body bg-secondary-subtle" style="height: 350px; overflow-y: auto;">
+            <div class="card-body bg-secondary-subtle" style="height: 350px; overflow-y: auto">
                 <div class="accordion accordion-flush" id="accordionFlush">
                     @for (lab of labs; track lab.lab_id) {
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading-{{lab.lab_id}}">
-
+                        <h2 class="accordion-header" id="heading-{{ lab.lab_id }}">
                             <button class="accordion-button collapsed bg-warning-subtle" type="button"
                                 data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + lab.lab_id"
                                 aria-expanded="false" [attr.aria-controls]="'collapse-' + lab.lab_id">
-
-                                {{ lab.name + ' - ' + lab.campus}}
-
+                                {{ lab.name + " - " + lab.campus }}
                             </button>
                         </h2>
-                        <div id="collapse-{{lab.lab_id}}" class="accordion-collapse collapse"
+                        <div id="collapse-{{ lab.lab_id }}" class="accordion-collapse collapse"
                             data-bs-parent="#accordionFlush">
-                            <div class="accordion-body" style="min-height: 150px;">
+                            <div class="accordion-body" style="min-height: 150px">
                                 <div class="d-flex flex-wrap gap-3">
                                     <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
-                                        style="min-width: 250px;">
-                                        <span class="fw-bold">Nombre:</span><br>
-                                        <span class="border-bottom pb-1 d-inline-block">{{ capitalizeString(lab.name)
+                                        style="min-width: 250px">
+                                        <span class="fw-bold">Nombre:</span><br />
+                                        <span class="border-bottom pb-1 d-inline-block">{{
+                                            capitalizeString(lab.name)
                                             }}</span>
                                     </div>
                                     <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
-                                        style="min-width: 250px;">
-                                        <span class="fw-bold">Especialización:</span><br>
+                                        style="min-width: 250px">
+                                        <span class="fw-bold">Especialización:</span><br />
                                         <span class="border-bottom pb-1 d-inline-block">{{
-                                            capitalizeString(lab.specialization) }}</span>
-                                    </div>
-                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
-                                        style="min-width: 250px;">
-                                        <span class="fw-bold">Capacidad:</span><br>
-                                        <span class="border-bottom pb-1 d-inline-block">{{ lab.capacity + ' personas'
+                                            capitalizeString(lab.specialization)
                                             }}</span>
                                     </div>
                                     <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
-                                        style="min-width: 250px;">
-                                        <span class="fw-bold">Institución:</span><br>
+                                        style="min-width: 250px">
+                                        <span class="fw-bold">Capacidad:</span><br />
                                         <span class="border-bottom pb-1 d-inline-block">{{
-                                            capitalizeString(lab.institution) }}</span>
-                                    </div>
-                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
-                                        style="min-width: 250px;">
-                                        <span class="fw-bold">Campus:</span><br>
-                                        <span class="border-bottom pb-1 d-inline-block">{{ lab.campus }}</span>
-                                    </div>
-                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
-                                        style="min-width: 250px;">
-                                        <span class="fw-bold">Ubicación:</span><br>
-                                        <span class="border-bottom pb-1 d-inline-block">{{
-                                            capitalizeString(lab.location) }}</span>
-                                    </div>
-                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
-                                        style="min-width: 250px;">
-                                        <span class="fw-bold">Creado el:</span><br>
-                                        <span class="border-bottom pb-1 d-inline-block">{{ formatDate(lab.creation_date)
+                                            lab.capacity + " personas"
                                             }}</span>
                                     </div>
                                     <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
-                                        style="min-width: 250px;">
-                                        <span class="fw-bold">Descripción:</span><br>
+                                        style="min-width: 250px">
+                                        <span class="fw-bold">Institución:</span><br />
                                         <span class="border-bottom pb-1 d-inline-block">{{
-                                            capitalizeString(lab.description) }}</span>
+                                            capitalizeString(lab.institution)
+                                            }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px">
+                                        <span class="fw-bold">Campus:</span><br />
+                                        <span class="border-bottom pb-1 d-inline-block">{{
+                                            lab.campus
+                                            }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px">
+                                        <span class="fw-bold">Ubicación:</span><br />
+                                        <span class="border-bottom pb-1 d-inline-block">{{
+                                            capitalizeString(lab.location)
+                                            }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px">
+                                        <span class="fw-bold">Creado el:</span><br />
+                                        <span class="border-bottom pb-1 d-inline-block">{{
+                                            formatDate(lab.creation_date)
+                                            }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px">
+                                        <span class="fw-bold">Descripción:</span><br />
+                                        <span class="border-bottom pb-1 d-inline-block">{{
+                                            capitalizeString(lab.description)
+                                            }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +144,9 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header bg-warning-subtle">
-                    <h1 class="modal-title fs-5">Agregar Laboratorio <i class="bi bi-building-fill-add"></i></h1>
+                    <h1 class="modal-title fs-5">
+                        Agregar Laboratorio <i class="bi bi-building-fill-add"></i>
+                    </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
 
@@ -151,7 +154,7 @@
                     <form [formGroup]="labForm" (submit)="createLab()">
                         <div class="mb-3">
                             <label for="labName" class="form-label">Nombre <i class="bi bi-tag-fill"></i></label>
-                            <input type="text" class="form-control" id="labName" formControlName="name">
+                            <input type="text" class="form-control" id="labName" formControlName="name" />
                             <div class="form-text">
                                 Ejemplo: Laboratorio de Química Orgánica
                             </div>
@@ -161,8 +164,12 @@
                             <label for="labInstitution" class="form-label">Institución <i
                                     class="bi bi-buildings-fill"></i></label>
                             <select id="labInstitution" class="form-select" formControlName="institution">
-                                <option value="" disabled selected>Selecciona una institución</option>
-                                <option value="Universidad de Guadalajara">Universidad de Guadalajara</option>
+                                <option value="" disabled selected>
+                                    Selecciona una institución
+                                </option>
+                                <option value="Universidad de Guadalajara">
+                                    Universidad de Guadalajara
+                                </option>
                             </select>
                         </div>
 
@@ -179,7 +186,7 @@
 
                         <div class="mb-3">
                             <label for="labLocation" class="form-label">Ubicación <i class="bi bi-geo-fill"></i></label>
-                            <input type="text" class="form-control" id="labLocation" formControlName="location">
+                            <input type="text" class="form-control" id="labLocation" formControlName="location" />
                             <div class="form-text">
                                 Ejemplo: Edificio anexo a Rectoría, planta baja.
                             </div>
@@ -191,8 +198,9 @@
                             <textarea class="form-control" id="labDescription" rows="3"
                                 formControlName="description"></textarea>
                             <div class="form-text">
-                                Ejemplo: Laboratorio enfocado en estudios de neurociencia cognitiva, psicología
-                                experimental y modelos computacionales del cerebro.
+                                Ejemplo: Laboratorio enfocado en estudios de neurociencia
+                                cognitiva, psicología experimental y modelos computacionales del
+                                cerebro.
                             </div>
                         </div>
 
@@ -200,9 +208,10 @@
                             <label for="labCapacity" class="form-label">Capacidad <i
                                     class="bi bi-person-raised-hand"></i></label>
                             <input type="number" min="1" max="100" placeholder="1" class="form-control" id="labCapacity"
-                                formControlName="capacity">
+                                formControlName="capacity" />
                             <div class="form-text">
-                                Ejemplo: Número total de personas que pueden estar simultáneamente en el laboratorio.
+                                Ejemplo: Número total de personas que pueden estar
+                                simultáneamente en el laboratorio.
                             </div>
                         </div>
 
@@ -210,7 +219,9 @@
                             <label for="labSpecialization" class="form-label">Especialización <i
                                     class="bi bi-search"></i></label>
                             <select id="labSpecialization" class="form-select" formControlName="specialization">
-                                <option value="" disabled selected>Selecciona una especialización</option>
+                                <option value="" disabled selected>
+                                    Selecciona una especialización
+                                </option>
                                 <option>Química</option>
                                 <option>Física</option>
                                 <option>Alimentos</option>
@@ -229,7 +240,7 @@
 
                         @if (labMessage != '') {
                         <div class="alert alert-warning" role="alert">
-                            {{labMessage}}
+                            {{ labMessage }}
                         </div>
                         }
                         <div class="modal-footer">
@@ -243,7 +254,6 @@
         </div>
     </div>
     }
-
 </ng-template>
 
 <ng-template #information>
@@ -253,12 +263,12 @@
             @if (user?.profile_image) {
             <img [src]="'data:image/png;base64,' + user?.profile_image"
                 class="rounded-circle border border-3 border-light shadow-sm" width="250" height="250" alt="Avatar"
-                style="object-fit: cover;">
+                style="object-fit: cover" />
             }
             <img src="/images/icon.png" class="rounded-circle border border-3 border-light shadow-sm" width="250"
-                height="250" alt="Avatar" style="object-fit: cover;">
-            <hr>
-            <h6 class="">{{'@'+ user?.username }}</h6>
+                height="250" alt="Avatar" style="object-fit: cover" />
+            <hr />
+            <h6 class="">{{ "@" + user?.username }}</h6>
             <h4 class="fw-bold mb-0">
                 {{ user?.first_name + " " + user?.last_name }}
             </h4>
@@ -276,39 +286,39 @@
                 <tbody>
                     <tr>
                         <th scope="row">Usuario</th>
-                        <td>{{user?.username}}</td>
+                        <td>{{ user?.username }}</td>
                     </tr>
                     <tr>
                         <th scope="row">Nombre</th>
-                        <td>{{user?.first_name + ' ' + user?.last_name}}</td>
+                        <td>{{ user?.first_name + " " + user?.last_name }}</td>
                     </tr>
                     <tr>
                         <th scope="row">Institución</th>
-                        <td>{{user?.institution}}</td>
+                        <td>{{ user?.institution }}</td>
                     </tr>
                     <tr>
                         <th scope="row">Campus</th>
-                        <td>{{user?.campus}}</td>
+                        <td>{{ user?.campus }}</td>
                     </tr>
                     <tr>
                         <th scope="row">Carrera</th>
-                        <td>{{user?.student_carrer}}</td>
+                        <td>{{ user?.student_carrer }}</td>
                     </tr>
                     <tr>
                         <th scope="row">Codigo</th>
-                        <td>{{user?.student_code}}</td>
+                        <td>{{ user?.student_code }}</td>
                     </tr>
                     <tr>
                         <th scope="row">Correo</th>
-                        <td>{{user?.email}}</td>
+                        <td>{{ user?.email }}</td>
                     </tr>
                     <tr>
                         <th scope="row">Telefono</th>
-                        <td>{{user?.phone}}</td>
+                        <td>{{ user?.phone }}</td>
                     </tr>
                     <tr>
                         <th scope="row">Miembro desde</th>
-                        <td>{{formatDate(user?.creation_date)}}</td>
+                        <td>{{ formatDate(user?.creation_date) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -319,7 +329,6 @@
 <ng-template #security>
     <div class="container">
         <div class="accordion" id="accountAccordion">
-
             <!-- Password Section -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingPassword">
@@ -336,16 +345,16 @@
                             <div class="mb-3">
                                 <label for="newPassword" class="form-label">Nueva contraseña</label>
                                 <input type="password" class="form-control" id="newPassword"
-                                    formControlName="newPassword">
+                                    formControlName="newPassword" />
                             </div>
                             <div class="mb-3">
                                 <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
                                 <input type="password" class="form-control" id="confirmPassword"
-                                    formControlName="confirmPassword">
+                                    formControlName="confirmPassword" />
                             </div>
                             @if (passwordMessage != '') {
                             <div class="alert alert-warning" role="alert">
-                                {{passwordMessage}}
+                                {{ passwordMessage }}
                             </div>
                             }
                             <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
@@ -356,149 +365,152 @@
                 </div>
             </div>
 
-            <!--Email Section 
+            <!--Email Section -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingEmail">
-                  <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseEmail" aria-expanded="false" aria-controls="collapseEmail">
-                    Correo <i class="bi bi-envelope-fill mx-2"></i>
-                  </button>
+                    <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseEmail" aria-expanded="false"
+                        aria-controls="collapseEmail">
+                        Correo <i class="bi bi-envelope-fill mx-2"></i>
+                    </button>
                 </h2>
                 <div id="collapseEmail" class="accordion-collapse collapse" aria-labelledby="headingEmail"
-                  data-bs-parent="#accountAccordion">
-                  <div class="accordion-body">
-                    <form [formGroup]="emailForm" (submit)="updateEmail()">
-                      <div class="mb-3">
-                        <label for="newEmail" class="form-label">Nuevo correo</label>
-                        <input type="email" class="form-control" id="newEmail" formControlName="newEmail">
-                      </div>
-                      <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
-                        Actualizar
-                      </button>
-                    </form>
-                  </div>
+                    data-bs-parent="#accountAccordion">
+                    <div class="accordion-body">
+                        <form [formGroup]="emailForm" (submit)="updateEmail()">
+                            <div class="mb-3">
+                                <label for="newEmail" class="form-label">Nuevo correo</label>
+                                <input type="email" class="form-control" id="newEmail" formControlName="newEmail" />
+                            </div>
+                            <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                Actualizar
+                            </button>
+                        </form>
+                    </div>
                 </div>
-              </div>
-             -->
-             
-              <!--Phone Section--> 
-              <div class="accordion-item">
+            </div>
+
+            <!--Phone Section-->
+            <div class="accordion-item">
                 <h2 class="accordion-header" id="headingPhone">
-                  <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapsePhone" aria-expanded="false" aria-controls="collapsePhone">
-                    Teléfono <i class="bi bi-phone-fill mx-2"></i>
-                  </button>
+                    <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapsePhone" aria-expanded="false"
+                        aria-controls="collapsePhone">
+                        Teléfono <i class="bi bi-phone-fill mx-2"></i>
+                    </button>
                 </h2>
                 <div id="collapsePhone" class="accordion-collapse collapse" aria-labelledby="headingPhone"
-                  data-bs-parent="#accountAccordion">
-                  <div class="accordion-body">
-                    <form [formGroup]="phoneForm" (submit)="updatePhone()">
-                      <div class="mb-3">
-                        <label for="newPhone" class="form-label">Nuevo teléfono</label>
-                        <input type="text" class="form-control" id="newPhone" formControlName="phone">
-                      </div>
-                      @if (phoneMessage != '') {
-                        <div class="alert alert-warning" role="alert">
-                            {{phoneMessage}}
-                        </div>
-                        }
-                      <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
-                        Actualizar
-                      </button>
-                    </form>
-                  </div>
+                    data-bs-parent="#accountAccordion">
+                    <div class="accordion-body">
+                        <form [formGroup]="phoneForm" (submit)="updatePhone()">
+                            <div class="mb-3">
+                                <label for="newPhone" class="form-label">Nuevo teléfono</label>
+                                <input type="text" class="form-control" id="newPhone" formControlName="phone" />
+                            </div>
+                            @if (phoneMessage != '') {
+                            <div class="alert alert-warning" role="alert">
+                                {{ phoneMessage }}
+                            </div>
+                            }
+                            <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                Actualizar
+                            </button>
+                        </form>
+                    </div>
                 </div>
-              </div>
-              <!-- Name -->
-              <div class="accordion-item">
+            </div>
+            <!-- Name -->
+            <div class="accordion-item">
                 <h2 class="accordion-header" id="headingName">
-                  <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseName" aria-expanded="false" aria-controls="collapseName">
-                    Name<i class="bi bi-phone-fill mx-2"></i>
-                  </button>
+                    <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseName" aria-expanded="false"
+                        aria-controls="collapseName">
+                        Name<i class="bi bi-phone-fill mx-2"></i>
+                    </button>
                 </h2>
                 <div id="collapseName" class="accordion-collapse collapse" aria-labelledby="headingName"
-                  data-bs-parent="#accountAccordion">
-                  <div class="accordion-body">
-                    <form [formGroup]="nameForm" (submit)="updateName()">
-                      <div class="mb-3">
-                        <label for="newName" class="form-label">Nuevo Nombre</label>
-                        <input type="text" class="form-control" id="newName" formControlName="first_name">
-                      </div>
+                    data-bs-parent="#accountAccordion">
+                    <div class="accordion-body">
+                        <form [formGroup]="nameForm" (submit)="updateName()">
+                            <div class="mb-3">
+                                <label for="newName" class="form-label">Nuevo Nombre</label>
+                                <input type="text" class="form-control" id="newName" formControlName="first_name" />
+                            </div>
 
-                      @if (nameMessage != '') {
-                        <div class="alert alert-warning" role="alert">
-                            {{nameMessage}}
-                        </div>
-                        }
-                      <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
-                        Actualizar
-                      </button>
-                    </form>
-                  </div>
+                            @if (nameMessage != '') {
+                            <div class="alert alert-warning" role="alert">
+                                {{ nameMessage }}
+                            </div>
+                            }
+                            <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                Actualizar
+                            </button>
+                        </form>
+                    </div>
                 </div>
-              </div>
-          
-            
-              <div class="accordion-item">
+            </div>
+
+            <div class="accordion-item">
                 <h2 class="accordion-header" id="headinglastName">
-                  <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapselastName" aria-expanded="false" aria-controls="collapsePhone">
-                    Apellido<i class="bi bi-phone-fill mx-2"></i>
-                  </button>
+                    <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapselastName" aria-expanded="false"
+                        aria-controls="collapsePhone">
+                        Apellido<i class="bi bi-phone-fill mx-2"></i>
+                    </button>
                 </h2>
                 <div id="collapselastName" class="accordion-collapse collapse" aria-labelledby="headinglastName"
-                  data-bs-parent="#accountAccordion">
-                  <div class="accordion-body">
-                    <form [formGroup]="lastNameForm" (submit)="updateLastName()">
-                      <div class="mb-3">
-                        <label for="newlastName" class="form-label">Nuevo Apellido</label>
-                        <input type="text" class="form-control" formControlName="last_name" id="newlastName">
-                      </div>
-                      @if (lastNameMessage != '') {
-                        <div class="alert alert-warning" role="alert">
-                            {{lastNameMessage}}
-                        </div>
-                        }
-                      <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
-                        Actualizar
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              
-              
-    <!-- Institution -->
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingInstitution">
-              <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseInstitution" aria-expanded="false" aria-controls="collapseInstitution">
-               Institucion <i class="bi bi-phone-fill mx-2"></i>
-              </button>
-            </h2>
-            <div id="collapseInstitution" class="accordion-collapse collapse" aria-labelledby="headingInstitution"
-              data-bs-parent="#accountAccordion">
-              <div class="accordion-body">
-                <form [formGroup]="institutionForm" (submit)="updateInstitution()">
-                  <div class="mb-3">
-                    <label for="newInstitution" class="form-label">Nueva Institucion</label>
-                    <input type="text" class="form-control" id="newInstitution" formControlName="institution">
-                  </div>
-                  @if (institutionMessage != '') {
-                    <div class="alert alert-warning" role="alert">
-                        {{institutionMessage}}
+                    data-bs-parent="#accountAccordion">
+                    <div class="accordion-body">
+                        <form [formGroup]="lastNameForm" (submit)="updateLastName()">
+                            <div class="mb-3">
+                                <label for="newlastName" class="form-label">Nuevo Apellido</label>
+                                <input type="text" class="form-control" formControlName="last_name" id="newlastName" />
+                            </div>
+                            @if (lastNameMessage != '') {
+                            <div class="alert alert-warning" role="alert">
+                                {{ lastNameMessage }}
+                            </div>
+                            }
+                            <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                Actualizar
+                            </button>
+                        </form>
                     </div>
-                    }
-                  <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
-                    Actualizar
-                  </button>
-                </form>
-              </div>
+                </div>
             </div>
-          </div>
 
-          <!-- Campus -->
+            <!-- Institution -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingInstitution">
+                    <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseInstitution" aria-expanded="false"
+                        aria-controls="collapseInstitution">
+                        Institucion <i class="bi bi-phone-fill mx-2"></i>
+                    </button>
+                </h2>
+                <div id="collapseInstitution" class="accordion-collapse collapse" aria-labelledby="headingInstitution"
+                    data-bs-parent="#accountAccordion">
+                    <div class="accordion-body">
+                        <form [formGroup]="institutionForm" (submit)="updateInstitution()">
+                            <div class="mb-3">
+                                <label for="newInstitution" class="form-label">Nueva Institucion</label>
+                                <input type="text" class="form-control" id="newInstitution"
+                                    formControlName="institution" />
+                            </div>
+                            @if (institutionMessage != '') {
+                            <div class="alert alert-warning" role="alert">
+                                {{ institutionMessage }}
+                            </div>
+                            }
+                            <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                Actualizar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campus -->
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingCampus">
                     <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
@@ -513,17 +525,17 @@
                         <form [formGroup]="campusForm" (submit)="updateCampus()">
                             <div class="mb-3">
                                 <label for="newCampus" class="form-label">Nuevo Campus</label>
-                                <select class="form-select"  id="newCampus" formControlName="campus" required>
-                                    <option value="" selected >Seleciona tu Campus</option>
+                                <select class="form-select" id="newCampus" formControlName="campus" required>
+                                    <option value="" selected>Seleciona tu Campus</option>
                                     <option value="CUCEI">CUCEI</option>
                                     <option value="CUCS Y CUCEA">CUCS</option>
-                                  </select>
+                                </select>
                             </div>
                             @if (campusMessage != '') {
-                                <div class="alert alert-warning" role="alert">
-                                    {{campusMessage}}
-                                </div>
-                                }
+                            <div class="alert alert-warning" role="alert">
+                                {{ campusMessage }}
+                            </div>
+                            }
                             <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
                                 Actualizar
                             </button>
@@ -535,86 +547,118 @@
             <!-- Student Career Update -->
             <div class="accordion-item border-warning">
                 <h2 class="accordion-header" id="headingCarreer">
-                  <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#collapseCarreer" aria-expanded="false"
-                    aria-controls="collapseCarreer">
-                    Carrera <i class="bi bi-phone-fill mx-2"></i>
-                  </button>
+                    <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseCarreer" aria-expanded="false"
+                        aria-controls="collapseCarreer">
+                        Carrera <i class="bi bi-phone-fill mx-2"></i>
+                    </button>
                 </h2>
-              
-                <div id="collapseCarreer" class="accordion-collapse collapse" aria-labelledby="headingCarreer"
-                  data-bs-parent="#accountAccordion">
-                  <div class="accordion-body">
-                    <form [formGroup]="carreerForm" (submit)="updateCarreer()">
-                      <div class="mb-3">
-                        <label for="newCarreer" class="form-label">Nueva Carrera</label>
-                        <select id="newCarreer" class="form-select"
-                          formControlName="student_carreer"
-                          required>
-                          <option value="" selected >Selecciona una carrera</option>
-                          <option value="Licenciatura en Física">Licenciatura en Física</option>
-                          <option value="Licenciatura en Matemáticas">Licenciatura en Matemáticas</option>
-                          <option value="Licenciatura en Química">Licenciatura en Química</option>
-                          <option value="Químico Farmacéutico Biólogo">Químico Farmacéutico Biólogo</option>
-                          <option value="Ingeniería en Ciencia de Materiales">Ingeniería en Ciencia de Materiales</option>
-                          <option value="Ingeniería Civil">Ingeniería Civil</option>
-                          <option value="Ingeniería en Alimentos y Biotecnología">Ingeniería en Alimentos y Biotecnología</option>
-                          <option value="Ingeniería en Topografía Geomática">Ingeniería en Topografía Geomática</option>
-                          <option value="Ingeniería Industrial">Ingeniería Industrial</option>
-                          <option value="Ingeniería Mecánica Eléctrica">Ingeniería Mecánica Eléctrica</option>
-                          <option value="Ingeniería Química">Ingeniería Química</option>
-                          <option value="Ingeniería en Logística y Transporte">Ingeniería en Logística y Transporte</option>
-                          <option value="Ingeniería Informática">Ingeniería Informática</option>
-                          <option value="Ingeniería Biomédica">Ingeniería Biomédica</option>
-                          <option value="Ingeniería en Computación">Ingeniería en Computación</option>
-                          <option value="Ingeniería en Electromovilidad y Autotrónica">Ingeniería en Electromovilidad y Autotrónica</option>
-                          <option value="Ingeniería en Electrónica y Sistemas Inteligentes">Ingeniería en Electrónica y Sistemas Inteligentes</option>
-                          <option value="Ingeniería Fotónica">Ingeniería Fotónica</option>
-                          <option value="Ingeniería en Mecatrónica Inteligente">Ingeniería en Mecatrónica Inteligente</option>
-                          <option value="Ingeniería Robótica">Ingeniería Robótica</option>
-                        </select>
-                       
-                      </div>
-                      @if (carreerMessage != '') {
-                        <div class="alert alert-warning" role="alert">
-                            {{carreerMessage}}
-                        </div>
-                        }
-                      <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
-                        Actualizar
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              
 
-                <!-- Code Update-->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingCode">
-                        <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#collapseCode" aria-expanded="false"
-                            aria-controls="collapseCode">
-                            Codigo <i class="bi bi-phone-fill mx-2"></i>
-                        </button>
-                    </h2>
-                    <div id="collapseCode" class="accordion-collapse collapse" aria-labelledby="headingCode"
-                        data-bs-parent="#accountAccordion">
-                        <div class="accordion-body">
-                            <form [formGroup]="codeForm" (submit)="updateCode()">
-                                <div class="mb-3">
-                                    <label for="newCode" class="form-label">Nuevo Codigo</label>
-                                <input type="text" class="form-control" id="newCode" formControlName="student_code">
-                                </div>
-                                <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
-                                    Actualizar
-                                </button>
-                            </form>
-                        </div>
+                <div id="collapseCarreer" class="accordion-collapse collapse" aria-labelledby="headingCarreer"
+                    data-bs-parent="#accountAccordion">
+                    <div class="accordion-body">
+                        <form [formGroup]="carreerForm" (submit)="updateCarreer()">
+                            <div class="mb-3">
+                                <label for="newCarreer" class="form-label">Nueva Carrera</label>
+                                <select id="newCarreer" class="form-select" formControlName="student_carreer" required>
+                                    <option value="" selected>Selecciona una carrera</option>
+                                    <option value="Licenciatura en Física">
+                                        Licenciatura en Física
+                                    </option>
+                                    <option value="Licenciatura en Matemáticas">
+                                        Licenciatura en Matemáticas
+                                    </option>
+                                    <option value="Licenciatura en Química">
+                                        Licenciatura en Química
+                                    </option>
+                                    <option value="Químico Farmacéutico Biólogo">
+                                        Químico Farmacéutico Biólogo
+                                    </option>
+                                    <option value="Ingeniería en Ciencia de Materiales">
+                                        Ingeniería en Ciencia de Materiales
+                                    </option>
+                                    <option value="Ingeniería Civil">Ingeniería Civil</option>
+                                    <option value="Ingeniería en Alimentos y Biotecnología">
+                                        Ingeniería en Alimentos y Biotecnología
+                                    </option>
+                                    <option value="Ingeniería en Topografía Geomática">
+                                        Ingeniería en Topografía Geomática
+                                    </option>
+                                    <option value="Ingeniería Industrial">
+                                        Ingeniería Industrial
+                                    </option>
+                                    <option value="Ingeniería Mecánica Eléctrica">
+                                        Ingeniería Mecánica Eléctrica
+                                    </option>
+                                    <option value="Ingeniería Química">Ingeniería Química</option>
+                                    <option value="Ingeniería en Logística y Transporte">
+                                        Ingeniería en Logística y Transporte
+                                    </option>
+                                    <option value="Ingeniería Informática">
+                                        Ingeniería Informática
+                                    </option>
+                                    <option value="Ingeniería Biomédica">
+                                        Ingeniería Biomédica
+                                    </option>
+                                    <option value="Ingeniería en Computación">
+                                        Ingeniería en Computación
+                                    </option>
+                                    <option value="Ingeniería en Electromovilidad y Autotrónica">
+                                        Ingeniería en Electromovilidad y Autotrónica
+                                    </option>
+                                    <option value="Ingeniería en Electrónica y Sistemas Inteligentes">
+                                        Ingeniería en Electrónica y Sistemas Inteligentes
+                                    </option>
+                                    <option value="Ingeniería Fotónica">
+                                        Ingeniería Fotónica
+                                    </option>
+                                    <option value="Ingeniería en Mecatrónica Inteligente">
+                                        Ingeniería en Mecatrónica Inteligente
+                                    </option>
+                                    <option value="Ingeniería Robótica">
+                                        Ingeniería Robótica
+                                    </option>
+                                </select>
+                            </div>
+                            @if (carreerMessage != '') {
+                            <div class="alert alert-warning" role="alert">
+                                {{ carreerMessage }}
+                            </div>
+                            }
+                            <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                Actualizar
+                            </button>
+                        </form>
                     </div>
                 </div>
-            
-                <!-- Birthday Update 
+            </div>
+
+            <!-- Code Update-->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingCode">
+                    <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapseCode" aria-expanded="false"
+                        aria-controls="collapseCode">
+                        Codigo <i class="bi bi-phone-fill mx-2"></i>
+                    </button>
+                </h2>
+                <div id="collapseCode" class="accordion-collapse collapse" aria-labelledby="headingCode"
+                    data-bs-parent="#accountAccordion">
+                    <div class="accordion-body">
+                        <form [formGroup]="codeForm" (submit)="updateCode()">
+                            <div class="mb-3">
+                                <label for="newCode" class="form-label">Nuevo Codigo</label>
+                                <input type="text" class="form-control" id="newCode" formControlName="student_code" />
+                            </div>
+                            <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                Actualizar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Birthday Update 
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingBirth">
                         <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
@@ -641,13 +685,8 @@
                     </div>
                 </div>
                 -->
-
-
         </div>
     </div>
-
-
-
 </ng-template>
 
 <ng-template #loading>

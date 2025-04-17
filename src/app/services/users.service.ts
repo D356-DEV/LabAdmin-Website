@@ -293,10 +293,12 @@ export class UsersService {
       });
   
       if (!response.ok) {
+        console.log(response.text())
         return false;
       }
   
       const json = await response.json();
+      console.log(json);
       return json.status === 'success';
   
     } catch (error) {
