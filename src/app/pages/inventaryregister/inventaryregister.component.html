@@ -1,0 +1,41 @@
+<section class="container-fluid mt-5">
+    <div class=" container">
+        <form [formGroup]="equipoForm" (submit)="onSubmit()" class="border border-warning rounded-4 p-3">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre del equipo</label>
+              <input type="text" [ngClass]="getInputClass('nombre')" id="nombre" formControlName="nombre"
+                class="form-control" placeholder="Introduce el nombre del equipo" required />
+              <div *ngIf="hasError('nombre')" class="invalid-feedback d-block">
+                {{ getErrorMessage('nombre') }}
+              </div>
+              <div class="form-text">Este será el identificador del equipo dentro del sistema.</div>
+            </div>
+          
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción del equipo</label>
+              <textarea [ngClass]="getInputClass('descripcion')" id="descripcion" formControlName="descripcion"
+                class="form-control" placeholder="Describe brevemente el equipo"></textarea>
+              <div *ngIf="hasError('descripcion')" class="invalid-feedback d-block">
+                {{ getErrorMessage('descripcion') }}
+              </div>
+              <div class="form-text">Proporciona una breve descripción funcional o técnica del equipo.</div>
+            </div>
+          
+            <div class="mb-3">
+              <label for="imagen" class="form-label">Subir imagen del equipo (JPEG o PNG)</label>
+              <input type="file" class="form-control" id="imagen" (change)="onFileChange($event)" accept=".jpeg,.jpg,.png" />
+              <div *ngIf="fileError" class="invalid-feedback d-block">
+                {{ fileError }}
+              </div>
+              <div class="form-text">Selecciona una imagen representativa del equipo.</div>
+            </div>
+          
+            <div class="d-grid">
+              <button type="submit" class="btn btn-outline-warning">
+                Guardar equipo
+              </button>
+            </div>
+          </form>
+          
+    </div>
+</section>

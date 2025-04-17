@@ -113,7 +113,256 @@ export class UsersService {
       return false;
     }
   }
+
+  async updateEmail(email: string, user_id: number, session_token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/update_email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${session_token}`
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          email: email
+        })
+      });
   
+      if (!response.ok) {
+        return false;
+      }
+  
+      const json = await response.json();
+      return json.status === 'success';
+  
+    } catch (error) {
+      console.error('Error updating email:', error);
+      return false;
+    }
+  }
+
+  async updatePhone(phone: string, user_id: number, session_token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/update_phone`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${session_token}`
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          phone: phone
+        })
+      });
+  
+      if (!response.ok) {
+        return false;
+      }
+  
+      const json = await response.json();
+      return json.status === 'success';
+  
+    } 
+    catch (error) {
+      console.error('Error updating phone:', error);
+      return false;
+    }
+  }
+
+  async updateName(first_name: string, user_id: number, session_token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/update_first_name`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${session_token}`
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          first_name: first_name
+        })
+      });
+  
+      if (!response.ok) {
+        return false;
+      }
+  
+      const json = await response.json();
+      console.log(json);
+      // Verifica si la respuesta es exitosa
+      return json.status === 'success';
+  
+    } catch (error) {
+      console.error('Error updating name:', error);
+      return false;
+    }
+  }
+
+  async updateLastName(last_name: string, user_id: number, session_token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/update_last_name`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${session_token}`
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          last_name: last_name
+        })
+      });
+  
+      if (!response.ok) {
+        return false;
+      }
+  
+      const json = await response.json();
+      return json.status === 'success';
+  
+    } catch (error) {
+      console.error('Error updating last name:', error);
+      return false;
+    }
+  }
+
+  async updateInstitution(institution: string, user_id: number, session_token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/update_institution`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${session_token}`
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          institution: institution
+        })
+      });
+  
+      if (!response.ok) {
+        return false;
+      }
+  
+      const json = await response.json();
+      return json.status === 'success';
+  
+    } catch (error) {
+      console.error('Error updating institution:', error);
+      return false;
+    }
+  }
+
+  async updateCampus(campus: string, user_id: number, session_token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/update_campus`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${session_token}`
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          campus: campus
+        })
+      });
+  
+      if (!response.ok) {
+        return false;
+      }
+  
+      const json = await response.json();
+      return json.status === 'success';
+  
+    } catch (error) {
+      console.error('Error updating campus:', error);
+      return false;
+    }
+  }
+   async updateCarreer(student_carreer: string, user_id: number, session_token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/update_student_carreer`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${session_token}`
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          student_carreer: student_carreer
+        })
+      });
+  
+      if (!response.ok) {
+        console.log(response.text())
+        return false;
+      }
+  
+      const json = await response.json();
+      console.log(json);
+      return json.status === 'success';
+  
+    } catch (error) {
+      console.error('Error updating career:', error);
+      return false;
+    }
+  }
+
+  async updateCode(student_code: string, user_id: number, session_token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/update_student_code`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${session_token}`
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          student_code: student_code
+        })
+      });
+  
+      if (!response.ok) {
+        return false;
+      }
+  
+      const json = await response.json();
+      console.log(json);
+      // Verifica si la respuesta es exitosa
+      return json.status === 'success';
+  
+    } catch (error) {
+      console.error('Error updating name:', error);
+      return false;
+    }
+  }
+
+  async updateBirth(birth_date: string, user_id: number, session_token: string): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.url}/update_birth_date`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${session_token}`
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          birth_date: birth_date
+        })
+      });
+  
+      if (!response.ok) {
+        return false;
+      }
+  
+      const json = await response.json();
+      return json.status === 'success';
+  
+    } catch (error) {
+      console.error('Error updating birth date:', error);
+      return false;
+    }
+  }
+
   async resetPassword(email: string): Promise<boolean> {
     try {
       const response = await fetch(`${this.url}/reset_password`, {

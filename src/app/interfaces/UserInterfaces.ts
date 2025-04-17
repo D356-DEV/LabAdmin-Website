@@ -12,7 +12,7 @@ export interface UserData {
   institution: string;
   campus: string;
   student_code?: string;
-  student_carrer: string;
+  student_carreer: string;
   email: string;
   phone: string;
 }
