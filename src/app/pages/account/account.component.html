@@ -346,11 +346,15 @@
                                 <label for="newPassword" class="form-label">Nueva contraseña</label>
                                 <input type="password" class="form-control" id="newPassword"
                                     formControlName="newPassword" />
+                                    <div class="form-text">Tu nueva contraseña debe tener al menos 8 caracteres.</div>
+
                             </div>
                             <div class="mb-3">
                                 <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
                                 <input type="password" class="form-control" id="confirmPassword"
                                     formControlName="confirmPassword" />
+                                    <div class="form-text">Repite la contraseña exactamente como la escribiste antes.</div>
+
                             </div>
                             @if (passwordMessage != '') {
                             <div class="alert alert-warning" role="alert">
@@ -381,6 +385,8 @@
                             <div class="mb-3">
                                 <label for="newEmail" class="form-label">Nuevo correo</label>
                                 <input type="email" class="form-control" id="newEmail" formControlName="email" />
+                                <div class="form-text">Ingresa tu correo electrónico institucional.</div>
+
                             </div>
                             @if (emailMessage != '') {
                                 <div class="alert alert-warning" role="alert">
@@ -412,6 +418,8 @@
                             <div class="mb-3">
                                 <label for="newPhone" class="form-label">Nuevo teléfono</label>
                                 <input type="text" class="form-control" id="newPhone" formControlName="phone" />
+                                <div class="form-text">Ingresa un número de 10 dígitos.</div>
+
                             </div>
                             @if (phoneMessage != '') {
                             <div class="alert alert-warning" role="alert">
@@ -431,7 +439,7 @@
                     <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseName" aria-expanded="false"
                         aria-controls="collapseName">
-                        Name<i class="bi bi-phone-fill mx-2"></i>
+                        Name<i class="bi bi-file-post mx-2"></i>
                     </button>
                 </h2>
                 <div id="collapseName" class="accordion-collapse collapse" aria-labelledby="headingName"
@@ -441,6 +449,7 @@
                             <div class="mb-3">
                                 <label for="newName" class="form-label">Nuevo Nombre</label>
                                 <input type="text" class="form-control" id="newName" formControlName="first_name" />
+                                <div class="form-text">Escribe tu(s) nombre(s) iniciando con mayúscula.</div>
                             </div>
 
                             @if (nameMessage != '') {
@@ -461,7 +470,7 @@
                     <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapselastName" aria-expanded="false"
                         aria-controls="collapsePhone">
-                        Apellido<i class="bi bi-phone-fill mx-2"></i>
+                        Apellido<i class="bi bi-file-post mx-2"></i>
                     </button>
                 </h2>
                 <div id="collapselastName" class="accordion-collapse collapse" aria-labelledby="headinglastName"
@@ -471,6 +480,7 @@
                             <div class="mb-3">
                                 <label for="newlastName" class="form-label">Nuevo Apellido</label>
                                 <input type="text" class="form-control" formControlName="last_name" id="newlastName" />
+                                <div class="form-text">Escribe tus apellido(s) con mayúscula inicial.</div>
                             </div>
                             @if (lastNameMessage != '') {
                             <div class="alert alert-warning" role="alert">
@@ -491,7 +501,7 @@
                     <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseInstitution" aria-expanded="false"
                         aria-controls="collapseInstitution">
-                        Institucion <i class="bi bi-phone-fill mx-2"></i>
+                        Institucion <i class="bi bi-buildings mx-2"></i>
                     </button>
                 </h2>
                 <div id="collapseInstitution" class="accordion-collapse collapse" aria-labelledby="headingInstitution"
@@ -500,8 +510,11 @@
                         <form [formGroup]="institutionForm" (submit)="updateInstitution()">
                             <div class="mb-3">
                                 <label for="newInstitution" class="form-label">Nueva Institucion</label>
-                                <input type="text" class="form-control" id="newInstitution"
-                                    formControlName="institution" />
+                                <select class="form-select" id="newInstitution" formControlName="institution" required>
+                                    <option value="" selected>Seleciona tu Institucion</option>
+                                    <option value="Universidad De Guadalajara">Universidad De Guadalajara</option>
+                                </select>
+                                <div class="form-text">Selecciona la institución a la que perteneces.</div>
                             </div>
                             @if (institutionMessage != '') {
                             <div class="alert alert-warning" role="alert">
@@ -522,7 +535,7 @@
                     <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseCampus" aria-expanded="false"
                         aria-controls="collapseCampus">
-                        Campus <i class="bi bi-phone-fill mx-2"></i>
+                        Campus <i class="bi bi-building mx-2"></i>
                     </button>
                 </h2>
                 <div id="collapseCampus" class="accordion-collapse collapse" aria-labelledby="headingCampus"
@@ -534,8 +547,21 @@
                                 <select class="form-select" id="newCampus" formControlName="campus" required>
                                     <option value="" selected>Seleciona tu Campus</option>
                                     <option value="CUCEI">CUCEI</option>
-                                    <option value="CUCS Y CUCEA">CUCS</option>
+                                    <option value="CUCS">CUCS</option>
+                                    <option value="CUCSH">CUCSH</option>
+                                    <option value="CUCEA">CUCEA</option>
+                                    <option value="CUCBA">CUCBA</option>
+                                    <option value="CUAAD">CUAAD</option>
+                                    <option value="CUALTOS">CUALTOS</option>
+                                    <option value="CUC">CUC</option>
+                                    <option value="CUCIENEGA">CUCIENEGA</option>
+                                    <option value="CULAGOS">CULAGOS</option>
+                                    <option value="CUCSUR">CUCSUR</option>
+                                    <option value="CUNORTE">CUNORTE</option>
+                                    <option value="CUSUR">CUSUR</option>
+                                    <option value="CUVALLES">CUVALLES</option>
                                 </select>
+                                <div class="form-text">Elige el campus donde estás inscrito.</div>
                             </div>
                             @if (campusMessage != '') {
                             <div class="alert alert-warning" role="alert">
@@ -556,7 +582,7 @@
                     <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseCarreer" aria-expanded="false"
                         aria-controls="collapseCarreer">
-                        Carrera <i class="bi bi-phone-fill mx-2"></i>
+                        Carrera <i class="bi bi-backpack4 mx-2"></i>
                     </button>
                 </h2>
 
@@ -625,6 +651,7 @@
                                         Ingeniería Robótica
                                     </option>
                                 </select>
+                                <div class="form-text">Selecciona la carrera que estás cursando o en la que estás inscrito.</div>
                             </div>
                             @if (carreerMessage != '') {
                             <div class="alert alert-warning" role="alert">
@@ -645,7 +672,7 @@
                     <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
                         data-bs-toggle="collapse" data-bs-target="#collapseCode" aria-expanded="false"
                         aria-controls="collapseCode">
-                        Codigo <i class="bi bi-phone-fill mx-2"></i>
+                        Codigo <i class="bi bi-123 mx-2"></i>
                     </button>
                 </h2>
                 <div id="collapseCode" class="accordion-collapse collapse" aria-labelledby="headingCode"
@@ -655,7 +682,13 @@
                             <div class="mb-3">
                                 <label for="newCode" class="form-label">Nuevo Codigo</label>
                                 <input type="text" class="form-control" id="newCode" formControlName="student_code" />
+                                <div class="form-text">Ingresa tu código de estudiante.</div>
                             </div>
+                            @if (codeMessage != '') {
+                                <div class="alert alert-warning" role="alert">
+                                    {{ codeMessage }}
+                                </div>
+                                }
                             <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
                                 Actualizar
                             </button>
