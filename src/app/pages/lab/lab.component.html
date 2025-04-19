@@ -31,7 +31,7 @@
                 <img src="/images/icon.png" class="img-fluid" alt="Imagen de laboratorio">
                 }
             </div>
-            <div class="card-body text-center p-3" style="height: 350px; overflow: auto;">
+            <div class="card-body text-center p-3" style="height: 400px; overflow: auto;">
                 <table class="table table-striped table-hover align-middle">
                     <tbody>
                         <tr>
@@ -78,6 +78,70 @@
                         </tr>    
                     </tbody>
                 </table>
+                
+                <div class="card-footer text-center">
+                    <button class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#reservationModal">
+                        Crear Reservacion <i class="bi bi-plus-circle ms-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-warning-subtle">
+                    <h1 class="modal-title">
+                        Crear Reservacion <i class="bi bi-building-fill-add"></i>
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form [formGroup]="reservationForm" (submit)="reservationLab()">
+                        <div class="mb-3">
+                            <label for="startTime" class="form-label">Hora de inicio: <i class="bi bi-clock-fill"></i></label>
+                            <input type="time" class="form-control" id="startTime" formControlName="start_time" />
+                            <div class="form-text">
+                                Ingresa la hora de inicio de la reservación.
+                                
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="endTime" class="form-label">Hora de finalizacion <i class="bi bi-clock-fill"></i></label>
+                                    <input type="time" class="form-control" id="endTime" formControlName="end_time" />
+                                    <div class="form-text">
+                                        Ingresa la hora de finalizacion de la reservación.
+                                        
+                                    </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="resvDescription" class="form-label">Descripción <i
+                                    class="bi bi-info-circle-fill"></i></label>
+                            <textarea class="form-control" id="resvDescription" rows="3"
+                                formControlName="description"></textarea>
+                            <div class="form-text">
+                                Ingresa una breve descripción de la reservación.
+                                Puedes incluir detalles como el propósito de la reservación.
+                            </div>
+                        </div>
+
+
+                        @if (reservationMessage != '') {
+                        <div class="alert alert-warning" role="alert">
+                            {{ reservationMessage }}
+                        </div>
+                        }
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning w-100">
+                                Generar solicitud de reservacion.<i class="bi bi-plus-circle mx-1"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

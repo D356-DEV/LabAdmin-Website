@@ -1,13 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { LabData } from '../../interfaces/LabInterfaces';
+import { LabData, ReservationData } from '../../interfaces/LabInterfaces';
 import { AuthService } from '../../services/auth.service';
 import { LabService } from '../../services/lab.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
+import { FormGroup, FormControlName, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-lab',
-  imports: [ NgTemplateOutlet, RouterLink ],
+  imports: [ NgTemplateOutlet, RouterLink, ReactiveFormsModule],
   templateUrl: './lab.component.html',
   styleUrl: './lab.component.css'
 })
@@ -28,6 +29,13 @@ export class LabComponent implements OnInit {
   requestingQuote: boolean = false;
   errorSending: boolean = false;
 
+  reservationForm: FormGroup;
+  reservationMessage: string = '';
+
+
+  constructor() {
+    this.reservationForm = new FormGroup({});
+  }
   async ngOnInit() {
     this.lab_id = Number(this.route.snapshot.paramMap.get('lab_id'));
     this.user_id = this.authService.getStoredUserId();
@@ -51,6 +59,34 @@ export class LabComponent implements OnInit {
     }
   }
 
+  async reservationLab() {
+      if (this.reservationForm.invalid) {
+        this.reservationMessage = 'Formulario incompleto.';
+        return;
+      }
+  
+      
+    
+      const reservData: ReservationData = this.reservationForm.value;
+      
+    
+      try {
+        const response = await this.labService.reservationLab(reservData);
+    
+        if (response) {
+          this.reservationMessage = 'Solicitud creada exitosamente.';
+          this.reservationForm.reset();
+          window.location.reload();
+        } else {
+          this.reservationMessage = 'No se pudo crear la solicitud. Intenta nuevamente.';
+          console.error('Respuesta nula o inválida al generar la solicitud de reservación.');
+        }
+    
+      } catch (error) {
+        console.error('Error al crear la reservacion:', error);
+        this.reservationMessage = 'Ocurrió un error inesperado al generar la reservacion.';
+      }
+    }
   /*
   async sendQuote() {
     if (!this.user_id) return;
