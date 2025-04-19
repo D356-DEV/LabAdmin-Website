@@ -1,0 +1,191 @@
+/* Estilo general */
+.labadmin-container {
+    background-color: #fff8e1;
+    min-height: 100vh;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Tarjetas */
+  .labadmin-card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background-color: white;
+  }
+  
+  .labadmin-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Encabezados de tarjetas */
+  .labadmin-card-header {
+    background-color: #ff9800;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  .labadmin-card-header-secondary {
+    background-color: #ffb74d;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  /* Títulos */
+  .labadmin-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: white;
+    margin: 0;
+  }
+  
+  /* Cuerpo de tarjetas */
+  .labadmin-card-body {
+    padding: 20px;
+  }
+  
+  /* Tablas */
+  .labadmin-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .labadmin-table-header th {
+    background-color: #ffe0b2;
+    color: #e65100;
+    font-weight: 600;
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 2px solid #ffcc80;
+  }
+  
+  .labadmin-table-row td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ffe0b2;
+  }
+  
+  .labadmin-table-striped tbody tr:nth-of-type(odd) {
+    background-color: #fff3e0;
+  }
+  
+  .labadmin-table-hover tbody tr:hover {
+    background-color: #ffe0b2;
+  }
+  
+  /* Botones */
+  .labadmin-btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .labadmin-btn-success {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .labadmin-btn-success:hover {
+    background-color: #3d8b40;
+    transform: translateY(-2px);
+  }
+  
+  .labadmin-btn-edit {
+    background-color: transparent;
+    color: #ff9800;
+    border: 1px solid #ff9800;
+  }
+  
+  .labadmin-btn-edit:hover {
+    background-color: #ff9800;
+    color: white;
+  }
+  
+  .labadmin-btn-delete {
+    background-color: transparent;
+    color: #f44336;
+    border: 1px solid #f44336;
+  }
+  
+  .labadmin-btn-delete:hover {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  /* Badges */
+  .labadmin-badge {
+    padding: 6px 12px;
+    font-weight: 500;
+    font-size: 0.8rem;
+    border-radius: 50px;
+  }
+  
+  .labadmin-badge-success {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .labadmin-badge-danger {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  /* Grupo de botones */
+  .labadmin-btn-group {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+  }
+  
+  /* Nota al pie */
+  .labadmin-footer-note {
+    color: #ff9800;
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+  
+  /* Responsive */
+  @media (max-width: 992px) {
+    .labadmin-card {
+      margin-bottom: 20px;
+    }
+    
+    .labadmin-card-header, 
+    .labadmin-card-header-secondary {
+      padding: 12px 15px;
+    }
+    
+    .labadmin-table-header th, 
+    .labadmin-table-row td {
+      padding: 10px 12px;
+    }
+  }
+  .form-control-sm {
+    padding: 0.25rem 0.5rem;
+    height: auto;
+    min-width: 120px;
+  }
+  
+  /* Ajustes para los botones de acción */
+  .btn-group .btn-sm {
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+  }
+  
+  /* Efecto hover para filas */
+  .table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+  
+  /* Badges de estado */
+  .badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+  }
