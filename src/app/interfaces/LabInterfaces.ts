@@ -23,3 +23,14 @@ export interface CreateLab {
   specialization: string;
   creator_id?: number;
 }
+
+export interface ReservationData {
+  reservation_id?: number;
+  lab_id?: number;
+  user_id?: number;
+  admin_id?: number;
+  start_time: string;
+  end_time: string;
+  status: string;
+  description: string;
+}
