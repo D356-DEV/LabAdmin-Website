@@ -1,0 +1,137 @@
+<div class="container-fluid py-4">
+    <div class="card shadow mb-4">
+        <div class="card-header labadmin-card-header text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Gestión de Prestadores</h5>
+            <button class="btn btn-success" (click)="nuevoPrestador()">
+              <i class="bi bi-plus-circle me-1"></i> Nuevo Prestador
+            </button>
+          </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Especialidad</th>
+                <th>Contacto</th>
+                <th>Estado</th>
+                <th class="text-end">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (prestador of prestadores; track prestador.id) {
+              <tr>
+                <td>{{ prestador.id }}</td>
+                
+                <!-- Nombre -->
+                <td>
+                  @if (editingId === prestador.id) {
+                    <input type="text" class="form-control form-control-sm" 
+                           [(ngModel)]="editForm.nombre">
+                  } @else {
+                    {{ prestador.nombre }}
+                  }
+                </td>
+                
+                <!-- Especialidad -->
+                <td>
+                  @if (editingId === prestador.id) {
+                    <input type="text" class="form-control form-control-sm" 
+                           [(ngModel)]="editForm.especialidad">
+                  } @else {
+                    {{ prestador.especialidad }}
+                  }
+                </td>
+                
+                <!-- Contacto -->
+                <td>
+                  @if (editingId === prestador.id) {
+                    <input type="text" class="form-control form-control-sm" 
+                           [(ngModel)]="editForm.contacto">
+                  } @else {
+                    {{ prestador.contacto }}
+                  }
+                </td>
+                
+                <!-- Estado -->
+                <td>
+                  <span class="badge rounded-pill" 
+                        [class.bg-success]="prestador.activo" 
+                        [class.bg-danger]="!prestador.activo">
+                    {{ prestador.activo ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+                
+                <!-- Acciones -->
+                <td class="text-end">
+                  @if (editingId === prestador.id) {
+                    <div class="btn-group" role="group">
+                      <button class="btn btn-sm btn-success me-1" 
+                              (click)="saveEdit(prestador.id)">
+                        <i class="bi bi-check-lg"></i>
+                      </button>
+                      <button class="btn btn-sm btn-secondary" 
+                              (click)="cancelEdit()">
+                        <i class="bi bi-x-lg"></i>
+                      </button>
+                    </div>
+                  } @else {
+                    <div class="btn-group" role="group">
+                      <button class="btn btn-sm btn-outline-primary me-1" 
+                              (click)="startEdit(prestador)"
+                              title="Editar">
+                        <i class="bi bi-pencil-fill"></i>
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger" 
+                              (click)="deletePrestador(prestador.id)"
+                              title="Eliminar">
+                        <i class="bi bi-trash-fill"></i>
+                      </button>
+                    </div>
+                  }
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+      <!-- Sección de Administradores -->
+      <div class="col-lg-4">
+        <div class="card shadow labadmin-card">
+          <div class="card-header labadmin-card-header-secondary">
+            <h5 class="mb-0 labadmin-title">Administradores Registrados</h5>
+          </div>
+          <div class="card-body labadmin-card-body">
+            <div class="table-responsive">
+              <table class="table table-striped labadmin-table">
+                <thead class="labadmin-table-header">
+                  <tr>
+                    <th>ID</th>
+                    <th>Usuario ID</th>
+                    <th>Laboratorio</th>
+                    <th>Registro</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (admin of administradores; track admin.admin_id) {
+                  <tr class="labadmin-table-row">
+                    <td>{{ admin.admin_id }}</td>
+                    <td>{{ admin.user_id }}</td>
+                    <td>{{ admin.lab_id ? 'Lab #' + admin.lab_id : 'Sistema' }}</td>
+                    <td>{{ formatDate(admin.creation_date) }}</td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+            <div class="mt-3 labadmin-footer-note">
+              <p>* Los administradores son gestionados por el doctor administrador Diego Baez</p>
+            </div>
+          </div>
+        </div>
+      </div>
