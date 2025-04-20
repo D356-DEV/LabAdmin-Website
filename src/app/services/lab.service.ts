@@ -82,6 +82,7 @@ export class LabService {
       throw error;
     }
   }
+
   async createLab(CreateLab: CreateLab): Promise<boolean> {
     try {
       const response = await fetch(`${this.apiUrl}/create_lab`, {
@@ -138,5 +139,4 @@ export class LabService {
       throw error;
     }
   }
-
 }
