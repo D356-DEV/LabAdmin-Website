@@ -5,15 +5,18 @@ import { LabService } from '../../services/lab.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
 import {
+  FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { AdminData } from '../../interfaces/AdminInterfaces';
 import { AdminsService } from '../../services/admins.service';
 
 @Component({
   selector: 'app-lab',
-  imports: [NgTemplateOutlet, RouterLink, ReactiveFormsModule],
+  imports: [NgTemplateOutlet, ReactiveFormsModule],
   templateUrl: './lab.component.html',
   styleUrl: './lab.component.css',
 })
@@ -42,10 +45,55 @@ export class LabComponent implements OnInit {
   reservationForm: FormGroup;
   reservationMessage: string = '';
 
-  constructor() {
-    this.reservationForm = new FormGroup({});
-  }
+  updateInstitutionForm: FormGroup;
+  updateInstitutionMessage: string = '';
 
+  updateCampusForm: FormGroup;
+  updateCampusMessage: string = '';
+
+  updateSpecialtyForm: FormGroup;
+  updateSpecialtyMessage: string = '';
+
+  updateLocationForm: FormGroup;
+  updateLocationMessage: string = '';
+
+  updateDescriptionForm: FormGroup;
+  updateDescriptionMessage: string = '';
+
+  updateAbilityForm: FormGroup;
+  updateAbilityMessage: string = '';
+
+
+
+  constructor( fb: FormBuilder) {
+    this.reservationForm = new FormGroup({});
+
+    this.updateInstitutionForm = new FormGroup ({
+      institution: new FormControl('',[Validators.required])
+    });
+
+    this.updateCampusForm = new FormGroup({
+      campus: new FormControl('',[Validators.required])
+    });
+
+    this.updateSpecialtyForm = new FormGroup({
+      specialty: new FormControl('',[Validators.required])
+    });
+
+    this.updateLocationForm = new FormGroup({
+      location: new FormControl('',[Validators.required])
+    });
+
+    this.updateDescriptionForm = new FormGroup({
+      description: new FormControl('')
+    });
+
+    this.updateAbilityForm = new FormGroup({
+      ability: new FormControl('')
+    });
+
+  }
+  
   async ngOnInit() {
     window.scroll({ top: 0, behavior: 'smooth' });
     try {
@@ -115,6 +163,17 @@ export class LabComponent implements OnInit {
     }
   }
   
+  async updateInstitution() {}
+  async updateCampus() {}
+
+  async updateSpecialty() {}
+
+  async updateLocation() {}
+
+  async updateDescription() {}
+
+  async updateAbility() {}
+
   /*
   async sendQuote() {
     if (!this.user_id) return;

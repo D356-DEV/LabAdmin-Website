@@ -30,8 +30,8 @@
     <div class="container-lg my-1">
         <div class="d-flex justify-content-center gap-3">
             <button class="btn btn-warning"><i class="bi bi-info"></i></button>
-            <button class="btn btn-warning"><i class="bi bi-gear"></i></button>
-            <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+            <button class="btn btn-warning"data-bs-toggle="modal" data-bs-target="#updateLabModal" ><i class="bi bi-gear"></i></button>
+            <button class="btn btn-danger" ><i class="bi bi-trash"></i></button>
         </div>
     </div>
     }
@@ -175,4 +175,247 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="updateLabModal" tabindex="-1" aria-labelledby="updateLabModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-warning-subtle">
+                <h1 class="modal-title">
+                    Editar información  <i class="bi bi-building-fill-add"></i>
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="accordion" id="accountAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingInstitution">
+                            <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseInstitution" aria-expanded="false"
+                                aria-controls="collapseInstitution">
+                                Institucion  <i class="bi bi-bank me-1"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseInstitution" class="accordion-collapse collapse" aria-labelledby="headingInstitution"
+                            data-bs-parent="#accountAccordion">
+                            <div class="accordion-body">
+                                <form [formGroup]="updateInstitutionForm" >
+                                    <div class="mb-3">
+                                        <label for="updateInstitution" class="form-label">Nueva Institucion</label>
+                                        <select class="form-select" id="updateInstitution" formControlName="institution" required>
+                                            <option value="" selected>Seleciona tu Institucion</option>
+                                            <option value="Universidad De Guadalajara">Universidad De Guadalajara</option>
+                                        </select>
+                                        <div class="form-text">
+                                            Selecciona la nueva institucion del laboratorio.
+                                        </div>
+                                    </div>
+                                    @if (updateInstitutionMessage != '') {
+                                    <div class="alert alert-warning" role="alert">
+                                        {{ updateInstitutionMessage }}
+                                    </div>
+                                    }
+                                    <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                        Actualizar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="accordion" id="accountAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingCAmpus">
+                            <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseCampus" aria-expanded="false"
+                                aria-controls="collapseCampus">
+                                Campus  <i class="bi bi-buildings me-1"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseCampus" class="accordion-collapse collapse" aria-labelledby="headingCampus"
+                            data-bs-parent="#accountAccordion">
+                            <div class="accordion-body">
+                                <form [formGroup]="updateCampusForm" >
+                                    <div class="mb-3">
+                                        <label for="updateCampus" class="form-label">Nuevo Campus</label>
+                                        <select class="form-select" id="updateCampus" formControlName="campus" required>
+                                            <option value="" selected>Seleciona tu Campus</option>
+                                            <option value="CUCEI">CUCEI</option>
+                                            <option value="CUCS">CUCS</option>
+                                            <option value="CUCSH">CUCSH</option>
+                                            <option value="CUCEA">CUCEA</option>
+                                            <option value="CUCBA">CUCBA</option>
+                                            <option value="CUAAD">CUAAD</option>
+                                            <option value="CUALTOS">CUALTOS</option>
+                                            <option value="CUC">CUC</option>
+                                            <option value="CUCIENEGA">CUCIENEGA</option>
+                                            <option value="CULAGOS">CULAGOS</option>
+                                            <option value="CUCSUR">CUCSUR</option>
+                                            <option value="CUNORTE">CUNORTE</option>
+                                            <option value="CUSUR">CUSUR</option>
+                                            <option value="CUVALLES">CUVALLES</option>
+                                        </select>
+                                        <div class="form-text">
+                                           Selecciona el campus del laboratorio.
+                                        </div>
+                                        
+                                    </div>
+                                    @if (updateCampusMessage != '') {
+                                    <div class="alert alert-warning" role="alert">
+                                        {{ updateCampusMessage }}
+                                    </div>
+                                    }
+                                    <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                        Actualizar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion" id="accountAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingSpecialty">
+                            <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseSpecialty" aria-expanded="false"
+                                aria-controls="collapseSpecialty">
+                                Especializacion <i class="bi bi-lightbulb me-1"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseSpecialty" class="accordion-collapse collapse" aria-labelledby="headingSpecialty"
+                            data-bs-parent="#accountAccordion">
+                            <div class="accordion-body">
+                                <form [formGroup]="updateSpecialtyForm" >
+                                    <div class="mb-3">
+                                        <label for="updateSpecialty" class="form-label">Nueva Especialización</label>
+                                        <input type="text" class="form-control" id="updateSpecialty" formControlName="specialty" required />
+                                        <div class="form-text">
+                                            Ingresa la nueva especialización del laboratorio.
+                                        </div>
+                                    </div>
+                                    @if (updateSpecialtyMessage != '') {
+                                    <div class="alert alert-warning" role="alert">
+                                        {{ updateSpecialtyMessage }}
+                                    </div>
+                                    }
+                                    <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                        Actualizar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion" id="accountAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingLocation">
+                            <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseLocation" aria-expanded="false"
+                                aria-controls="collapseLocation">
+                                Ubicacion <i class="bi bi-geo-alt me-1"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseLocation" class="accordion-collapse collapse" aria-labelledby="headingLocation"
+                            data-bs-parent="#accountAccordion">
+                            <div class="accordion-body">
+                                <form [formGroup]="updateLocationForm" >
+                                    <div class="mb-3">
+                                        <label for="updateLocation" class="form-label">Nueva Ubicacion</label>
+                                        <input type="text" class="form-control" id="updateLocation" formControlName="Location" required />
+                                        <div class="form-text">
+                                            Ingresa la nueva ubicacion del laboratorio.
+                                        </div>
+                                    </div>
+                                    @if (updateLocationMessage != '') {
+                                    <div class="alert alert-warning" role="alert">
+                                        {{ updateLocationMessage }}
+                                    </div>
+                                    }
+                                    <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                        Actualizar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion" id="accountAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingDescription">
+                            <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseDescription" aria-expanded="false"
+                                aria-controls=" collapseDescription">
+                                Descripcion <i class="bi bi-key-fill mx-2"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseDescription" class="accordion-collapse collapse" aria-labelledby="headingDescription"
+                            data-bs-parent="#accountAccordion">
+                            <div class="accordion-body">
+                                <form [formGroup]="updateDescriptionForm" >
+                                    <div class="mb-3">
+                                        <label for="updateDescription" class="form-label">Nueva descripción</label>
+                                        <textarea class="form-control" id="updateDescription" rows="3"
+                                        formControlName="description"></textarea>
+                                        <div class="form-text">
+                                            Ingresa la nueva descripción del laboratorio.
+                                        </div>
+                                        
+                                    </div>
+                                    @if (updateDescriptionMessage != '') {
+                                    <div class="alert alert-warning" role="alert">
+                                        {{ updateDescriptionMessage }}
+                                    </div>
+                                    }
+                                    <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                        Actualizar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion" id="accountAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingAbility">
+                            <button class="accordion-button bg-warning text-white collapsed fw-bold" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapseAbility" aria-expanded="false"
+                                aria-controls="collapseAbility">
+                                Capacidad <i class="bi bi-key-fill mx-2"></i>
+                            </button>
+                        </h2>
+                        <div id="collapseAbility" class="accordion-collapse collapse" aria-labelledby="headingAbility"
+                            data-bs-parent="#accountAccordion">
+                            <div class="accordion-body">
+                                <form [formGroup]="updateAbilityForm" >
+                                    <div class="mb-3">
+                                        <label for="updateAbility" class="form-label">Nueva Capacidad</label>
+                                        <input type="number" class="form-control" id="updateAbility" formControlName="Ability" required />
+                                        <div class="form-text">
+                                            Ingresa la nueva capacidad del laboratorio.
+                                        </div>
+                                        
+                                    </div>
+                                    @if (updateAbilityMessage != '') {
+                                    <div class="alert alert-warning" role="alert">
+                                        {{ updateAbilityMessage }}
+                                    </div>
+                                    }
+                                    <button type="submit" class="btn btn-warning text-light w-100 fw-bold">
+                                        Actualizar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </div>
+</div>
+</div>
 </div>

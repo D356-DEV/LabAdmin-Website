@@ -34,3 +34,8 @@ export interface ReservationData {
   status: string;
   description: string;
 }
+
+export interface UpdateLabData{
+  
+  
+}
