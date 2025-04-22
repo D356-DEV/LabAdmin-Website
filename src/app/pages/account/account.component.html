@@ -138,7 +138,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- LAB MODAL -->
     <div class="modal fade" id="labModal" tabindex="-1" aria-labelledby="labModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -255,7 +255,63 @@
     </div>
     }
 </ng-template>
-
+@if (!isAdmin) {
+    <!-- FAVORITOS LIST -->
+    <div class="container-lg mt-5">
+        <div class="card shadow">
+            <div class="card-header bg-warning-subtle">
+                <div class="row">
+                    <div class="col d-flex align-items-center justify-content-start">
+                        <h3>Laboratorios Favoritos</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body bg-secondary-subtle" style="height: 350px; overflow-y: auto">
+                @if (favoriteLabs && favoriteLabs.length > 0) {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-warning">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Especialización</th>
+                                    <th>Capacidad</th>
+                                    <th>Institución</th>
+                                    <th>Campus</th>
+                                    <th>Ubicación</th>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (lab of favoriteLabs; track lab.lab_id) {
+                                    <tr>
+                                        <td>{{ capitalizeString(lab.name) }}</td>
+                                        <td>{{ capitalizeString(lab.specialization) }}</td>
+                                        <td>{{ lab.capacity }} personas</td>
+                                        <td>{{ capitalizeString(lab.institution) }}</td>
+                                        <td>{{ lab.campus }}</td>
+                                        <td>{{ capitalizeString(lab.location) }}</td>
+                                        <td>{{ capitalizeString(lab.description) }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-warning" (click)="removeFromFavorites(lab.lab_id)">
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                } @else {
+                    <div class="alert alert-warning text-center">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        No tienes laboratorios favoritos. Añade algunos para verlos aquí.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    }
 <ng-template #information>
     <div class="row gy-3">
         <!-- Columna de la imagen -->

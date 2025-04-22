@@ -62,6 +62,7 @@ export class AccountComponent {
   user: UserData | undefined;
   admin: AdminData | undefined;
   labs: LabData[] | undefined;
+  favoriteLabs: LabData[] | undefined;
 
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
@@ -135,7 +136,58 @@ export class AccountComponent {
 
       if (this.admin) {
         this.labs = await this.labService.creatorLabs(this.admin.admin_id);
+        
       }
+    }else{
+      this.loadFavoriteLabs();
+    }
+  }
+  async loadFavoriteLabs() {
+    try {
+
+      if (this.user) {
+
+        this.favoriteLabs = [
+          {
+            lab_id: 1,
+            creation_date: '2023-04-15',
+            name: 'laboratorio de química orgánica',
+            location: 'edificio F, planta baja',
+            capacity: 25,
+            description: 'laboratorio especializado en análisis de compuestos orgánicos',
+            institution: 'universidad de guadalajara',
+            campus: 'CUCEI',
+            specialization: 'química',
+            creator_id: 1
+          },
+          {
+            lab_id: 2,
+            creation_date: '2023-05-20',
+            name: 'laboratorio de robótica',
+            location: 'edificio Z, segundo piso',
+            capacity: 30,
+            description: 'laboratorio para pruebas y desarrollo de prototipos robóticos',
+            institution: 'universidad de guadalajara',
+            campus: 'CUCEI',
+            specialization: 'robótica',
+            creator_id: 1
+          }
+        ];
+      }
+    } catch (error) {
+      console.error('Error al cargar laboratorios favoritos:', error);
+    }
+  }
+
+  async removeFromFavorites(labId: number) {
+    try {
+      if (this.user && this.favoriteLabs) {
+        
+        this.favoriteLabs = this.favoriteLabs.filter(lab => lab.lab_id !== labId);
+        
+      }
+    } catch (error) {
+      console.error('Error al eliminar laboratorio de favoritos:', error);
     }
   }
 
