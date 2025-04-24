@@ -3,7 +3,7 @@ import { LabData, ReservationData } from '../../interfaces/LabInterfaces';
 import { AuthService } from '../../services/auth.service';
 import { LabService } from '../../services/lab.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   FormBuilder,
   FormControl,
@@ -16,7 +16,7 @@ import { AdminsService } from '../../services/admins.service';
 
 @Component({
   selector: 'app-lab',
-  imports: [NgTemplateOutlet, ReactiveFormsModule,NgIf],
+  imports: [NgTemplateOutlet, ReactiveFormsModule],
   templateUrl: './lab.component.html',
   styleUrl: './lab.component.css',
 })
@@ -351,16 +351,16 @@ export class LabComponent implements OnInit {
       const deleted = await this.labService.deleteLab(this.lab_id, this.lab.creator_id);
   
       if (deleted) {
-        console.log('✅ Laboratorio eliminado exitosamente.'); // <- AQUI el mensaje de éxito
+        
         this.deleteLabMessage = 'Laboratorio eliminado exitosamente.';
-        this.router.navigate(['/labs']); // Redirige después de eliminar
+        this.router.navigate(['/labs']); 
       } else {
-        console.error('❌ No se pudo eliminar el laboratorio.');
+        
         this.deleteLabMessage = 'No se pudo eliminar el laboratorio.';
       }
   
     } catch (error) {
-      console.error('🔥 Error al eliminar el laboratorio:', error);
+      console.error( 'Error al eliminar el laboratorio:', error);
       this.deleteLabMessage = 'Ocurrió un error inesperado al eliminar el laboratorio.';
     }
   }
