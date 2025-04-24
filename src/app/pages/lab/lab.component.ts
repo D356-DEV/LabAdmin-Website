@@ -3,7 +3,7 @@ import { LabData, ReservationData } from '../../interfaces/LabInterfaces';
 import { AuthService } from '../../services/auth.service';
 import { LabService } from '../../services/lab.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { NgTemplateOutlet } from '@angular/common';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {
   FormBuilder,
   FormControl,
@@ -16,7 +16,7 @@ import { AdminsService } from '../../services/admins.service';
 
 @Component({
   selector: 'app-lab',
-  imports: [NgTemplateOutlet, ReactiveFormsModule],
+  imports: [NgTemplateOutlet, ReactiveFormsModule,NgIf],
   templateUrl: './lab.component.html',
   styleUrl: './lab.component.css',
 })
@@ -45,13 +45,16 @@ export class LabComponent implements OnInit {
   reservationForm: FormGroup;
   reservationMessage: string = '';
 
+  updateNameForm: FormGroup;
+  updateNameMessage: string = '';
+
   updateInstitutionForm: FormGroup;
   updateInstitutionMessage: string = '';
 
   updateCampusForm: FormGroup;
   updateCampusMessage: string = '';
 
-  updateSpecialtyForm: FormGroup;
+  updateSpecializationForm: FormGroup;
   updateSpecialtyMessage: string = '';
 
   updateLocationForm: FormGroup;
@@ -60,13 +63,24 @@ export class LabComponent implements OnInit {
   updateDescriptionForm: FormGroup;
   updateDescriptionMessage: string = '';
 
-  updateAbilityForm: FormGroup;
-  updateAbilityMessage: string = '';
+  updateCapacityForm: FormGroup;
+  updateCapacityMessage: string = '';
+
+  deleteLabMessage: string = '';
 
 
 
   constructor( fb: FormBuilder) {
-    this.reservationForm = new FormGroup({});
+    this.reservationForm = new FormGroup({
+      startTime: new FormControl(''),
+      endTime: new FormControl(''),
+      description: new FormControl('')
+
+    });
+
+    this.updateNameForm = new FormGroup({
+      name: new FormControl('',[Validators.required]) 
+    });
 
     this.updateInstitutionForm = new FormGroup ({
       institution: new FormControl('',[Validators.required])
@@ -76,8 +90,8 @@ export class LabComponent implements OnInit {
       campus: new FormControl('',[Validators.required])
     });
 
-    this.updateSpecialtyForm = new FormGroup({
-      specialty: new FormControl('',[Validators.required])
+    this.updateSpecializationForm = new FormGroup({
+      specialization: new FormControl('',[Validators.required])
     });
 
     this.updateLocationForm = new FormGroup({
@@ -85,11 +99,11 @@ export class LabComponent implements OnInit {
     });
 
     this.updateDescriptionForm = new FormGroup({
-      description: new FormControl('')
+      udescription: new FormControl('',[Validators.required])
     });
 
-    this.updateAbilityForm = new FormGroup({
-      ability: new FormControl('')
+    this.updateCapacityForm = new FormGroup({
+      capacity: new FormControl('' ,[Validators.required,Validators.min(1)])
     });
 
   }
@@ -162,18 +176,202 @@ export class LabComponent implements OnInit {
         'Ocurrió un error inesperado al generar la reservacion.';
     }
   }
+
+  async updateName() {
+    if (this.updateNameForm.invalid) {
+      this.updateNameMessage = 'Formulario incompleto.';
+      return;
+    }
+    const nameData = this.updateNameForm.value;
+    try {
+      const response = await this.labService.updateName(this.lab_id, nameData.name);
+      if (response) {
+        this.updateNameMessage = 'Nombre actualizado exitosamente.';
+        window.location.reload();
+      } else {
+        this.updateNameMessage = 'No se pudo actualizar el nombre.';
+        console.error('Error al actualizar el nombre:', response);
+      }
+    }
+    catch (error) {
+      console.error('Error al actualizar el nombre:', error);
+      this.updateNameMessage = 'Ocurrió un error inesperado.';
+    }
+  }
+
+  async updateInstitution() {
+    if (this.updateInstitutionForm.invalid) {
+      this.updateInstitutionMessage = 'Formulario incompleto.';
+      return;
+    }
+
+    const institutionData = this.updateInstitutionForm.value;
+
+    try {
+      const response = await this.labService.updateInstitution(this.lab_id, institutionData.institution);
+      if (response) {
+        this.updateInstitutionMessage = 'Institución actualizada exitosamente.';
+        window.location.reload();
+      } else {
+        this.updateInstitutionMessage = 'No se pudo actualizar la institución.';
+        console.error('Error al actualizar la institución:', response);
+      }
+    } catch (error) {
+      console.error('Error al actualizar la institución:', error);
+      this.updateInstitutionMessage = 'Ocurrió un error inesperado.';
+    }
+  }
+
+  async updateCampus() {
+    if (this.updateCampusForm.invalid) {
+      this.updateCampusMessage = 'Formulario incompleto.';
+      return;
+    }
+
+    const campusData = this.updateCampusForm.value;
+
+    try {
+      const response = await this.labService.updateCampus(this.lab_id, campusData.campus);
+      if (response) {
+        this.updateCampusMessage = 'Campus actualizado exitosamente.';
+        this.updateCampusForm.reset();
+        window.location.reload();
+      } else {
+        this.updateCampusMessage = 'No se pudo actualizar el campus.';
+        console.error('Error al actualizar el campus:', response);
+      }
+    } catch (error) {
+      console.error('Error al actualizar el campus:', error);
+      this.updateCampusMessage = 'Ocurrió un error inesperado.';
+    }
+  }
+
+  async updateSpecialization() {
+    if (this.updateSpecializationForm.invalid) {
+      this.updateSpecialtyMessage = 'Formulario incompleto.';
+      return;
+    }
+
+    const specializationData = this.updateSpecializationForm.value;
+
+    try {
+      const response = await this.labService.updateSpecialization(this.lab_id, specializationData.specialization);
+      if (response) {
+        this.updateSpecialtyMessage = 'Especialización actualizada exitosamente.';
+        window.location.reload();
+      } else {
+        this.updateSpecialtyMessage = 'No se pudo actualizar la especialización.';
+        console.error('Error al actualizar la especialización:', response);
+      }
+    } catch (error) {
+      console.error('Error al actualizar la especialización:', error);
+      this.updateSpecialtyMessage = 'Ocurrió un error inesperado.';
+    }
+  }
+
+  async updateLocation() {
+    if (this.updateLocationForm.invalid) {
+      this.updateLocationMessage = 'Formulario incompleto.';
+      return;
+    }
+
+    const locationData = this.updateLocationForm.value;
+
+    try {
+      const response = await this.labService.updateLocation(this.lab_id, locationData.location);
+      if (response) {
+        this.updateLocationMessage = 'Ubicación actualizada exitosamente.';
+        window.location.reload();
+      } else {
+        this.updateLocationMessage = 'No se pudo actualizar la ubicación.';
+        console.error('Error al actualizar la ubicación:', response);
+      }
+    } catch (error) {
+      console.error('Error al actualizar la ubicación:', error);
+      this.updateLocationMessage = 'Ocurrió un error inesperado.';
+    }
+  }
+
+  async updateDescription() {
+    if (this.updateDescriptionForm.invalid) {
+      this.updateDescriptionMessage = 'Formulario incompleto.';
+      return;
+    }
+
+    const descriptionData = this.updateDescriptionForm.value;
+
+    try {
+      const response = await this.labService.updateDescription(this.lab_id, descriptionData.udescription);
+      if (response) {
+        this.updateDescriptionMessage = 'Descripción actualizada exitosamente.';
+        window.location.reload();
+      } else {
+        this.updateDescriptionMessage = 'No se pudo actualizar la descripción.';
+        console.error('Error al actualizar la descripción:', response);
+      }
+    } catch (error) {
+      console.error('Error al actualizar la descripción:', error);
+      this.updateDescriptionMessage = 'Ocurrió un error inesperado.';
+    }
+  }
+
+  async updateCapacity() {
+    if (this.updateCapacityForm.invalid) {
+      this.updateCapacityMessage = 'Formulario incompleto.';
+      return;
+    }
+
+    const capacityData = this.updateCapacityForm.value;
+
+    try {
+      const response = await this.labService.updateCapacity(this.lab_id, capacityData.capacity);
+      if (response) {
+        this.updateCapacityMessage = 'Capacidad actualizada exitosamente.';
+        window.location.reload();
+      } else {
+        this.updateCapacityMessage = 'No se pudo actualizar la capacidad.';
+        console.error('Error al actualizar la capacidad:', response);
+      }
+    } catch (error) {
+      console.error('Error al actualizar la capacidad:', error);
+      this.updateCapacityMessage = 'Ocurrió un error inesperado.';
+    }
+  }
+
+  async deleteLab() {
+    try {
+      if (!this.lab?.creator_id) {
+        this.deleteLabMessage = 'No se pudo obtener el creador del laboratorio.';
+        console.log('creator_id no está disponible');
+        return;
+      }
   
-  async updateInstitution() {}
-  async updateCampus() {}
+      console.log('Eliminando laboratorio...', this.lab_id, this.lab.creator_id);
+  
+      const deleted = await this.labService.deleteLab(this.lab_id, this.lab.creator_id);
+  
+      if (deleted) {
+        console.log('✅ Laboratorio eliminado exitosamente.'); // <- AQUI el mensaje de éxito
+        this.deleteLabMessage = 'Laboratorio eliminado exitosamente.';
+        this.router.navigate(['/labs']); // Redirige después de eliminar
+      } else {
+        console.error('❌ No se pudo eliminar el laboratorio.');
+        this.deleteLabMessage = 'No se pudo eliminar el laboratorio.';
+      }
+  
+    } catch (error) {
+      console.error('🔥 Error al eliminar el laboratorio:', error);
+      this.deleteLabMessage = 'Ocurrió un error inesperado al eliminar el laboratorio.';
+    }
+  }
+  
+  
 
-  async updateSpecialty() {}
+  
 
-  async updateLocation() {}
-
-  async updateDescription() {}
-
-  async updateAbility() {}
-
+  
+  
+  
   /*
   async sendQuote() {
     if (!this.user_id) return;
@@ -191,4 +389,5 @@ export class LabComponent implements OnInit {
     }
   }
     */
+ 
 }
