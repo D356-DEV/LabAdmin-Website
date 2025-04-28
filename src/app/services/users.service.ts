@@ -278,7 +278,8 @@ export class UsersService {
       return false;
     }
   }
-   async updateCarreer(student_carreer: string, user_id: number, session_token: string): Promise<boolean> {
+  
+  async updateCarreer(student_carreer: string, user_id: number, session_token: string): Promise<boolean> {
     try {
       const response = await fetch(`${this.url}/update_student_carreer`, {
         method: 'POST',

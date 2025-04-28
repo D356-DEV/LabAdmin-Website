@@ -159,6 +159,7 @@ export class AccountComponent {
       if (response) {
         this.labMessage = 'Laboratorio creado exitosamente.';
         this.labForm.reset();
+        window.location.reload()
       } else {
         this.labMessage = 'No se pudo crear el laboratorio. Intenta nuevamente.';
         console.error('Respuesta nula o inválida al crear el laboratorio');
