@@ -14,6 +14,7 @@ import { FaqComponent } from './pages/faq/faq.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { InventaryregisterComponent } from './pages/inventaryregister/inventaryregister.component';
 import { AdminListComponent } from './pages/admin-list/admin-list.component';
+import { ReservationsComponent } from './pages/reservations/reservations.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -31,6 +32,6 @@ export const routes: Routes = [
   { path: 'labs',component: LabsComponent, title:'LabAdmin | Laboratorios', canActivate: [authGuard] },
   { path: 'lab/:lab_id', component: LabComponent, title: 'LabAdmin | Laboratorio', canActivate: [authGuard] },
   { path: 'admin/list', component: AdminListComponent, title: 'LabAdmin | admin-list',canActivate:[authGuard] },
-
+  {path:'reservations',component:ReservationsComponent,title:'LabAdmin|reservaciones',canActivate:[authGuard]},
 
 ];
