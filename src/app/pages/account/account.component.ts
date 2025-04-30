@@ -7,8 +7,10 @@ import { AdminsService } from '../../services/admins.service';
 import { AdminData } from '../../interfaces/AdminInterfaces';
 import { LabService } from '../../services/lab.service';
 import { CreateLab, LabData } from '../../interfaces/LabInterfaces';
-import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms'; // Se puede incluir Validators si deseas validaciones
+import { FormBuilder, FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms'; 
 import { UsersService } from '../../services/users.service';
+import { ReservData } from '../../interfaces/ReservInterfaces';
+import { ReservService } from '../../services/reserv.service';
 
 @Component({
   selector: 'app-account',
@@ -25,7 +27,8 @@ export class AccountComponent {
   labService = inject(LabService);
   userService = inject(UsersService);
   router = inject(Router);
-  
+  reservService = inject(ReservService);
+
   labForm: FormGroup<CreateLab | any>;
   labMessage: string = '';
   
@@ -62,6 +65,7 @@ export class AccountComponent {
   user: UserData | undefined;
   admin: AdminData | undefined;
   labs: LabData[] | undefined;
+  reservs: ReservData[] | undefined;
 
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
@@ -127,8 +131,9 @@ export class AccountComponent {
       await this.router.navigate(['/login']);
       return;
     }
-
+    this.reservs = await this.reservService.getByUser(this.user.user_id);
     this.isAdmin = await this.adminService.isUserAdmin(this.user.user_id);
+    
 
     if (this.isAdmin) {
       this.admin = await this.adminService.getByUser(this.user.user_id);
