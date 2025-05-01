@@ -136,7 +136,7 @@ export class ReservService {
 
   async getByLabAndStatus(lab_id: number, status: string): Promise<ReservData[]> {
     try {
-      const response = await fetch(`${this.url}/get_by_id?reserv_id=${lab_id}&status=${status}`, {
+      const response = await fetch(`${this.url}/by_lab_status?reserv_id=${lab_id}&status=${status}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });

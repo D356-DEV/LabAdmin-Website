@@ -127,6 +127,7 @@
             <div class="card-body bg-secondary-subtle" style="height: 350px; overflow-y: auto">
                 <div class="accordion accordion-flush" id="accordionFlush">
                     @for (reserv of reservs; track reserv.lab_id) {
+                      @if (reserv.status?.toLowerCase() === 'accepted'){
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading-{{ reserv.lab_id }}">
                             <button class="accordion-button collapsed bg-warning-subtle" type="button"
@@ -159,6 +160,7 @@
                         </div>
                     </div>
                     }
+                  }
                 </div>
             </div>
         </div>

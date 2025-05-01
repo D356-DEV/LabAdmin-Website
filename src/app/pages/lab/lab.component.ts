@@ -77,12 +77,12 @@ export class LabComponent implements OnInit {
 
   constructor( fb: FormBuilder) {
     this.reservationForm = new FormGroup({
-      reserv_date: new FormControl('',[Validators.required, this.minDateValidator()]),
-      start_time: new FormControl('',[Validators.required]),
-      end_time: new FormControl('',[Validators.required]),
-      description: new FormControl('',[Validators.required])
-
-    });
+      reserv_date: new FormControl('', [Validators.required, this.minDateValidator()]),
+      start_time: new FormControl('', [Validators.required]),
+      end_time: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required])
+    }, { validators: this.timeRangeValidator() });  
+    
 
     this.updateNameForm = new FormGroup({
       name: new FormControl('',[Validators.required]) 
@@ -190,28 +190,43 @@ export class LabComponent implements OnInit {
   }
 
   async createReserv() {
-    const dateControl = this.reservationForm.get('date');
-    const startTimeControl = this.reservationForm.get('startTime');
-    const endTimeControl = this.reservationForm.get('endTime');
+    const dateControl = this.reservationForm.get('reserv_date');
+    const startTimeControl = this.reservationForm.get('start_time');
+    const endTimeControl = this.reservationForm.get('end_time');
   
-    // Verificar si el formulario es inválido
+    
+    this.reservationForm.markAllAsTouched();
+  
     if (this.reservationForm.invalid) {
-      // Validar cada campo para dar un mensaje más específico
-      if (dateControl?.errors?.['required']) {
-        this.reservationMessage = 'La fecha es obligatoria.';
-      } else if (dateControl?.errors?.['minDate']) {
-        this.reservationMessage = 'La fecha no puede ser anterior a hoy.';
-      } else if (startTimeControl?.errors?.['required']) {
-        this.reservationMessage = 'La hora de inicio es obligatoria.';
-      } else if (endTimeControl?.errors?.['required']) {
-        this.reservationMessage = 'La hora de fin es obligatoria.';
+      if (dateControl?.errors) {
+        if (dateControl.errors['required']) {
+          this.reservationMessage = 'La fecha es obligatoria.';
+        } else if (dateControl.errors['minDate']) {
+          this.reservationMessage = 'La fecha no puede ser anterior a hoy.';
+        } else {
+          this.reservationMessage = 'Error en el campo de fecha.';
+        }
+      } else if (startTimeControl?.errors) {
+        if (startTimeControl.errors['required']) {
+          this.reservationMessage = 'La hora de inicio es obligatoria.';
+        } else {
+          this.reservationMessage = 'Error en la hora de inicio.';
+        }
+      } else if (endTimeControl?.errors) {
+        if (endTimeControl.errors['required']) {
+          this.reservationMessage = 'La hora de fin es obligatoria.';
+        } else {
+          this.reservationMessage = 'Error en la hora de fin.';
+        }
+      } else if (this.reservationForm.errors?.['invalidTimeRange']) {
+        this.reservationMessage = 'La hora de fin debe ser posterior a la hora de inicio.';
       } else {
-        this.reservationMessage = 'Formulario incompleto.';
+        this.reservationMessage = 'Formulario incompleto o con errores.';
       }
-      return;  // Salir si el formulario es inválido
+      return;
     }
   
-    // Si el formulario es válido, proceder con la creación de la reservación
+    
     const reservData: CreateReserv = {
       ...this.reservationForm.value,
       lab_id: this.lab_id,
@@ -220,24 +235,20 @@ export class LabComponent implements OnInit {
   
     try {
       const response = await this.reservService.createReserv(reservData);
-  
       if (response) {
         this.reservationMessage = 'Solicitud creada exitosamente.';
         this.reservationForm.reset();
         window.location.reload();
       } else {
-        this.reservationMessage =
-          'No se pudo crear la solicitud. Intenta nuevamente.';
-        console.error(
-          'Respuesta nula o inválida al generar la solicitud de reservación.'
-        );
+        this.reservationMessage = 'No se pudo crear la solicitud. Intenta nuevamente.';
+        console.error('Respuesta nula o inválida al generar la solicitud de reservación.');
       }
     } catch (error) {
-      console.error('Error al crear la reservacion:', error);
-      this.reservationMessage =
-        'Ocurrió un error inesperado al generar la reservacion.';
+      console.error('Error al crear la reservación:', error);
+      this.reservationMessage = 'Ocurrió un error inesperado al generar la reservación.';
     }
   }
+  
   
   
 
