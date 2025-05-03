@@ -37,7 +37,7 @@
     }
 
     <!--LAB INFORMATION CARD-->
-    <div class="container-lg">
+    <div class="container-lg ">
         <div class="card shadow">
             <div class="card-header bg-warning border-0">
                 <div class="text-center">
@@ -106,7 +106,65 @@
             </div>
         </div>
     </div>
+    
 </ng-template>
+<!--Reserv Part-->
+ <div class="container-lg mt-5">
+        <div class="card shadow">
+            <div class="card-header bg-warning-subtle">
+                <div class="row">
+                    <div class="col-7 col-4 d-flex align-items-center justify-content-start">
+                        <h3>Reservaciones</h3>
+                    </div>
+                    <div class="col-5 d-flex align-items-center justify-content-center">
+                        <button type="button" class="btn btn-warning w-100 rounded-pill" data-bs-toggle="modal"
+                            data-bs-target="#reservationModal">
+                            <i class="bi bi-plus-circle mx-1"></i> Crear reservaciones
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body bg-secondary-subtle" style="height: 350px; overflow-y: auto">
+                <div class="accordion accordion-flush" id="accordionFlush">
+                    @for (reserv of reservs; track reserv.lab_id) {
+                      @if (reserv.status?.toLowerCase() === 'accepted'){
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-{{ reserv.lab_id }}">
+                            <button class="accordion-button collapsed bg-warning-subtle" type="button"
+                                data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + reserv.reserv_date"
+                                aria-expanded="false" [attr.aria-controls]="'collapse-' + reserv.lab_id">
+                                {{ reserv.reserv_date }}
+                            </button>
+                        </h2>
+                        <div id="collapse-{{ reserv.reserv_date}}" class="accordion-collapse collapse"
+                            data-bs-parent="#accordionFlush">
+                            <div class="accordion-body" style="min-height: 150px">
+                                <div class="d-flex flex-wrap gap-3">
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px">
+                                        <span class="fw-bold">Hora de inicio:</span><br />
+                                        <span class="border-bottom pb-1 d-inline-block">{{
+                                            capitalizeString(reserv.start_time)
+                                            }}</span>
+                                    </div>
+                                    <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                        style="min-width: 250px">
+                                        <span class="fw-bold">Hora de finalizacion:</span><br />
+                                        <span class="border-bottom pb-1 d-inline-block">{{
+                                            capitalizeString(reserv.end_time)
+                                            }}</span>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                  }
+                </div>
+            </div>
+        </div>
+    </div>
 
 <ng-template #loading>
     <div class="col text-center py-5">
@@ -116,7 +174,7 @@
         <p class="mt-3">Cargando...</p>
     </div>
 </ng-template>
-
+<!--Create Reservation-->
 <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -128,11 +186,21 @@
             </div>
 
             <div class="modal-body">
-                <form [formGroup]="reservationForm" (submit)="reservationLab()">
+                <form [formGroup]="reservationForm" (submit)="createReserv()">
+
+                  <div class="mb-3">
+                    <label for="reservDate" class="form-label">Fecha de reservacion<i
+                            class="bi bi-clock-fill"></i></label>
+                    <input type="date" class="form-control" id="reservDate" formControlName="reserv_date" />
+                    <div class="form-text">
+                        Ingresa la Fecha de reservación que sea despues de hoy.
+
+                    </div>
+                </div>
                     <div class="mb-3">
                         <label for="startTime" class="form-label">Hora de inicio: <i
                                 class="bi bi-clock-fill"></i></label>
-                        <input type="time" class="form-control" id="startTime" formControlName="startTime" />
+                        <input type="time" class="form-control" id="startTime" formControlName="start_time" />
                         <div class="form-text">
                             Ingresa la hora de inicio de la reservación.
 
@@ -142,9 +210,9 @@
                     <div class="mb-3">
                         <label for="endTime" class="form-label">Hora de finalizacion <i
                                 class="bi bi-clock-fill"></i></label>
-                        <input type="time" class="form-control" id="endTime" formControlName="endTime" />
+                        <input type="time" class="form-control" id="endTime" formControlName="end_time" />
                         <div class="form-text">
-                            Ingresa la hora de finalizacion de la reservación.
+                            Ingresa la hora de finalizacion de la reservación que no sea antes de la hora de inicio.
 
                         </div>
                     </div>
@@ -176,7 +244,7 @@
         </div>
     </div>
 </div>
-
+<!--Update Lab-->
 <div class="modal fade" id="updateLabModal" tabindex="-1" aria-labelledby="updateLabModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -373,7 +441,7 @@
                       <div id="collapseDescription" class="accordion-collapse collapse"
                            aria-labelledby="headingDescription" data-bs-parent="#labAccordion">
                         <div class="accordion-body">
-                        <form *ngIf="updateDescriptionForm" [formGroup]="updateDescriptionForm" (submit)="updateDescription()">
+                        <form  [formGroup]="updateDescriptionForm" (submit)="updateDescription()">
                             <div class="mb-3">
                               <label for="updateDescription" class="form-label">Nueva descripción</label>
                               <textarea class="form-control" id="updateDescription" rows="3" formControlName="udescription"></textarea>
@@ -426,7 +494,7 @@
 </div>
 </div>
 </div>
-
+<!--Delete Lab-->
 <div class="modal fade" id="deleteLabModal" tabindex="-1" aria-labelledby="deleteLabModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
@@ -441,7 +509,7 @@
           <div class="modal-body">
             <p>¿Estás seguro de que deseas eliminar este laboratorio? Esta acción no se puede deshacer.</p>
   
-            <div *ngIf="deleteLabMessage" class="alert alert-warning" role="alert">
+            <div  class="alert alert-warning" role="alert">
               {{ deleteLabMessage }}
             </div>
   

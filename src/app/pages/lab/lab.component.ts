@@ -10,9 +10,12 @@ import {
   FormGroup,
   ReactiveFormsModule,
   Validators,
+  AbstractControl,
 } from '@angular/forms';
 import { AdminData } from '../../interfaces/AdminInterfaces';
 import { AdminsService } from '../../services/admins.service';
+import { CreateReserv, ReservData } from '../../interfaces/ReservInterfaces';
+import { ReservService } from '../../services/reserv.service';
 
 @Component({
   selector: 'app-lab',
@@ -26,11 +29,13 @@ export class LabComponent implements OnInit {
   private adminService = inject(AdminsService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private reservService = inject(ReservService);
+  
 
   user_id: number = 0;
   lab_id: number = 0;
   admin_id: number = 0;
-
+  reservs: ReservData [] | any;
   lab: LabData | undefined;
   admin: AdminData | undefined;
 
@@ -72,11 +77,12 @@ export class LabComponent implements OnInit {
 
   constructor( fb: FormBuilder) {
     this.reservationForm = new FormGroup({
-      startTime: new FormControl(''),
-      endTime: new FormControl(''),
-      description: new FormControl('')
-
-    });
+      reserv_date: new FormControl('', [Validators.required, this.minDateValidator()]),
+      start_time: new FormControl('', [Validators.required]),
+      end_time: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required])
+    }, { validators: this.timeRangeValidator() });  
+    
 
     this.updateNameForm = new FormGroup({
       name: new FormControl('',[Validators.required]) 
@@ -107,12 +113,40 @@ export class LabComponent implements OnInit {
     });
 
   }
+  minDateValidator() {
+    return (control: AbstractControl) => {
+      const selectedDate = new Date(control.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Eliminar la hora para comparar solo fecha
   
+      if (!control.value) return null;
+  
+      return selectedDate < today ? { minDate: true } : null;
+    };
+  }
+
+  timeRangeValidator() {
+    return (group: AbstractControl) => {
+      const start = group.get('start_time')?.value;
+      const end = group.get('end_time')?.value;
+      if (!start || !end) return null;
+
+      const [startH, startM] = start.split(':').map(Number);
+      const [endH, endM] = end.split(':').map(Number);
+      const startTotal = startH * 60 + startM;
+      const endTotal = endH * 60 + endM;
+
+      return endTotal > startTotal ? null : { invalidTimeRange: true };
+    };}
+
+
+
   async ngOnInit() {
     window.scroll({ top: 0, behavior: 'smooth' });
     try {
       this.lab_id = Number(this.route.snapshot.paramMap.get('lab_id'));
       this.user_id = Number(this.authService.getStoredUserId());
+      
 
       if (!this.lab_id || this.lab_id < 1) {
         this.router.navigate(['/labs']);
@@ -124,6 +158,11 @@ export class LabComponent implements OnInit {
           return;
         }
       }
+     
+
+      this.reservs = await this.reservService.getByLab(this.lab_id);
+      console.log('Reservaciones cargadas:', this.reservs);
+
 
       if (!this.user_id || this.user_id < 1) {
         this.router.navigate(['/labs']);
@@ -146,36 +185,72 @@ export class LabComponent implements OnInit {
     } finally {
       this.isLoading = false;
     }
+
+    
   }
 
-  async reservationLab() {
+  async createReserv() {
+    const dateControl = this.reservationForm.get('reserv_date');
+    const startTimeControl = this.reservationForm.get('start_time');
+    const endTimeControl = this.reservationForm.get('end_time');
+  
+    
+    this.reservationForm.markAllAsTouched();
+  
     if (this.reservationForm.invalid) {
-      this.reservationMessage = 'Formulario incompleto.';
+      if (dateControl?.errors) {
+        if (dateControl.errors['required']) {
+          this.reservationMessage = 'La fecha es obligatoria.';
+        } else if (dateControl.errors['minDate']) {
+          this.reservationMessage = 'La fecha no puede ser anterior a hoy.';
+        } else {
+          this.reservationMessage = 'Error en el campo de fecha.';
+        }
+      } else if (startTimeControl?.errors) {
+        if (startTimeControl.errors['required']) {
+          this.reservationMessage = 'La hora de inicio es obligatoria.';
+        } else {
+          this.reservationMessage = 'Error en la hora de inicio.';
+        }
+      } else if (endTimeControl?.errors) {
+        if (endTimeControl.errors['required']) {
+          this.reservationMessage = 'La hora de fin es obligatoria.';
+        } else {
+          this.reservationMessage = 'Error en la hora de fin.';
+        }
+      } else if (this.reservationForm.errors?.['invalidTimeRange']) {
+        this.reservationMessage = 'La hora de fin debe ser posterior a la hora de inicio.';
+      } else {
+        this.reservationMessage = 'Formulario incompleto o con errores.';
+      }
       return;
     }
-
-    const reservData: ReservationData = this.reservationForm.value;
-
+  
+    
+    const reservData: CreateReserv = {
+      ...this.reservationForm.value,
+      lab_id: this.lab_id,
+      user_id: this.user_id,
+    };
+  
     try {
-      const response = await this.labService.reservationLab(reservData);
-
+      const response = await this.reservService.createReserv(reservData);
       if (response) {
         this.reservationMessage = 'Solicitud creada exitosamente.';
         this.reservationForm.reset();
         window.location.reload();
       } else {
-        this.reservationMessage =
-          'No se pudo crear la solicitud. Intenta nuevamente.';
-        console.error(
-          'Respuesta nula o inválida al generar la solicitud de reservación.'
-        );
+        this.reservationMessage = 'No se pudo crear la solicitud. Intenta nuevamente.';
+        console.error('Respuesta nula o inválida al generar la solicitud de reservación.');
       }
     } catch (error) {
-      console.error('Error al crear la reservacion:', error);
-      this.reservationMessage =
-        'Ocurrió un error inesperado al generar la reservacion.';
+      console.error('Error al crear la reservación:', error);
+      this.reservationMessage = 'Ocurrió un error inesperado al generar la reservación.';
     }
   }
+  
+  
+  
 
   async updateName() {
     if (this.updateNameForm.invalid) {
@@ -364,7 +439,14 @@ export class LabComponent implements OnInit {
       this.deleteLabMessage = 'Ocurrió un error inesperado al eliminar el laboratorio.';
     }
   }
-  
+  capitalizeString(str: string | undefined): string {
+    if (!str) return "";
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
   
 
   

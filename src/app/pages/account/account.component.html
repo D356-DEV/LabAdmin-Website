@@ -728,6 +728,58 @@
     </div>
 </ng-template>
 
+<div class="container-lg ">
+    <div class="card">
+        <div class="card-header bg-warning-subtle">
+            <h3>Reservaciones</h3>
+        </div>
+        <div class="card-body bg-secondary-subtle" style="height: 350px; overflow-y: auto">
+            <div class="accordion accordion-flush" id="accordionFlush">
+                @for (reserv of reservs; track reserv.user_id) {
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-{{ reserv.user_id }}">
+                        <button class="accordion-button collapsed bg-warning-subtle" type="button"
+                            data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse-' + reserv.reserv_id"
+                            aria-expanded="false" [attr.aria-controls]="'collapse-' + reserv.reserv_id">
+                            {{ reserv.reserv_date }}
+                        </button>
+                    </h2>
+                    <div id="collapse-{{ reserv.reserv_id }}" class="accordion-collapse collapse"
+                        data-bs-parent="#accordionFlush">
+                        <div class="accordion-body" style="min-height: 150px">
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                    style="min-width: 250px">
+                                    <span class="fw-bold">Hora de inicio:</span><br />
+                                    <span class="border-bottom pb-1 d-inline-block">{{
+                                        capitalizeString(reserv.start_time)
+                                        }}</span>
+                                </div>
+                                <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                    style="min-width: 250px">
+                                    <span class="fw-bold">Hora de finalizacion:</span><br />
+                                    <span class="border-bottom pb-1 d-inline-block">{{
+                                        capitalizeString(reserv.end_time)
+                                        }}</span>
+                                </div>
+                                <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
+                                    style="min-width: 250px">
+                                    <span class="fw-bold">Estatus de la reservacion:</span><br />
+                                    <span class="border-bottom pb-1 d-inline-block">{{
+                                        capitalizeString(reserv.status)
+                                        }}</span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
 <ng-template #loading>
     <div class="col text-center py-5">
         <div class="spinner-border text-dark" role="status">

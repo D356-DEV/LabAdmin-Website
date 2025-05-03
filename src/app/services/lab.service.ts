@@ -116,29 +116,7 @@ export class LabService {
     }
   }
 
-  async reservationLab(reservationData: any): Promise<boolean> {
-    try {
-      const response = await fetch(`${this.apiUrl}/reservation_lab`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(reservationData)
-      });
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to create reservation: ${response.status} ${errorText}`);
-      }
-      
-      const json = await response.json();
-
-      return json.status === 'success';
-    } catch (error) {
-      console.error(`[LabService] Error in reservationLab:`, error);
-      throw error;
-    }
-  }
+ 
   
   async updateName(lab_id: number, name: string): Promise<boolean> {
     try {

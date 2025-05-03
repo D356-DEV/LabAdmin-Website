@@ -14,7 +14,7 @@ export class ReservService {
       const response = await fetch(`${this.url}/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ createReserv }),
+        body: JSON.stringify( createReserv ),
       });
 
       if (!response.ok) {
@@ -112,9 +112,9 @@ export class ReservService {
     }
   }
 
-  async getByLab(lab_id: number): Promise<ReservData[]> {
+  async getByLab(reserv_id: number): Promise<ReservData[]> {
     try {
-      const response = await fetch(`${this.url}/get_by_id?lab_id=${lab_id}`, {
+      const response = await fetch(`${this.url}/by_lab?lab_id=${reserv_id}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -123,8 +123,10 @@ export class ReservService {
         const errorText = await response.text();
         throw new Error(`Error al obtener reservas por laboratorio: ${response.status} ${errorText}`);
       }
-
+      
       const json = await response.json();
+      console.log('[ReservService] Respuesta JSON:', json);
+
       return json.data as ReservData[];
     } catch (error) {
       console.error('[ReservService] Error en getByLab:', error);
@@ -134,7 +136,7 @@ export class ReservService {
 
   async getByLabAndStatus(lab_id: number, status: string): Promise<ReservData[]> {
     try {
-      const response = await fetch(`${this.url}/get_by_id?reserv_id=${lab_id}&status=${status}`, {
+      const response = await fetch(`${this.url}/by_lab_status?reserv_id=${lab_id}&status=${status}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -154,7 +156,7 @@ export class ReservService {
 
   async getByUser(user_id: number): Promise<ReservData[]> {
     try {
-      const response = await fetch(`${this.url}/get_by_id?user_id=${user_id}`, {
+      const response = await fetch(`${this.url}/by_user?user_id=${user_id}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
