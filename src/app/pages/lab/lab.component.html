@@ -32,6 +32,7 @@
             <button class="btn btn-warning"><i class="bi bi-info"></i></button>
             <button class="btn btn-warning"data-bs-toggle="modal" data-bs-target="#updateLabModal" ><i class="bi bi-gear"></i></button>
             <button class="btn btn-danger" data-bs-toggle="modal"  data-bs-target="#deleteLabModal"><i class="bi bi-trash" ></i></button>
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#labSchedule"><i class="bi bi-calendar-date"></i></button>
         </div>
     </div>
     }
@@ -519,4 +520,190 @@
       </div>
     </div>
   </div>
-  
+<!--Lab Schedule-->
+<div class="modal fade" id="labSchedule" tabindex="-1" aria-labelledby="labschedule" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
+      <div class="modal-content">
+          <div class="modal-header bg-warning-subtle">
+              <h1 class="modal-title">
+                  Crea el horario del Laboratorio <i class="bi bi-calendar-date-fill"></i>
+              </h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          
+          <div class="modal-body">
+            <form [formGroup]="scheduleForm" (submit)="labSchedule()">
+              <div class="row">
+                <div class="col-12 col-sm-6 col-lg-3" formGroupName="monday">
+                  <div class="card">
+                    <div class="card-header bg-warning-subtle">
+                      <span>Lunes</span>
+                      <div class="form-check form-switch">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [checked]="dayEnabled['monday']"
+                          (change)="toggleDay('monday')">
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <label for="monOpen">Ingresa la hora de apertura del laboratorio:</label>
+                      <input id="monOpen" type="time" class="form-control" formControlName="monday_open" [disabled]="!dayEnabled['monday']">
+                      <div class="form-text">Selecciona la hora de apertura.</div>
+
+                      <label for="monClosed">Ingresa la hora de cierre del laboratorio:</label>
+                      <input id="monClosed" type="time" class="form-control" formControlName="monday_close">
+                      <div class="form-text">Selecciona la hora de cierre que sea despues de la hora de apertura.</div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3" formGroupName="tuesday">
+                  <div class="card">
+                    <div class="card-header bg-warning-subtle">
+                      <span>Martes</span>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <label for="tueOpen">Ingresa la hora de apertura del laboratorio:</label>
+                      <input id="tueOpen" type="time" class="form-control" formControlName="tuesday_open">
+                      <div class="form-text">Selecciona la hora de apertura.</div>
+
+                      <label for="tueClosed">Ingresa la hora de cierre del laboratorio:</label>
+                      <input id="tueClosed" type="time" class="form-control" formControlName="tuesday_close">
+                      <div class="form-text">Selecciona la hora de cierre que sea despues de la hora de apertura.</div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3" formGroupName="wednesday">
+                  <div class="card">
+                    <div class="card-header bg-warning-subtle">
+                    <span>Miercoles</span> 
+                     <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                      <label class="form-check-label" for="flexSwitchCheckChecked">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                    </div>
+                    </div>
+                    <div class="card-body">
+                      <label for="wedOpen">Ingresa la hora de apertura del laboratorio:</label>
+                      <input id="wedOpen" type="time" class="form-control" formControlName="wednesday_open">
+                      <div class="form-text">Selecciona la hora de apertura.</div>
+
+                      <label for="wedClosed">Ingresa la hora de cierre del laboratorio:</label>
+                      <input id="wedClosed" type="time" class="form-control" formControlName="wednesday_close">
+                      <div class="form-text">Selecciona la hora de cierre que sea despues de la hora de apertura.</div>
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+                <div class="col-12 col-sm-6 col-lg-3" formGroupName="thursday">
+                  <div class="card">
+                    <div class="card-header bg-warning-subtle">
+                      <span>Jueves</span>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <label for="thuOpen">Ingresa la hora de apertura del laboratorio:</label>
+                      <input id="thuOpen" type="time" class="form-control" formControlName="thursday_open">
+                      <div class="form-text">Selecciona la hora de apertura.</div>
+
+                      <label for="thuClosed">Ingresa la hora de cierre del laboratorio:</label>
+                      <input id="thuClosed" type="time" class="form-control" formControlName="thursday_close">
+                      <div class="form-text">Selecciona la hora de cierre que sea despues de la hora de apertura.</div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+
+              <div class="row mt-2">
+                <div class="col-12 col-sm-6 col-lg-4" formGroupName="friday">
+                  <div class="card">
+                    <div class="card-header bg-warning-subtle">
+                     <span>Viernes</span> 
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <label for="friOpen">Ingresa la hora de apertura del laboratorio:</label>
+                      <input id="friOpen" type="time" class="form-control" formControlName="friday_open">
+                      <div class="form-text">Selecciona la hora de apertura.</div>
+
+                      <label for="friClosed">Ingresa la hora de cierre del laboratorio:</label>
+                      <input id="friClosed" type="time" class="form-control" formControlName="friday_close">
+                      <div class="form-text">Selecciona la hora de cierre que sea despues de la hora de apertura.</div>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4" formGroupName="saturday">
+                  <div class="card">
+                    <div class="card-header bg-warning-subtle">
+                      <span>Sabado</span>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <label for="satOpen">Ingresa la hora de apertura del laboratorio:</label>
+                      <input id="satOpen" type="time" class="form-control" formControlName="saturday_open">
+                      <div class="form-text">Selecciona la hora de apertura.</div>
+
+                      <label for="satClosed">Ingresa la hora de cierre del laboratorio:</label>
+                      <input id="satClosed" type="time" class="form-control" formControlName="saturday_close">
+                      <div class="form-text">Selecciona la hora de cierre que sea despues de la hora de apertura.</div>
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+                <div class="col-12 col-sm-6 col-lg-4" formGroupName="sunday">
+                  <div class="card">
+                    <div class="card-header bg-warning-subtle">
+                      <span>Domingo</span>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <label for="sunOpen">Ingresa la hora de apertura del laboratorio:</label>
+                      <input id="sunOpen" type="time" class="form-control" formControlName="sunday_open">
+                      <div class="form-text">Selecciona la hora de apertura.</div>
+
+                      <label for="sunClosed">Ingresa la hora de cierre del laboratorio:</label>
+                      <input id="sunClosed" type="time" class="form-control" formControlName="sunday_close">
+                      <div class="form-text">Selecciona la hora de cierre que sea despues de la hora de apertura.</div>
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+              </div>
+              <br>
+              @if (scheduleMessage != '') {
+                <div class="alert alert-warning" role="alert">
+                    {{ scheduleMessage }}
+                </div>
+                }
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-warning w-100">
+                      Crear horario <i class="bi bi-clock-history"></i>
+                  </button>
+              </div>
+            </form>
+          </div>
+      </div>
+  </div>
+</div> 

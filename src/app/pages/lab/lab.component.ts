@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { LabData, ReservationData } from '../../interfaces/LabInterfaces';
+import { LabData, ReservationData, ScheduleData } from '../../interfaces/LabInterfaces';
 import { AuthService } from '../../services/auth.service';
 import { LabService } from '../../services/lab.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -38,6 +38,7 @@ export class LabComponent implements OnInit {
   reservs: ReservData [] | any;
   lab: LabData | undefined;
   admin: AdminData | undefined;
+  scheduleData: ScheduleData [] | undefined;
 
   isLoading: boolean = true;
   isAdmin: boolean = false;
@@ -73,8 +74,18 @@ export class LabComponent implements OnInit {
 
   deleteLabMessage: string = '';
 
+  scheduleForm: FormGroup;
+  scheduleMessage: string ='';
 
-
+  dayEnabled: { [key: string]: boolean } = {
+    monday: true,
+    tuesday: true,
+    wednesday: true,
+    thursday: true,
+    friday: true,
+    saturday: true,
+    sunday: true,
+  };
   constructor( fb: FormBuilder) {
     this.reservationForm = new FormGroup({
       reserv_date: new FormControl('', [Validators.required, this.minDateValidator()]),
@@ -111,6 +122,38 @@ export class LabComponent implements OnInit {
     this.updateCapacityForm = new FormGroup({
       capacity: new FormControl('' ,[Validators.required,Validators.min(1)])
     });
+
+    this.scheduleForm = new FormGroup({
+      monday: new FormGroup({
+        monday_open: new FormControl(''),
+        monday_close: new FormControl ('')
+      }),
+      tuesday: new FormGroup({
+        tuesday_open: new FormControl(''),
+        tuesday_close: new FormControl ('')
+      }),
+      wednesday: new FormGroup({
+        wednesday_open: new FormControl(''),
+        wednesday_close: new FormControl ('')
+      }),
+      thursday: new FormGroup({
+        thursday_open: new FormControl(''),
+        thursday_close: new FormControl ('')
+      }),
+      friday: new FormGroup({
+        friday_open: new FormControl(''),
+        friday_close: new FormControl ('')
+      }),
+      saturday: new FormGroup({
+        saturday_open: new FormControl(''),
+        saturday_close: new FormControl ('')
+      }),
+      sunday: new FormGroup({
+        sunday_open: new FormControl(''),
+        sunday_close: new FormControl ('')
+      })
+      
+    })
 
   }
   minDateValidator() {
@@ -439,6 +482,32 @@ export class LabComponent implements OnInit {
       this.deleteLabMessage = 'Ocurrió un error inesperado al eliminar el laboratorio.';
     }
   }
+
+  async labSchedule(){
+    if(this.scheduleForm.invalid){
+      this.scheduleMessage = 'Formulario Incompleto'
+      return;
+    }
+    try {
+      const scheduleData = this.scheduleForm.value;
+      const response = await this.labService.labSchedule(scheduleData);
+      if (response) {
+        this.scheduleMessage = 'Horario creado exitosamente.';
+        window.location.reload();
+      } else {
+        this.scheduleMessage = 'No se pudo crear el horario.';
+        console.error('Error al crear el horario:', response);
+      }
+    }
+    catch (error) {
+    console.error('Error al crear el horario:', error);
+    this.scheduleMessage = 'Ocurrió un error inesperado.';
+  }
+  }
+  
+  
+
+
   capitalizeString(str: string | undefined): string {
     if (!str) return "";
     return str
@@ -448,7 +517,9 @@ export class LabComponent implements OnInit {
       .join(" ");
   }
   
-
+  toggleDay(day: string) {
+    this.dayEnabled[day] = !this.dayEnabled[day];
+  }
   
 
   
