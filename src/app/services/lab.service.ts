@@ -341,13 +341,7 @@ export class LabService {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          lab_id: ScheduleData.lab_id,
-          day_schedule: ScheduleData.day_schedule,
-          open_time: ScheduleData.open_time,
-          close_time: ScheduleData.close_time,
-          
-         
+        body: JSON.stringify({ScheduleData
         })
       });
   

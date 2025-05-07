@@ -37,8 +37,25 @@ export interface ReservationData {
 
 export interface ScheduleData {
   lab_id: number;
-  day_schedule: string;
-  open_time: string;
-  close_time: string;
-  
+  active_monday: number;
+  start_time_monday: string;
+  end_time_monday: string;
+  active_tuesday: number;
+  start_time_tuesday: string;
+  end_time_tuesday: string;
+  active_wednesday: number;
+  start_time_wednesday: string;
+  end_time_wednesday: string;
+  active_thursday: number;
+  start_time_thursday: string;
+  end_time_thursday: string;
+  active_friday: number;
+  start_time_friday: string;
+  end_time_friday: string;
+  active_saturday: number;
+  start_time_saturday: string;
+  end_time_saturday: string;
+  active_sunday: number;
+  start_time_sunday: string;
+  end_time_sunday: string;
 }

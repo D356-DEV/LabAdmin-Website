@@ -16,6 +16,7 @@ import { AdminData } from '../../interfaces/AdminInterfaces';
 import { AdminsService } from '../../services/admins.service';
 import { CreateReserv, ReservData } from '../../interfaces/ReservInterfaces';
 import { ReservService } from '../../services/reserv.service';
+import { ScheduleService } from '../../services/schedule.service';
 
 @Component({
   selector: 'app-lab',
@@ -27,9 +28,11 @@ export class LabComponent implements OnInit {
   private labService = inject(LabService);
   private authService = inject(AuthService);
   private adminService = inject(AdminsService);
+  private scheduleService = inject(ScheduleService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private reservService = inject(ReservService);
+
   
 
   user_id: number = 0;
@@ -124,33 +127,33 @@ export class LabComponent implements OnInit {
     });
 
     this.scheduleForm = new FormGroup({
-      monday: new FormGroup({
-        monday_open: new FormControl(''),
-        monday_close: new FormControl ('')
+      active_monday: new FormGroup({
+        start_time_monday: new FormControl('',[Validators.required]),
+        end_time_monday: new FormControl ('', [Validators.required])
       }),
-      tuesday: new FormGroup({
-        tuesday_open: new FormControl(''),
-        tuesday_close: new FormControl ('')
+      active_tuesday: new FormGroup({
+        start_time_tuesday: new FormControl('',[Validators.required]),
+        end_time_tuesday: new FormControl ('',[Validators.required])
       }),
-      wednesday: new FormGroup({
-        wednesday_open: new FormControl(''),
-        wednesday_close: new FormControl ('')
+      active_wednesday: new FormGroup({
+        start_time_wednesday: new FormControl('',[Validators.required]),
+        end_time_wednesday: new FormControl ('',[Validators.required])
       }),
-      thursday: new FormGroup({
-        thursday_open: new FormControl(''),
-        thursday_close: new FormControl ('')
+      active_thursday: new FormGroup({
+        start_time_thursday: new FormControl('',[Validators.required]),
+        end_time_thursday: new FormControl ('',[Validators.required])
       }),
-      friday: new FormGroup({
-        friday_open: new FormControl(''),
-        friday_close: new FormControl ('')
+      active_friday: new FormGroup({
+        start_time_friday: new FormControl('',[Validators.required]),
+        end_time_friday: new FormControl ('',[Validators.required])
       }),
-      saturday: new FormGroup({
-        saturday_open: new FormControl(''),
-        saturday_close: new FormControl ('')
+      active_saturday: new FormGroup({
+        start_time_saturday: new FormControl('',[Validators.required]),
+        end_time_saturday: new FormControl ('',[Validators.required])
       }),
-      sunday: new FormGroup({
-        sunday_open: new FormControl(''),
-        sunday_close: new FormControl ('')
+      active_sunday: new FormGroup({
+        start_time_sunday: new FormControl('',[Validators.required]),
+        end_time_sunday: new FormControl ('',[Validators.required])
       })
       
     })
@@ -182,7 +185,9 @@ export class LabComponent implements OnInit {
       return endTotal > startTotal ? null : { invalidTimeRange: true };
     };}
 
+    
 
+    
 
   async ngOnInit() {
     window.scroll({ top: 0, behavior: 'smooth' });
@@ -483,27 +488,63 @@ export class LabComponent implements OnInit {
     }
   }
 
-  async labSchedule(){
-    if(this.scheduleForm.invalid){
-      this.scheduleMessage = 'Formulario Incompleto'
+  async labSchedule() {
+    if (this.scheduleForm.invalid) {
+      this.scheduleMessage = 'Formulario Incompleto';
       return;
     }
+  
+    const formValue = this.scheduleForm.value;
+  
+    // Reemplazar valores null o vacíos por "00:00:00"
+    const payload: ScheduleData = {
+      lab_id: this.lab_id,  
+      active_monday: this.dayEnabled['monday'] ? 1 : 0,
+      start_time_monday: formValue.active_monday?.start_time_monday || '00:00:00',
+      end_time_monday: formValue.active_monday?.end_time_monday || '00:00:00',
+      
+      active_tuesday: this.dayEnabled['tuesday'] ? 1 : 0,
+      start_time_tuesday: formValue.active_tuesday?.start_time_tuesday || '00:00:00',
+      end_time_tuesday: formValue.active_tuesday?.end_time_tuesday || '00:00:00',
+      
+      active_wednesday: this.dayEnabled['wednesday'] ? 1 : 0,
+      start_time_wednesday: formValue.active_wednesday?.start_time_wednesday || '00:00:00',
+      end_time_wednesday: formValue.active_wednesday?.end_time_wednesday || '00:00:00',
+      
+      active_thursday: this.dayEnabled['thursday'] ? 1 : 0,
+      start_time_thursday: formValue.active_thursday?.start_time_thursday || '00:00:00',
+      end_time_thursday: formValue.active_thursday?.end_time_thursday || '00:00:00',
+      
+      active_friday: this.dayEnabled['friday'] ? 1 : 0,
+      start_time_friday: formValue.active_friday?.start_time_friday || '00:00:00',
+      end_time_friday: formValue.active_friday?.end_time_friday || '00:00:00',
+      
+      active_saturday: this.dayEnabled['saturday'] ? 1 : 0,
+      start_time_saturday: formValue.active_saturday?.start_time_saturday || '00:00:00',
+      end_time_saturday: formValue.active_saturday?.end_time_saturday || '00:00:00',
+      
+      active_sunday: this.dayEnabled['sunday'] ? 1 : 0,
+      start_time_sunday: formValue.active_sunday?.start_time_sunday || '00:00:00',
+      end_time_sunday: formValue.active_sunday?.end_time_sunday || '00:00:00'
+    };
+  
+    console.log('Payload:', payload);  // Log para verificar el formato del payload antes de enviarlo
+    
     try {
-      const scheduleData = this.scheduleForm.value;
-      const response = await this.labService.labSchedule(scheduleData);
+      const response = await this.scheduleService.labSchedule(payload);
       if (response) {
         this.scheduleMessage = 'Horario creado exitosamente.';
-        window.location.reload();
+        window.location.reload(); // puedes reemplazar esto con cerrar modal y limpiar el form
       } else {
         this.scheduleMessage = 'No se pudo crear el horario.';
         console.error('Error al crear el horario:', response);
       }
+    } catch (error) {
+      console.error('Error al crear el horario:', error);
+      this.scheduleMessage = 'Ocurrió un error inesperado.';
     }
-    catch (error) {
-    console.error('Error al crear el horario:', error);
-    this.scheduleMessage = 'Ocurrió un error inesperado.';
   }
-  }
+  
   
   
 
