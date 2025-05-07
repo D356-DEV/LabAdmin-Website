@@ -16,7 +16,8 @@ import { AdminData } from '../../interfaces/AdminInterfaces';
 import { AdminsService } from '../../services/admins.service';
 import { CreateReserv, ReservData } from '../../interfaces/ReservInterfaces';
 import { ReservService } from '../../services/reserv.service';
-
+import { NoticeService } from '../../services/notice.service';
+import { NoticeData,createNotice,deleteNotice } from '../../interfaces/NoticeInterfaces';
 @Component({
   selector: 'app-lab',
   imports: [NgTemplateOutlet, ReactiveFormsModule],
@@ -30,7 +31,7 @@ export class LabComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private reservService = inject(ReservService);
-  
+  private noticeService = inject(NoticeService)
 
   user_id: number = 0;
   lab_id: number = 0;
@@ -43,6 +44,14 @@ export class LabComponent implements OnInit {
   isLoading: boolean = true;
   isAdmin: boolean = false;
   isOwner: boolean = false;
+  showNoticesSection:boolean  = false;
+
+  noticeForm:FormGroup;
+  notices:NoticeData[]|undefined;
+  isLoadingNotices: boolean = false;
+  showNoticeForm:boolean = false;
+  noticeErrorMessage:string='';
+  noticeSuccessMessage:string=''
 
   quoteSent: boolean = false;
   requestingQuote: boolean = false;
@@ -154,6 +163,10 @@ export class LabComponent implements OnInit {
       })
       
     })
+    this.noticeForm = new FormGroup({
+      title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      message:new FormControl('',[Validators.required, Validators.maxLength(500)])
+    });
 
   }
   minDateValidator() {
@@ -222,6 +235,7 @@ export class LabComponent implements OnInit {
           this.isOwner = true;
         }
       }
+      await this.loadNotices();
     } catch (error) {
       console.error('Error fetching artwork details:', error);
       this.router.navigate(['/labs']);
@@ -230,6 +244,92 @@ export class LabComponent implements OnInit {
     }
 
     
+  }
+
+  async loadNotices(): Promise<void> {
+    this.isLoadingNotices = true;
+    try {
+      if (this.isAdmin && this.admin_id) {
+        this.notices = await this.noticeService.getbyAdmin(this.admin_id);
+      } else {
+        this.notices = await this.noticeService.getbyLab(this.lab_id);
+      }
+    } catch (error) {
+      this.noticeErrorMessage = 'Error al cargar los anuncios. Intente de nuevo más tarde.';
+      console.error('Error al cargar anuncios:', error);
+    } finally {
+      this.isLoadingNotices = false;
+    }
+  }
+  toggleNoticeForm(): void {
+    this.showNoticeForm = !this.showNoticeForm;
+    if (!this.showNoticeForm) {
+      this.noticeForm.reset();
+    }
+  }
+
+  async submitNotice(){
+    if(this.noticeForm.invalid ||!this.isAdmin||!this.admin_id)
+      return;
+    this.isLoadingNotices = true;
+    this.noticeErrorMessage = '';
+    this.noticeSuccessMessage= '';
+    const newNotice : createNotice = {
+      admin_id:this.admin_id,
+      lab_id:this.lab_id,
+      title:this.noticeForm.value.title,
+      message:this.noticeForm.value.message
+    };
+    try {
+      const success = await this.noticeService.createNotice(newNotice);
+      if (success) {
+        this.noticeSuccessMessage = 'Anuncio creado correctamente.';
+        this.noticeForm.reset();
+        this.showNoticeForm = false;
+        await this.loadNotices(); 
+      } else {
+        this.noticeErrorMessage = 'No se pudo crear el anuncio. Intente de nuevo.';
+      }
+    } catch (error) {
+      this.noticeErrorMessage = 'Error al crear el anuncio. Intente de nuevo más tarde.';
+      console.error('Error al crear anuncio:', error);
+    } finally {
+      this.isLoadingNotices = false;
+    }
+  }
+
+  async deleteNotice(noticeId:number){
+    if (!this.isAdmin || !this.admin_id) {
+      return;
+    }
+
+    if (!confirm('¿Está seguro que desea eliminar este anuncio?')) {
+      return;
+    }
+
+    this.isLoadingNotices = true;
+    this.noticeErrorMessage = '';
+    this.noticeSuccessMessage = '';
+
+    const deleteReq: deleteNotice = {
+      admin_id: this.admin_id,
+      notice_id: noticeId
+    };
+
+    try {
+      const success = await this.noticeService.deleteNotice(deleteReq);
+      if (success) {
+        this.noticeSuccessMessage = 'Anuncio eliminado correctamente.';
+        await this.loadNotices(); 
+      } else {
+        this.noticeErrorMessage = 'No se pudo eliminar el anuncio. Intente de nuevo.';
+      }
+    } catch (error) {
+      this.noticeErrorMessage = 'Error al eliminar el anuncio. Intente de nuevo más tarde.';
+      console.error('Error al eliminar anuncio:', error);
+    } finally {
+      this.isLoadingNotices = false;
+    }
   }
 
   async createReserv() {

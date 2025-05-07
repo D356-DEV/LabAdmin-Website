@@ -7,7 +7,7 @@ import { CreateReserv, ReservData } from '../interfaces/ReservInterfaces';
 export class ReservService {
   private url = 'https://api.d356.dev/reservs';
 
-  constructor() {}
+  constructor() {}  
 
   async createReserv(createReserv: CreateReserv): Promise<boolean> {
     try {

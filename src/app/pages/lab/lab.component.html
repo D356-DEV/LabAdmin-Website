@@ -107,7 +107,122 @@
             </div>
         </div>
     </div>
+    <div class="container-lg mt-4 d-flex justify-content-center">
+      <div 
+        class="notice-toggle-tab shadow-sm d-flex align-items-center px-4 py-3 rounded"
+        [class.bg-warning-subtle]="showNoticesSection"
+        [style.background-color]="showNoticesSection ? '#ffa726' : '#ffa726'" 
+        style="cursor: pointer; min-width: 220px; justify-content: center; transition: all 0.3s ease;" 
+        (click)="showNoticesSection = !showNoticesSection"
+      >
+        <i class="bi bi-newspaper me-2 fs-4"></i>
+        <span class="fw-bold fs-5">
+          {{ showNoticesSection ? 'Ocultar Anuncios' : 'Ver Anuncios' }}
+        </span>
+      </div>
+    </div>
     
+    <!-- SECCIÓN DE ANUNCIOS DEL LABORATORIO -->
+    @if (showNoticesSection) {
+      <div class="container-lg mt-4">
+        <div class="card shadow">
+            <div class="card-header bg-warning-subtle">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Anuncios del Laboratorio</h3>
+                    @if (isAdmin) {
+                    <button class="btn btn-warning" (click)="toggleNoticeForm()">
+                        {{ showNoticeForm ? 'Cancelar' : 'Crear Anuncio' }}
+                    </button>
+                    }
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <!-- Formulario para crear anuncios (solo admins) -->
+                @if (showNoticeForm && isAdmin) {
+                <div class="mb-4 p-3 border rounded bg-light">
+                    <form [formGroup]="noticeForm" (ngSubmit)="submitNotice()">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Título:</label>
+                            <input type="text" class="form-control" id="title" formControlName="title" placeholder="Título del anuncio">
+                            @if (noticeForm.get('title')?.invalid && noticeForm.get('title')?.touched) {
+                            <div class="text-danger small">
+                                El título es obligatorio y debe tener máximo 100 caracteres.
+                            </div>
+                            }
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Mensaje:</label>
+                            <textarea class="form-control" id="message" formControlName="message" rows="4" placeholder="Contenido del anuncio"></textarea>
+                            @if (noticeForm.get('message')?.invalid && noticeForm.get('message')?.touched) {
+                            <div class="text-danger small">
+                                El mensaje es obligatorio y debe tener máximo 500 caracteres.
+                            </div>
+                            }
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success" [disabled]="noticeForm.invalid || isLoadingNotices">
+                                {{ isLoadingNotices ? 'Enviando...' : 'Publicar Anuncio' }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                }
+                
+                <!-- Mensajes de éxito o error -->
+                @if (noticeSuccessMessage) {
+                <div class="alert alert-success mb-3">
+                    {{ noticeSuccessMessage }}
+                </div>
+                }
+                @if (noticeErrorMessage) {
+                <div class="alert alert-danger mb-3">
+                    {{ noticeErrorMessage }}
+                </div>
+                }
+                
+                <!-- Lista de anuncios -->
+                <div class="notices-list">
+                    @if (isLoadingNotices) {
+                    <div class="text-center py-3">
+                        <div class="spinner-border text-dark" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p class="mt-2">Cargando anuncios...</p>
+                    </div>
+                    }
+                    
+                    @if (!isLoadingNotices) {
+                    <div class="text-center py-3 text-muted">
+                        No hay anuncios disponibles en este momento.
+                    </div>
+                    }
+                    
+                    @for (notice of notices; track notice.notice_id) {
+                    <div class="card mb-3">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">{{ notice.title }}</h5>
+                            @if (isAdmin) {
+                            <button class="btn btn-sm btn-outline-danger" (click)="deleteNotice(notice.notice_id)" title="Eliminar anuncio">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            }
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ notice.message }}</p>
+                        </div>
+                        <div class="card-footer text-muted small">
+                            ID: {{ notice.notice_id }}
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+      </div>
+    }
 </ng-template>
 <!--Reserv Part-->
  <div class="container-lg mt-5">
