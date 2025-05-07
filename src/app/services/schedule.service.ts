@@ -5,7 +5,7 @@ import { ScheduleData } from '../interfaces/LabInterfaces';
 })
 export class ScheduleService {
 
-  private apiUrl = 'https://api.d356.dev/schedule';
+  private apiUrl = 'https://api.d356.dev/schedules';
 
   constructor() { }
   async labSchedule(ScheduleData: ScheduleData){

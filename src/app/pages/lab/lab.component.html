@@ -528,22 +528,21 @@
               <h1 class="modal-title">
                   Crea el horario del Laboratorio <i class="bi bi-calendar-date-fill"></i>
               </h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" ></button>
           </div>
           
           <div class="modal-body">
-            <form [formGroup]="scheduleForm" (submit)="labSchedule()">
+            <form [formGroup]="scheduleForm" (submit)="createSchedule()">
               <div class="row">
                 <!-- Lunes -->
-                <div class="col-12 col-sm-6 col-lg-3" formGroupName="active_monday">
+                <div class="col-12 col-sm-6 col-lg-3" >
                   <div class="card">
                     <div class="card-header bg-warning-subtle">
                       <span>Lunes</span>
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox"
-                               [checked]="dayEnabled['monday']"
-                               (change)="toggleDay('monday')">
-                        <label class="form-check-label">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                        <input class="form-check-input" type="checkbox" role="switch" id="switchCheckChecked" checked>
+                        <input class="form-check-input" type="checkbox" formControlName="active_monday" checked >
+                        <label class="form-check-label">activa el interruptor si el laboratorio está disponible ese día.</label>
                       </div>
                     </div>
                     <div class="card-body">
@@ -561,15 +560,13 @@
                 </div>
             
                 <!-- Martes -->
-                <div class="col-12 col-sm-6 col-lg-3" formGroupName="active_tuesday">
+                <div class="col-12 col-sm-6 col-lg-3" >
                   <div class="card">
                     <div class="card-header bg-warning-subtle">
                       <span>Martes</span>
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox"
-                               [checked]="dayEnabled['tuesday']"
-                               (change)="toggleDay('tuesday')">
-                        <label class="form-check-label">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                        <input class="form-check-input" type="checkbox" formControlName="active_tuesday">
+                        <label class="form-check-label">activa el interruptor si el laboratorio está disponible ese día.</label>
                       </div>
                     </div>
                     <div class="card-body">
@@ -587,15 +584,14 @@
                 </div>
             
                 <!-- Miércoles -->
-                <div class="col-12 col-sm-6 col-lg-3" formGroupName="active_wednesday">
+                <div class="col-12 col-sm-6 col-lg-3" >
                   <div class="card">
                     <div class="card-header bg-warning-subtle">
                       <span>Miércoles</span>
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox"
-                               [checked]="dayEnabled['wednesday']"
-                               (change)="toggleDay('wednesday')">
-                        <label class="form-check-label">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                        <input class="form-check-input" type="checkbox" formControlName="active_wednesday">
+                               
+                        <label class="form-check-label">activa el interruptor si el laboratorio está disponible ese día.</label>
                       </div>
                     </div>
                     <div class="card-body">
@@ -613,15 +609,13 @@
                 </div>
             
                 <!-- Jueves -->
-                <div class="col-12 col-sm-6 col-lg-3" formGroupName="active_thursday">
+                <div class="col-12 col-sm-6 col-lg-3" >
                   <div class="card">
                     <div class="card-header bg-warning-subtle">
                       <span>Jueves</span>
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox"
-                               [checked]="dayEnabled['thursday']"
-                               (change)="toggleDay('thursday')">
-                        <label class="form-check-label">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                        <input class="form-check-input" type="checkbox" formControlName="active_thursday">
+                        <label class="form-check-label">activa el interruptor si el laboratorio está disponible ese día.</label>
                       </div>
                     </div>
                     <div class="card-body">
@@ -641,15 +635,13 @@
             
               <div class="row mt-2">
                 <!-- Viernes -->
-                <div class="col-12 col-sm-6 col-lg-4" formGroupName="active_friday">
+                <div class="col-12 col-sm-6 col-lg-4" >
                   <div class="card">
                     <div class="card-header bg-warning-subtle">
                       <span>Viernes</span>
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox"
-                               [checked]="dayEnabled['friday']"
-                               (change)="toggleDay('friday')">
-                        <label class="form-check-label">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                        <input class="form-check-input" type="checkbox" formControlName="active_friday">
+                        <label class="form-check-label">activa el interruptor si el laboratorio está disponible ese día.</label>
                       </div>
                     </div>
                     <div class="card-body">
@@ -667,15 +659,13 @@
                 </div>
             
                 <!-- Sábado -->
-                <div class="col-12 col-sm-6 col-lg-4" formGroupName="active_saturday">
+                <div class="col-12 col-sm-6 col-lg-4" >
                   <div class="card">
                     <div class="card-header bg-warning-subtle">
                       <span>Sábado</span>
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox"
-                               [checked]="dayEnabled['saturday']"
-                               (change)="toggleDay('saturday')">
-                        <label class="form-check-label">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                        <input class="form-check-input" type="checkbox" formControlName="active_saturday">
+                        <label class="form-check-label">activa el interruptor si el laboratorio está disponible ese día.</label>
                       </div>
                     </div>
                     <div class="card-body">
@@ -693,15 +683,13 @@
                 </div>
             
                 <!-- Domingo -->
-                <div class="col-12 col-sm-6 col-lg-4" formGroupName="active_sunday">
+                <div class="col-12 col-sm-6 col-lg-4" >
                   <div class="card">
                     <div class="card-header bg-warning-subtle">
                       <span>Domingo</span>
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox"
-                               [checked]="dayEnabled['sunday']"
-                               (change)="toggleDay('sunday')">
-                        <label class="form-check-label">Desactiva el interruptor si el laboratorio no está disponible ese día.</label>
+                        <input class="form-check-input" type="checkbox" formControlName="active_sunday">
+                        <label class="form-check-label">activa el interruptor si el laboratorio está disponible ese día.</label>
                       </div>
                     </div>
                     <div class="card-body">

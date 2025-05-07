@@ -17,6 +17,7 @@ import { AdminsService } from '../../services/admins.service';
 import { CreateReserv, ReservData } from '../../interfaces/ReservInterfaces';
 import { ReservService } from '../../services/reserv.service';
 import { ScheduleService } from '../../services/schedule.service';
+import { CreateSchedule } from '../../interfaces/ScheduleInterfaces';
 
 @Component({
   selector: 'app-lab',
@@ -80,15 +81,7 @@ export class LabComponent implements OnInit {
   scheduleForm: FormGroup;
   scheduleMessage: string ='';
 
-  dayEnabled: { [key: string]: boolean } = {
-    monday: true,
-    tuesday: true,
-    wednesday: true,
-    thursday: true,
-    friday: true,
-    saturday: true,
-    sunday: true,
-  };
+ 
   constructor( fb: FormBuilder) {
     this.reservationForm = new FormGroup({
       reserv_date: new FormControl('', [Validators.required, this.minDateValidator()]),
@@ -127,34 +120,34 @@ export class LabComponent implements OnInit {
     });
 
     this.scheduleForm = new FormGroup({
-      active_monday: new FormGroup({
-        start_time_monday: new FormControl('',[Validators.required]),
-        end_time_monday: new FormControl ('', [Validators.required])
-      }),
-      active_tuesday: new FormGroup({
-        start_time_tuesday: new FormControl('',[Validators.required]),
-        end_time_tuesday: new FormControl ('',[Validators.required])
-      }),
-      active_wednesday: new FormGroup({
-        start_time_wednesday: new FormControl('',[Validators.required]),
-        end_time_wednesday: new FormControl ('',[Validators.required])
-      }),
-      active_thursday: new FormGroup({
-        start_time_thursday: new FormControl('',[Validators.required]),
-        end_time_thursday: new FormControl ('',[Validators.required])
-      }),
-      active_friday: new FormGroup({
-        start_time_friday: new FormControl('',[Validators.required]),
-        end_time_friday: new FormControl ('',[Validators.required])
-      }),
-      active_saturday: new FormGroup({
-        start_time_saturday: new FormControl('',[Validators.required]),
-        end_time_saturday: new FormControl ('',[Validators.required])
-      }),
-      active_sunday: new FormGroup({
-        start_time_sunday: new FormControl('',[Validators.required]),
-        end_time_sunday: new FormControl ('',[Validators.required])
-      })
+        active_monday: new FormControl (false),
+        start_time_monday: new FormControl(''),
+        end_time_monday: new FormControl (''),
+      
+        active_tuesday: new FormControl(false),
+        start_time_tuesday: new FormControl(''),
+        end_time_tuesday: new FormControl (''),
+     
+      active_wednesday: new FormControl(false),
+        start_time_wednesday: new FormControl(''),
+        end_time_wednesday: new FormControl (''),
+      
+      active_thursday: new FormControl(false),
+        start_time_thursday: new FormControl(''),
+        end_time_thursday: new FormControl (''),
+      
+      active_friday: new FormControl(false),
+        start_time_friday: new FormControl(''),
+        end_time_friday: new FormControl (''),
+     
+      active_saturday: new FormControl(false),
+        start_time_saturday: new FormControl(''),
+        end_time_saturday: new FormControl (''),
+      
+      active_sunday: new FormControl (false),
+        start_time_sunday: new FormControl(''),
+        end_time_sunday: new FormControl ('')
+     
       
     })
 
@@ -488,59 +481,36 @@ export class LabComponent implements OnInit {
     }
   }
 
-  async labSchedule() {
+  async createSchedule() {
+    let scheduleData: CreateSchedule = {
+      lab_id: this.lab_id,
+      active_monday: this.scheduleForm.controls['active_monday'].value,
+      start_time_monday: this.scheduleForm.controls['start_time_monday'].value? 
+      end_time_monday: this.scheduleForm.controls['end_time_monday'].value?
+    } 
+    const activeMondayControl = this.scheduleForm.controls['active_monday'].value;
+    console.log(activeMondayControl);
     if (this.scheduleForm.invalid) {
-      this.scheduleMessage = 'Formulario Incompleto';
+      this.scheduleMessage = 'Formulario incompleto.';
       return;
     }
-  
-    const formValue = this.scheduleForm.value;
-  
-    // Reemplazar valores null o vacíos por "00:00:00"
-    const payload: ScheduleData = {
-      lab_id: this.lab_id,  
-      active_monday: this.dayEnabled['monday'] ? 1 : 0,
-      start_time_monday: formValue.active_monday?.start_time_monday || '00:00:00',
-      end_time_monday: formValue.active_monday?.end_time_monday || '00:00:00',
-      
-      active_tuesday: this.dayEnabled['tuesday'] ? 1 : 0,
-      start_time_tuesday: formValue.active_tuesday?.start_time_tuesday || '00:00:00',
-      end_time_tuesday: formValue.active_tuesday?.end_time_tuesday || '00:00:00',
-      
-      active_wednesday: this.dayEnabled['wednesday'] ? 1 : 0,
-      start_time_wednesday: formValue.active_wednesday?.start_time_wednesday || '00:00:00',
-      end_time_wednesday: formValue.active_wednesday?.end_time_wednesday || '00:00:00',
-      
-      active_thursday: this.dayEnabled['thursday'] ? 1 : 0,
-      start_time_thursday: formValue.active_thursday?.start_time_thursday || '00:00:00',
-      end_time_thursday: formValue.active_thursday?.end_time_thursday || '00:00:00',
-      
-      active_friday: this.dayEnabled['friday'] ? 1 : 0,
-      start_time_friday: formValue.active_friday?.start_time_friday || '00:00:00',
-      end_time_friday: formValue.active_friday?.end_time_friday || '00:00:00',
-      
-      active_saturday: this.dayEnabled['saturday'] ? 1 : 0,
-      start_time_saturday: formValue.active_saturday?.start_time_saturday || '00:00:00',
-      end_time_saturday: formValue.active_saturday?.end_time_saturday || '00:00:00',
-      
-      active_sunday: this.dayEnabled['sunday'] ? 1 : 0,
-      start_time_sunday: formValue.active_sunday?.start_time_sunday || '00:00:00',
-      end_time_sunday: formValue.active_sunday?.end_time_sunday || '00:00:00'
+    
+    const scheduleData: ScheduleData = {
+      lab_id: this.lab_id,
+      ...this.scheduleForm.value,
     };
   
-    console.log('Payload:', payload);  // Log para verificar el formato del payload antes de enviarlo
-    
     try {
-      const response = await this.scheduleService.labSchedule(payload);
+      const response = await this.scheduleService.labSchedule(scheduleData);
       if (response) {
-        this.scheduleMessage = 'Horario creado exitosamente.';
-        window.location.reload(); // puedes reemplazar esto con cerrar modal y limpiar el form
+        this.scheduleMessage = 'Horario actualizado exitosamente.';
+        window.location.reload();
       } else {
-        this.scheduleMessage = 'No se pudo crear el horario.';
-        console.error('Error al crear el horario:', response);
+        this.scheduleMessage = 'No se pudo actualizar el horario.';
+        console.error('Error al actualizar el horario:', response);
       }
     } catch (error) {
-      console.error('Error al crear el horario:', error);
+      console.error('Error al actualizar el horario:', error);
       this.scheduleMessage = 'Ocurrió un error inesperado.';
     }
   }
@@ -558,9 +528,6 @@ export class LabComponent implements OnInit {
       .join(" ");
   }
   
-  toggleDay(day: string) {
-    this.dayEnabled[day] = !this.dayEnabled[day];
-  }
   
 
   
