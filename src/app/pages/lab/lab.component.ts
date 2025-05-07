@@ -45,7 +45,7 @@ export class LabComponent implements OnInit {
   isAdmin: boolean = false;
   isOwner: boolean = false;
   showNoticesSection:boolean  = false;
-
+  showAllNotices:boolean = false;
   noticeForm:FormGroup;
   notices:NoticeData[]|undefined;
   isLoadingNotices: boolean = false;
@@ -245,18 +245,27 @@ export class LabComponent implements OnInit {
 
     
   }
-
+  async toggleAllNotices(): Promise<void> {
+    this.showAllNotices = !this.showAllNotices;
+    await this.loadNotices();
+  }
   async loadNotices(): Promise<void> {
     this.isLoadingNotices = true;
+    this.noticeErrorMessage = '';
+    
     try {
-      if (this.isAdmin && this.admin_id) {
+      if (this.isAdmin && this.showAllNotices) {
         this.notices = await this.noticeService.getbyAdmin(this.admin_id);
       } else {
         this.notices = await this.noticeService.getbyLab(this.lab_id);
       }
+      this.notices = this.notices.sort((a, b) => 
+        new Date(b.creation_date).getTime() - new Date(a.creation_date).getTime()
+      );
+  
     } catch (error) {
       this.noticeErrorMessage = 'Error al cargar los anuncios. Intente de nuevo más tarde.';
-      console.error('Error al cargar anuncios:', error);
+      console.error('Error en loadNotices:', error);
     } finally {
       this.isLoadingNotices = false;
     }

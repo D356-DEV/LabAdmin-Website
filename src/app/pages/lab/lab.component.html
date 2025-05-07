@@ -138,6 +138,15 @@
             </div>
             
             <div class="card-body">
+              <!-- Botón "Ver todos mis anuncios" solo para admins -->
+    @if (isAdmin) {
+      <div class="d-flex justify-content-end mb-3">
+          <button class="btn btn-primary" (click)="toggleAllNotices()">
+              <i class="bi bi-collection"></i>
+              {{ showAllNotices ? 'Ver anuncios de este laboratorio' : 'Ver todos mis anuncios' }}
+          </button>
+      </div>
+      }
                 <!-- Formulario para crear anuncios (solo admins) -->
                 @if (showNoticeForm && isAdmin) {
                 <div class="mb-4 p-3 border rounded bg-light">
@@ -185,41 +194,41 @@
                 
                 <!-- Lista de anuncios -->
                 <div class="notices-list">
-                    @if (isLoadingNotices) {
-                    <div class="text-center py-3">
-                        <div class="spinner-border text-dark" role="status">
-                            <span class="visually-hidden">Cargando...</span>
-                        </div>
-                        <p class="mt-2">Cargando anuncios...</p>
-                    </div>
-                    }
-                    
-                    @if (!isLoadingNotices) {
-                    <div class="text-center py-3 text-muted">
-                        No hay anuncios disponibles en este momento.
-                    </div>
-                    }
-                    
-                    @for (notice of notices; track notice.notice_id) {
-                    <div class="card mb-3">
-                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">{{ notice.title }}</h5>
-                            @if (isAdmin) {
-                            <button class="btn btn-sm btn-outline-danger" (click)="deleteNotice(notice.notice_id)" title="Eliminar anuncio">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                            }
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">{{ notice.message }}</p>
-                        </div>
-                        <div class="card-footer text-muted small">
-                            ID: {{ notice.notice_id }}
-                        </div>
-                    </div>
-                    }
-                </div>
-            </div>
+                  @if (isLoadingNotices) {
+                  <div class="text-center py-3">
+                      <div class="spinner-border text-dark" role="status">
+                          <span class="visually-hidden">Cargando...</span>
+                      </div>
+                      <p class="mt-2">Cargando anuncios...</p>
+                  </div>
+                  }
+                  
+                  @if (!isLoadingNotices) {
+                  <div class="text-center py-3 text-muted">
+                      No hay anuncios disponibles en este momento.
+                  </div>
+                  }
+                  
+                  @for (notice of notices; track notice.notice_id) {
+                  <div class="card mb-3">
+                      <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                          <h5 class="mb-0">{{ notice.title }}</h5>
+                          @if (isAdmin) {
+                          <button class="btn btn-sm btn-outline-danger" (click)="deleteNotice(notice.notice_id)" title="Eliminar anuncio">
+                              <i class="bi bi-trash"></i>
+                          </button>
+                          }
+                      </div>
+                      <div class="card-body">
+                          <p class="card-text">{{ notice.message }}</p>
+                      </div>
+                      <div class="card-footer text-muted small">
+                          ID: {{ notice.notice_id }} | Laboratorio: {{ notice.lab_id }}
+                      </div>
+                  </div>
+                  }
+              </div>
+          </div>
         </div>
       </div>
     }
