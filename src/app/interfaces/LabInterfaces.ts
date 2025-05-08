@@ -34,11 +34,3 @@ export interface ReservationData {
   status: string;
   description: string;
 }
-
-export interface ScheduleData {
-  lab_id: number;
-  day_schedule: string;
-  open_time: string;
-  close_time: string;
-  
-}

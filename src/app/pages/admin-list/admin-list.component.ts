@@ -15,7 +15,7 @@ interface Prestador {//SOLO PARA EL EJEMPLO DESPUES RETIRAR Y AÑADIRLO
 }
 @Component({
   selector: 'app-admin-list',
-  imports: [NgClass,FormsModule,CommonModule],
+  imports: [ FormsModule,CommonModule],
   templateUrl: './admin-list.component.html',
   styleUrl: './admin-list.component.css'
   

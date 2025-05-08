@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LabData, ScheduleData } from '../interfaces/LabInterfaces';
+import { LabData } from '../interfaces/LabInterfaces';
 import { CreateLab } from '../interfaces/LabInterfaces';
 
 @Injectable({
@@ -116,8 +116,6 @@ export class LabService {
     }
   }
 
- 
-  
   async updateName(lab_id: number, name: string): Promise<boolean> {
     try {
       const response = await fetch(`${this.apiUrl}/update_name`, {
@@ -172,6 +170,7 @@ export class LabService {
       throw error;
     }
   }
+
   async updateCampus(lab_id: number, campus: string): Promise<boolean> {
     try {
       const response = await fetch(`${this.apiUrl}/update_campus`, {
@@ -198,6 +197,7 @@ export class LabService {
       throw error;
     }
   }
+
   async updateSpecialization(lab_id: number, specialization: string): Promise<boolean> {
     try {
       const response = await fetch(`${this.apiUrl}/update_specialization`, {
@@ -278,6 +278,7 @@ export class LabService {
       throw error;
     }
   }
+
   async updateCapacity(lab_id: number, capacity: string): Promise<boolean> {
     try {
       const response = await fetch(`${this.apiUrl}/update_capacity`, {
@@ -333,38 +334,5 @@ export class LabService {
       console.error(`[LabService] Error en deleteLab:`, error);
       throw error;
     }
-  }
-  async labSchedule(ScheduleData: ScheduleData){
-    try {
-      const response = await fetch(`${this.apiUrl}/create_schedule`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          lab_id: ScheduleData.lab_id,
-          day_schedule: ScheduleData.day_schedule,
-          open_time: ScheduleData.open_time,
-          close_time: ScheduleData.close_time,
-          
-         
-        })
-      });
-  
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to create schedule: ${response.status} ${errorText}`);
-      }
-  
-      const json = await response.json();
-  
-      return json.status === 'success';
-    } catch (error) {
-      console.error(`[LabService] Error in labSchedule:`, error);
-      throw error;
-    }
-
-  }
-  
-  
+  }  
 }
