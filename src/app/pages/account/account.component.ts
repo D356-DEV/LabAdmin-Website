@@ -20,7 +20,7 @@ import { ReservService } from '../../services/reserv.service';
 })
 export class AccountComponent {
   
-  activeScreen: 'information' | 'security' = 'information';
+  activeScreen: 'information' | 'security' | 'reservations' = 'information';
   
   authService = inject(AuthService);
   adminService = inject(AdminsService);
@@ -132,6 +132,7 @@ export class AccountComponent {
       return;
     }
     this.reservs = await this.reservService.getByUser(this.user.user_id);
+    await this.loadReservations();
     this.isAdmin = await this.adminService.isUserAdmin(this.user.user_id);
     
 
@@ -143,7 +144,50 @@ export class AccountComponent {
       }
     }
   }
-
+  async loadReservations() {
+    if (this.user) {
+      try {
+        this.reservs = await this.reservService.getByUser(this.user.user_id);
+      } catch (error) {
+        console.error('Error al cargar reservaciones:', error);
+      }
+    }
+  }
+  async acceptReservation(reservId: number) {
+    if (!this.admin) return;
+    
+    try {
+      const result = await this.reservService.acceptReserv(reservId, this.admin.admin_id);
+      
+      if (result) {
+        await this.loadReservations();
+        
+        alert('Reservación aceptada correctamente');
+      }
+    } catch (error) {
+      console.error('Error al aceptar la reservación:', error);
+      alert('Error al aceptar la reservación');
+    }
+  }
+  async rejectReservation(reservId: number) {
+    if (!this.admin) return;
+    
+    try {
+      const result = await this.reservService.rejectReserv(reservId, this.admin.admin_id);
+      
+      if (result) {
+        await this.loadReservations();
+        
+        alert('Reservación rechazada correctamente');
+      }
+    } catch (error) {
+      console.error('Error al rechazar la reservación:', error);
+      alert('Error al rechazar la reservación');
+    }
+  }
+  switchScreen(screen: 'information' | 'security' | 'reservations') {
+    this.activeScreen = screen;
+  }
   async createLab() {
     if (this.labForm.invalid) {
       this.labMessage = 'Formulario incompleto.';

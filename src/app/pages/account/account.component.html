@@ -728,7 +728,7 @@
     </div>
 </ng-template>
 
-<div class="container-lg ">
+<div class="container-lg">
     <div class="card">
         <div class="card-header bg-warning-subtle">
             <h3>Reservaciones</h3>
@@ -757,20 +757,31 @@
                                 </div>
                                 <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
                                     style="min-width: 250px">
-                                    <span class="fw-bold">Hora de finalizacion:</span><br />
+                                    <span class="fw-bold">Hora de finalización:</span><br />
                                     <span class="border-bottom pb-1 d-inline-block">{{
                                         capitalizeString(reserv.end_time)
                                         }}</span>
                                 </div>
                                 <div class="card bg-warning-subtle border border-primary rounded p-3 m-1 flex-fill text-break"
                                     style="min-width: 250px">
-                                    <span class="fw-bold">Estatus de la reservacion:</span><br />
+                                    <span class="fw-bold">Estatus de la reservación:</span><br />
                                     <span class="border-bottom pb-1 d-inline-block">{{
                                         capitalizeString(reserv.status)
                                         }}</span>
                                 </div>
-                                
                             </div>
+                            
+                            <!-- Botones para administradores en todas las reservaciones -->
+                            @if (isAdmin && admin) {
+                            <div class="mt-3 d-flex justify-content-end">
+                                <button class="btn btn-success me-2" (click)="acceptReservation(reserv.reserv_id)">
+                                    Aceptar
+                                </button>
+                                <button class="btn btn-danger" (click)="rejectReservation(reserv.reserv_id)">
+                                    Rechazar
+                                </button>
+                            </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -778,7 +789,6 @@
             </div>
         </div>
     </div>
-
 </div>
 <ng-template #loading>
     <div class="col text-center py-5">
